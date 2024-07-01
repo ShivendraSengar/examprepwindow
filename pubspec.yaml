@@ -1,0 +1,93 @@
+name: exam_prep_tool
+version: 1.0.0+1
+publish_to: none
+description: A new Flutter project.
+environment:
+  sdk: '>=3.1.0 <4.0.0'
+
+dependencies:
+  cupertino_icons: ^1.0.2
+  get: 4.6.6
+  velocity_x: ^4.1.0
+  flutter_switch: ^0.3.0
+  image_picker:
+  shared_preferences:
+  syncfusion_flutter_pdfviewer:
+  readmore:
+  razorpay_web:
+  intl:
+  # flutter_zoom_sdk: ^1.1.0+4
+  flutter_html:
+  js: ^0.6.3
+  video_player_win:
+  msix: ^3.16.7
+
+
+
+
+  flutter:
+    sdk: flutter
+  flutter_fadein: ^2.0.0
+  cached_network_image: ^3.3.0
+  flutter_svg: ^2.0.9
+  hexcolor: ^3.0.1
+  shimmer: ^3.0.0
+  # flutter_inappwebview:
+  retrofit:
+  chewie: ^1.7.4
+  firebase_messaging:
+  screen_protector: ^1.4.2
+  #firebase_messaging:
+  # firebase_core:
+  http: ^1.2.0
+  dio: ^4.0.6
+  url_strategy:
+  encrypt: ^5.0.0
+  share_plus: ^9.0.0
+  flutter_inappwebview: ^6.0.0
+  webview_flutter: ^4.0.0
+  # razorpay_flutter: ^1.2.7
+  window_manager: ^0.3.9
+  desktop_webview_window: ^0.2.3
+  webview_windows: ^0.4.0
+  
+
+
+
+
+
+dev_dependencies:
+  flutter_lints: ^2.0.0
+  retrofit_generator: 4.2.0
+  flutter_gen_runner: any
+  build_runner:
+  flutter_test:
+    sdk: flutter
+
+msix_config:
+  display_name: Ept
+  publisher_display_name: EXAMPREPTOOL
+  identity_name: EXAMPREPTOOL.Ept
+  publisher: CN=8A0A7BCF-FE9D-4C6A-8512-32694D0B47DF
+  msix_version: 1.0.1.0
+  store: true
+
+flutter:
+  uses-material-design: true
+  assets:
+    - images/
+    - images/razorpay_checkout.html
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: images/fonts/PoppinsSemiBold.ttf
+          weight: 600
+        - asset: images/fonts/PoppinsMedium.ttf
+          weight: 500
+        - asset: images/fonts/PoppinsRegular.ttf
+          weight: 400
+        - asset: images/fonts/PoppinsBold.ttf
+          weight: 700
+        - asset: images/fonts/PoppinsExtraBold.ttf
+          weight: 800
+        - asset: images/fonts/PoppinsLight.ttf

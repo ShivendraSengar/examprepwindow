@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <!--<base href="$FLUTTER_BASE_HREF">-->
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="exam_prep_tool">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link type="text/css" rel="stylesheet" href="https://source.zoom.us/1.9.9/css/bootstrap.css" />
+<link type="text/css" rel="stylesheet" href="https://source.zoom.us/1.9.9/css/react-select.css" />
+
+  <title>exam_prep_tool</title>
+  <link rel="manifest" href="manifest.json">
+  <script type="text/javascript">
+    document.onkeydown = function(e) {
+// sniptool
+if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.keyCode === 83) {
+        e.preventDefault(); // Prevent the default behavior (screen capture)
+
+        // Add your custom logic here
+        // For example, you can open a custom dialog or perform a different action
+        console.log("Custom action triggered!");
+    }
+
+      if (e.metaKey && e.keyCode === 44) {
+        e.preventDefault();
+        // Optionally, you can add a custom message or action here
+        console.log('Windows + PrntScrn is blocked!');
+    }
+        if(event.keyCode == 123) {
+            return false;
+        }
+        if((e.metaKey || e.ctrlKey) && e.shiftKey && e.keyCode === 51){ // Check for Command (⌘) + Shift + 3
+        e.preventDefault();
+    }
+
+        if((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'P'){ // Command (⌘) or Ctrl + Shift + P
+        e.preventDefault();
+    }
+    if((e.metaKey || e.ctrlKey) && e.key === 'P'){ // Command (⌘) or Ctrl + P
+        e.preventDefault();
+    }
+        // print scrrn & inpect in mac os
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'P'.charCodeAt(0)){
+            return false;
+        }
+        if(e.ctrlKey  && e.keyCode == 'P'.charCodeAt(0)){
+            return false;
+        }
+        if ((e.ctrlKey || e.metaKey) && e.altKey && e.keyCode == 'I'.charCodeAt(0)) {
+    return false;
+  }
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+    return false;
+  }
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.keyCode == 'U'.charCodeAt(0)) {
+    return false;
+  }
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+    return false;
+  }
+   // print scrrn & inpect in window
+        if(e.ctrlKey && e.altKey && e.keyCode == 'I'.charCodeAt(0)){
+            return false;
+        }
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'P'.charCodeAt(0)){
+            return false;
+        }
+        if(e.ctrlKey  && e.keyCode == 'P'.charCodeAt(0)){
+            return false;
+        }
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
+            return false;
+        }
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
+            return false;
+        }
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)){
+            return false;
+        }
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'U'.charCodeAt(0)){
+            return false;
+        }
+    }
+</script>
+    <!--// The value below is injected by flutter build, do not touch.-->
+    <!--const serviceWorkerVersion = null;-->
+
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
+
+    <!-- ... -->
+    <script type="application/javascript" src="/assets/packages/flutter_inappwebview_web/assets/web/web_support.js" defer></script>
+    <!-- ... -->
+
+  <script>
+    document.addEventListener('contextmenu', event => event.preventDefault());
+</script>
+</head>
+<body>
+  <!-- import ZoomMtg dependencies -->
+  <script src="https://source.zoom.us/1.9.9/lib/vendor/react.min.js"></script>
+  <script src="https://source.zoom.us/1.9.9/lib/vendor/react-dom.min.js"></script>
+  <script src="https://source.zoom.us/1.9.9/lib/vendor/redux.min.js"></script>
+  <script src="https://source.zoom.us/1.9.9/lib/vendor/redux-thunk.min.js"></script>
+  <script src="https://source.zoom.us/1.9.9/lib/vendor/lodash.min.js"></script>
+  <script src="https://source.zoom.us/1.9.9/lib/av/1502_js_media.min.js"></script>
+
+  <!-- import ZoomMtg -->
+  <script src="https://source.zoom.us/zoom-meeting-1.9.9.min.js"></script>
+ <script src="main.dart.js" type="application/javascript"></script>
+  <!--<script src="main.dart.js" type="application/javascript"></script>-->
+  <script src="share.js"></script>
+
+  <script>
+    window.flutterWebRenderer="html";
+  </script>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+<script type="text/javascript">
+   pdfjsLib.GlobalWorkerOptions.workerSrc = "//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js";
+</script>
+<script>
+  document.addEventListener("keyup", function (e) {
+    var keyCode = e.keyCode ? e.keyCode : e.which;
+            if (keyCode == 44) {
+                stopPrntScr();
+            }
+        });
+function stopPrntScr() {
+
+            var inpFld = document.createElement("input");
+            inpFld.setAttribute("value", ".");
+            inpFld.setAttribute("width", "0");
+            inpFld.style.height = "0px";
+            inpFld.style.width = "0px";
+            inpFld.style.border = "0px";
+            document.body.appendChild(inpFld);
+            inpFld.select();
+            document.execCommand("copy");
+            inpFld.remove(inpFld);
+        }
+       function AccessClipboardData() {
+            try {
+                window.clipboardData.setData('text', "Access   Restricted");
+            } catch (err) {
+            }
+        }
+        setInterval("AccessClipboardData()", 300);
+</script>
+  <script>
+    window.addEventListener('load', function(ev) {
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(function(appRunner) {
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
+  <script>
+    document.addEventListener("keydown", function(event) {
+  // Check if the pressed key is the Print Screen key
+  if (event.key === "PrintScreen" || event.key === "prtSc") {
+    // Prevent the default behavior
+    event.preventDefault();
+
+    // Log a message indicating that the Print Screen key was pressed
+    console.log("Print Screen key pressed.");
+
+    // Optionally, you can add additional logic here to handle the event
+    // For example, you could display a message to the user indicating that the Print Screen key is disabled.
+  }
+});
+  </script>
+  <script>
+    //var serviceWorkerVersion = null;
+    var scriptLoaded = false;
+    function loadMainDartJs() {
+      if (scriptLoaded) {
+        return;
+      }
+      scriptLoaded = true;
+      var scriptTag = document.createElement('script');
+      scriptTag.src = 'main.dart.js';
+      scriptTag.type = 'application/javascript';
+      document.body.append(scriptTag);
+    }
+
+    if ('serviceWorker' in navigator) {
+      // Service workers are supported. Use them.
+      window.addEventListener('load', function () {
+        // Wait for registration to finish before dropping the <script> tag.
+        // Otherwise, the browser will load the script multiple times,
+        // potentially different versions.
+        var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
+        navigator.serviceWorker.register(serviceWorkerUrl)
+          .then((reg) => {
+            function waitForActivation(serviceWorker) {
+              serviceWorker.addEventListener('statechange', () => {
+                if (serviceWorker.state == 'activated') {
+                  console.log('Installed new service worker.');
+                  loadMainDartJs();
+                }
+              });
+            }
+            if (!reg.active && (reg.installing || reg.waiting)) {
+              // No active web worker and we have installed or are installing
+              // one for the first time. Simply wait for it to activate.
+              waitForActivation(reg.installing || reg.waiting);
+            } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
+              // When the app updates the serviceWorkerVersion changes, so we
+              // need to ask the service worker to update.
+              console.log('New service worker available.');
+              reg.update();
+              waitForActivation(reg.installing);
+            } else {
+              // Existing service worker is still good.
+              console.log('Loading app from service worker.');
+              loadMainDartJs();
+            }
+          });
+
+        // If service worker doesn't succeed in a reasonable amount of time,
+        // fallback to plaint <script> tag.
+        setTimeout(() => {
+          if (!scriptLoaded) {
+            console.warn(
+              'Failed to load app from service worker. Falling back to plain <script> tag.',
+            );
+            loadMainDartJs();
+          }
+        }, 4000);
+      });
+    } else {
+      // Service workers not supported. Just drop the <script> tag.
+      loadMainDartJs();
+    }
+  </script>
+</body>
+</html>
