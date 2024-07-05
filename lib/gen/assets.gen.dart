@@ -16,6 +16,9 @@ class $ImagesGen {
   AssetGenImage get coupanImage =>
       const AssetGenImage('images/Coupan image.png');
 
+  /// File path: images/Group 309.png
+  AssetGenImage get group309 => const AssetGenImage('images/Group 309.png');
+
   /// File path: images/Logo for splash screen.png
   AssetGenImage get logoForSplashScreen =>
       const AssetGenImage('images/Logo for splash screen.png');
@@ -26,6 +29,9 @@ class $ImagesGen {
 
   /// File path: images/all.png
   AssetGenImage get all => const AssetGenImage('images/all.png');
+
+  /// File path: images/answer.png
+  AssetGenImage get answer => const AssetGenImage('images/answer.png');
 
   /// File path: images/app-development.png
   AssetGenImage get appDevelopment =>
@@ -135,6 +141,9 @@ class $ImagesGen {
   /// File path: images/invite.png
   AssetGenImage get invite => const AssetGenImage('images/invite.png');
 
+  /// File path: images/language.png
+  AssetGenImage get language => const AssetGenImage('images/language.png');
+
   /// File path: images/linkedin.png
   AssetGenImage get linkedin => const AssetGenImage('images/linkedin.png');
 
@@ -148,6 +157,9 @@ class $ImagesGen {
   /// File path: images/login text area bg.png
   AssetGenImage get loginTextAreaBg =>
       const AssetGenImage('images/login text area bg.png');
+
+  /// File path: images/mark review.png
+  AssetGenImage get markReview => const AssetGenImage('images/mark review.png');
 
   /// File path: images/menu active option bg.png
   AssetGenImage get menuActiveOptionBg =>
@@ -193,6 +205,9 @@ class $ImagesGen {
 
   /// File path: images/my story.png
   AssetGenImage get myStory => const AssetGenImage('images/my story.png');
+
+  /// File path: images/not answer.png
+  AssetGenImage get notAnswer => const AssetGenImage('images/not answer.png');
 
   /// File path: images/notification icon.png
   AssetGenImage get notificationIcon =>
@@ -285,6 +300,12 @@ class $ImagesGen {
   /// File path: images/question.png
   AssetGenImage get question => const AssetGenImage('images/question.png');
 
+  /// File path: images/razorpay_checkout.html
+  String get razorpayCheckout => 'images/razorpay_checkout.html';
+
+  /// File path: images/rectangle.png
+  AssetGenImage get rectangle => const AssetGenImage('images/rectangle.png');
+
   /// File path: images/referal image.png
   AssetGenImage get referalImage =>
       const AssetGenImage('images/referal image.png');
@@ -307,6 +328,9 @@ class $ImagesGen {
   /// File path: images/settings_menu.png
   AssetGenImage get settingsMenu =>
       const AssetGenImage('images/settings_menu.png');
+
+  /// File path: images/showicons.png
+  AssetGenImage get showicons => const AssetGenImage('images/showicons.png');
 
   /// File path: images/sign in button.png
   AssetGenImage get signInButton =>
@@ -337,6 +361,19 @@ class $ImagesGen {
   /// File path: images/test sr.png
   AssetGenImage get testSr => const AssetGenImage('images/test sr.png');
 
+  /// File path: images/timer.png
+  AssetGenImage get timer => const AssetGenImage('images/timer.png');
+
+  /// File path: images/total marks.png
+  AssetGenImage get totalMarks => const AssetGenImage('images/total marks.png');
+
+  /// File path: images/total question.png
+  AssetGenImage get totalQuestion =>
+      const AssetGenImage('images/total question.png');
+
+  /// File path: images/vector.png
+  AssetGenImage get vector => const AssetGenImage('images/vector.png');
+
   /// File path: images/vidio.png
   AssetGenImage get vidio => const AssetGenImage('images/vidio.png');
 
@@ -344,11 +381,13 @@ class $ImagesGen {
   AssetGenImage get whatsapp => const AssetGenImage('images/whatsapp.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [
+  List<dynamic> get values => [
         coupanImage,
+        group309,
         logoForSplashScreen,
         accountReferal,
         all,
+        answer,
         appDevelopment,
         bgPrivacy,
         contactScreenCallIcon,
@@ -379,10 +418,12 @@ class $ImagesGen {
         homeScreenOptionBg,
         important,
         invite,
+        language,
         linkedin,
         liveIcons,
         loginHeaderBg,
         loginTextAreaBg,
+        markReview,
         menuActiveOptionBg,
         menuContactUsIcon,
         menuDrawerBg,
@@ -395,6 +436,7 @@ class $ImagesGen {
         menuResolveDoubtNowIcon,
         messageBox,
         myStory,
+        notAnswer,
         notificationIcon,
         offButton,
         onButtonGreen,
@@ -419,12 +461,15 @@ class $ImagesGen {
         profileScrrenSaveUpdateButton,
         psu,
         question,
+        razorpayCheckout,
+        rectangle,
         referalImage,
         resetPassword,
         resolveDoubts,
         revision,
         settingsIcon,
         settingsMenu,
+        showicons,
         signInButton,
         signUpButton,
         splashBg,
@@ -433,6 +478,10 @@ class $ImagesGen {
         telegram,
         termCondition,
         testSr,
+        timer,
+        totalMarks,
+        totalQuestion,
+        vector,
         vidio,
         whatsapp
       ];
@@ -445,11 +494,16 @@ class Assets {
 }
 
 class AssetGenImage {
-  const AssetGenImage(this._assetName, {this.size = null});
+  const AssetGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  });
 
   final String _assetName;
 
   final Size? size;
+  final Set<String> flavors;
 
   Image image({
     Key? key,

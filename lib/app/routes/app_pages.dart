@@ -1,5 +1,3 @@
-import 'package:exam_prep_tool/app/modules/razor_pay_window/binding/razor_pay_binding.dart';
-import 'package:exam_prep_tool/app/modules/razor_pay_window/view/razor_pay_windoe.dart';
 import 'package:get/get.dart';
 
 import '../modules/account_referal/bindings/account_referal_binding.dart';
@@ -44,6 +42,8 @@ import '../modules/privacy_policypage/bindings/privacy_policypage_binding.dart';
 import '../modules/privacy_policypage/views/privacy_policypage_view.dart';
 import '../modules/proile_page/bindings/proile_page_binding.dart';
 import '../modules/proile_page/views/proile_page_view.dart';
+import '../modules/razor_pay_window/binding/razor_pay_binding.dart';
+import '../modules/razor_pay_window/view/razor_pay_windoe.dart';
 import '../modules/referal/bindings/referal_binding.dart';
 import '../modules/referal/views/referal_view.dart';
 import '../modules/resetpass_screen/bindings/resetpass_screen_binding.dart';
@@ -64,6 +64,14 @@ import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
 import '../modules/terms_conditionscreen/bindings/terms_conditionscreen_binding.dart';
 import '../modules/terms_conditionscreen/views/terms_conditionscreen_view.dart';
+import '../modules/testactive_screen/bindings/testactive_screen_binding.dart';
+import '../modules/testactive_screen/views/testactive_screen_view.dart';
+import '../modules/testsearis/bindings/testsearis_binding.dart';
+import '../modules/testsearis/views/testsearis_view.dart';
+import '../modules/testseries_instruction/bindings/testseries_instruction_binding.dart';
+import '../modules/testseries_instruction/views/testseries_instruction_view.dart';
+import '../modules/testseries_mcq/bindings/testseries_mcq_binding.dart';
+import '../modules/testseries_mcq/views/testseries_mcq_view.dart';
 import '../modules/twenypys_question/bindings/twenypys_question_binding.dart';
 import '../modules/twenypys_question/views/twenypys_question_view.dart';
 import '../modules/verify_user/bindings/un_authorized_person_binding.dart';
@@ -215,18 +223,16 @@ class AppPages {
       page: () => PlayVidioView(),
       binding: PlayVidioBinding(),
     ),
-
     GetPage(
       name: _Paths.UN_AUTHORIZED_PERSON,
       page: () => const UnAuthorizedPersonView(),
       binding: UnAuthorizedPersonBinding(),
     ),
     GetPage(
-     name: _Paths.RAZOR_PAY_WINDOW,
-     page: () => const RazorpayWindowPageView(),
-     binding: RazorpayWindowBinding(),
+      name: _Paths.RAZOR_PAY_WINDOW,
+      page: () => const RazorpayWindowPageView(),
+      binding: RazorpayWindowBinding(),
     ),
-
     GetPage(
       name: _Paths.CUPAN_DISCOUNT,
       page: () => const CupanDiscountView(),
@@ -242,7 +248,6 @@ class AppPages {
       page: () => const LiveLetctureView(),
       binding: LiveLetctureBinding(),
     ),
-
     GetPage(
       name: _Paths.REFERAL,
       page: () => ReferalView(),
@@ -252,6 +257,26 @@ class AppPages {
       name: _Paths.ACCOUNT_REFERAL,
       page: () => const AccountReferalView(),
       binding: AccountReferalBinding(),
+    ),
+    GetPage(
+      name: _Paths.TESTSEARIS,
+      page: () => const TestsearisView(),
+      binding: TestsearisBinding(),
+    ),
+    GetPage(
+      name: _Paths.TESTSERIES_INSTRUCTION,
+      page: () => const TestseriesInstructionView(),
+      binding: TestseriesInstructionBinding(),
+    ),
+    GetPage(
+      name: _Paths.TESTSERIES_MCQ,
+      page: () => const TestseriesMcqView(),
+      binding: TestseriesMcqBinding(),
+    ),
+    GetPage(
+      name: _Paths.TESTACTIVE_SCREEN,
+      page: () => const TestactiveScreenView(),
+      binding: TestactiveScreenBinding(),
     ),
   ];
 }

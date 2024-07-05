@@ -11,6 +11,7 @@ class CustomAlertBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Colors.grey.shade200,
       title: Text(title),
       contentTextStyle: TextStyle(color: Colors.amber),
       content: Text(

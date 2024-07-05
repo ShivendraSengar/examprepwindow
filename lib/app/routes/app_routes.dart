@@ -43,6 +43,10 @@ abstract class Routes {
   static const REFERAL = _Paths.REFERAL;
   static const ACCOUNT_REFERAL = _Paths.ACCOUNT_REFERAL;
   static const RAZOR_PAY_WINDOW = _Paths.RAZOR_PAY_WINDOW;
+  static const TESTSEARIS = _Paths.TESTSEARIS;
+  static const TESTSERIES_INSTRUCTION = _Paths.TESTSERIES_INSTRUCTION;
+  static const TESTSERIES_MCQ = _Paths.TESTSERIES_MCQ;
+  static const TESTACTIVE_SCREEN = _Paths.TESTACTIVE_SCREEN;
 }
 
 abstract class _Paths {
@@ -85,7 +89,11 @@ abstract class _Paths {
   static const LIVE_LETCTURE = '/live-letcture';
 
   static const REFERAL = '/referal';
- 
+
   static const ACCOUNT_REFERAL = '/account-referal';
   static const RAZOR_PAY_WINDOW = '/razor-pay-window';
+  static const TESTSEARIS = '/testsearis';
+  static const TESTSERIES_INSTRUCTION = '/testseries-instruction';
+  static const TESTSERIES_MCQ = '/testseries-mcq';
+  static const TESTACTIVE_SCREEN = '/testactive-screen';
 }

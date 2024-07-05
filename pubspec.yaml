@@ -16,6 +16,7 @@ dependencies:
   readmore:
   razorpay_web:
   intl:
+  carousel_slider: ^4.2.1
   # flutter_zoom_sdk: ^1.1.0+4
   flutter_html:
   js: ^0.6.3
@@ -50,7 +51,7 @@ dependencies:
   window_manager: ^0.3.9
   desktop_webview_window: ^0.2.3
   webview_windows: ^0.4.0
-  
+
 
 
 
