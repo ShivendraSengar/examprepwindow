@@ -18,6 +18,8 @@ import 'package:exam_prep_tool/app/data/modal/payments_modal.dart';
 import 'package:exam_prep_tool/app/data/modal/profile/profile_updated.dart';
 
 import 'package:exam_prep_tool/app/data/modal/signup/forget_password_response.dart';
+import 'package:exam_prep_tool/app/data/modal/test_series/random_question_testseries.dart';
+import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
 import 'package:exam_prep_tool/app/data/modal/verify_payments.dart';
 import 'package:exam_prep_tool/app/data/modal/vidio_lecturesresponse/get_exam_id.dart';
 import 'package:exam_prep_tool/app/data/modal/vidio_lecturesresponse/vidio_lecturesresponse.dart';
@@ -104,12 +106,11 @@ abstract class AppApis {
   @GET('liveChannel/list')
   Future<HttpResponse<Livechnalelist>> livelectureslist(
     @Query('courseId') String id,
-     @Header("Authorization") String token,
+    @Header("Authorization") String token,
   );
   @GET('courseModule/list')
   Future<HttpResponse<CirculamModalList>> circulimdatalist(
     @Query('courseId') String id,
-    
   );
   // accountr referral
 
@@ -129,5 +130,17 @@ abstract class AppApis {
     @Path("referalID") String referalID,
     @Query("userId") String userId,
     @Header("Authorization") String token,
+  );
+  //////////////////// testSeries
+
+  @GET('test')
+  Future<HttpResponse<WeeklyTestseriesModal>> weeklytestseries(
+    @Query("subject") String subject,
+    @Query("examId") String courseid,
+  );
+  //test/id/668b8c6d024fee047e44b9a1
+  @GET('test/id/{testId}')
+  Future<HttpResponse<RandomQuestionTestseriesModal>> randomqueslist(
+    @Path("testId") String testId,
   );
 }

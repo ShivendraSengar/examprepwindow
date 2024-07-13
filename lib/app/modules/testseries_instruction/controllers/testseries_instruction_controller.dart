@@ -1,7 +1,8 @@
+import 'package:exam_prep_tool/app/modules/testsearis/controllers/testsearis_controller.dart';
 import 'package:get/get.dart';
 
 class TestseriesInstructionController extends GetxController {
-  //TODO: Implement TestseriesInstructionController
+  final arguments = Get.arguments;
 
   final count = 0.obs;
   @override

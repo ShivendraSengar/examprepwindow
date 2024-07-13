@@ -22,6 +22,10 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              Text(controller
+                      .testcontroller.selectedTestSeries.value?.testName ??
+                  'Detail Page'),
+
               20.widthBox,
               RichText(
                 text: TextSpan(
@@ -42,12 +46,16 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
                 ),
               ),
               20.heightBox,
+              //Text(controller.testcontroller.data!.first.questions!.length
+              //    .toString()),
               buildRow(Assets.images.totalQuestion.path,
-                  'total 30 questions'.toUpperCase()),
-              buildRow(Assets.images.timer.path,
-                  'total time 30 Minutes'.toUpperCase()),
+                  'total ${controller.arguments[1]} questions'.toUpperCase()),
+              buildRow(
+                  Assets.images.timer.path,
+                  'total time ${controller.arguments[2]} Minutes'
+                      .toUpperCase()),
               buildRow(Assets.images.totalMarks.path,
-                  'total marks 60'.toUpperCase()),
+                  'total marks ${controller.arguments[0]}'.toUpperCase()),
               buildRow(Assets.images.language.path,
                   'language- English'.toUpperCase()),
               "Declaration : ".text.size(18).make().paddingOnly(left: 20),
@@ -73,42 +81,42 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
                 ),
               ),
               20.heightBox,
-              InkWell(
-                onTap: () {
-                  //print("object${coursedetails.rating}");
-                  //print("purchase${coursedetails.purchased}");
-                  if (controller.isChecked.value == true) {
-                    Get.toNamed(Routes.TESTSERIES_MCQ);
-                  }
-
-                  //print("exam idddd${coursedetails.exam?.id}"),
-
-                  // offercodes?.offerName,
-                },
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                    //padding: EdgeInsets.symmetric(horizontal: 8),
-                    alignment: Alignment.center,
-                    height: 45,
-                    width: 250,
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(15),
+              Obx(() => InkWell(
+                    onTap: () {
+                      if (controller.isChecked.value == true) {
+                        Get.toNamed(Routes.TESTSERIES_MCQ, arguments: [
+                          controller.arguments[2],
+                          controller.arguments[1],
+                          controller.arguments[0],
+                        ]);
+                      }
+                    },
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 45,
+                        width: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(15),
+                            ),
+                            color: controller.isChecked.value
+                                ? Colors.green
+                                : Vx.green100),
+                        child: Text(
+                          'Ready to Begin',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: controller.isChecked.value
+                                ? Colors.white
+                                : Colors.grey,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        //gradient: buttonColor,
-                        color: Colors.green),
-                    child: const Text(
-                      'Ready to Begin',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ),
-              ),
+                  )),
               20.heightBox
             ]),
       ),

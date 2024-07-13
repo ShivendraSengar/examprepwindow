@@ -1,13 +1,17 @@
+import 'package:exam_prep_tool/app/data/modal/buycourses_modal.dart';
 import 'package:exam_prep_tool/app/modules/testsearis/controllers/testsearis_controller.dart';
 import 'package:exam_prep_tool/app/routes/app_pages.dart';
 import 'package:exam_prep_tool/app/themes/app_style.dart';
+import 'package:exam_prep_tool/app/widgets/custom_alert_dialog.dart';
 import 'package:exam_prep_tool/app/widgets/custom_colors.dart';
 import 'package:exam_prep_tool/app/widgets/custom_shimmer.dart';
 import 'package:exam_prep_tool/app/widgets/custom_widgets.dart';
+import 'package:exam_prep_tool/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class WeeklyTest extends GetView<TestsearisController> {
@@ -15,15 +19,171 @@ class WeeklyTest extends GetView<TestsearisController> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: allCourses(),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          //Text(controller.testSeries.length.toString()),
+          //20.heightBox,
+          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+            20.heightBox,
+            Container(
+              height: 52,
+              width: 350,
+              decoration: BoxDecoration(
+                  color: HexColor("#F3FFFF"),
+                  borderRadius: const BorderRadius.all(Radius.circular(25)),
+                  border: Border.all(width: 1, color: Colors.grey)),
+              padding: const EdgeInsets.only(left: 0, right: 0),
+              // alignment: Alignment.center,
+              child: Obx(() {
+                final filteredData = controller.userdetais
+                    .where((coursedetails) => coursedetails.active == "yes")
+                    .toList();
+                return Container(
+                  height: 52,
+                  // width: 380,
+                  decoration: BoxDecoration(
+                    color: HexColor("#F3FFFF"),
+                    borderRadius: const BorderRadius.all(Radius.circular(25)),
+                    border: Border.all(width: 1, color: Colors.grey),
+                  ),
+                  padding: const EdgeInsets.only(left: 18, right: 0),
+                  child: DropdownButton<CourseSub>(
+                    hint: "Choose Course".text.make(),
+                    dropdownColor: Colors.grey.shade300,
+                    items: filteredData.map((CourseSub value) {
+                      return DropdownMenuItem<CourseSub>(
+                        value: value,
+                        child: Text(
+                          value.name.toString(),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    value: controller.seleectrdvalue.value,
+                    underline: Container(color: Colors.black),
+                    isExpanded: true,
+                    icon: Container(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      alignment: Alignment.center,
+                      height: 95,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: buttonColor,
+                      ),
+                      child: const Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.white,
+                        size: 38,
+                      ),
+                    ),
+                    onChanged: (CourseSub? newVal) {
+                      controller.subjectList.clear();
+                      controller.subjectList
+                          .addAll(newVal!.courseId!.exam!.subjects!.toList());
+                      if (newVal != null) {
+                        controller.selectedid.value =
+                            newVal.courseId!.exam!.id.toString();
+                        // Update the selected ID in the controller
+                        print('Selected ID: ${controller.selectedid.value}');
+                        // Call API or perform actions with the selected value
+                        //controller.getProfile();
+                        controller.seleectrdvalue.value = newVal;
+                      }
+                    },
+                  ),
+                );
+              }),
+            ),
+            20.heightBox,
+            //Text(subjectid.toString()),
+            Container(
+                height: 52,
+                width: 350,
+                decoration: BoxDecoration(
+                    color: HexColor("#F3FFFF"),
+                    borderRadius: const BorderRadius.all(Radius.circular(25)),
+                    border: Border.all(width: 1, color: Colors.grey)),
+                padding: const EdgeInsets.only(left: 18, right: 0),
+                // alignment: Alignment.center,
+                child: Obx(
+                  () => DropdownButton<String>(
+                    hint: "Choose subject".text.make(),
+                    dropdownColor: Colors.grey.shade300,
+                    items: controller.subjectList.map((String subject) {
+                      return DropdownMenuItem<String>(
+                        value: subject,
+                        child: Text(
+                          subject,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    // menuMaxHeight: 10,
+                    value: controller.seleectrdvalue1.value,
+
+                    underline: Container(color: Colors.black),
+                    isExpanded: true,
+                    icon: Container(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      alignment: Alignment.center,
+                      height: 95,
+                      width: 50,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, gradient: buttonColor),
+                      child: const Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.white,
+                        size: 38,
+                      ),
+                    ),
+                    onChanged: (newValue) {
+                      if (newValue != null) {
+                        controller.selectedSubject.value = newValue.toString();
+                        // Update the selected ID in the controller
+                        print(
+                            'Selected Subjects: ${controller.selectedSubject.value}');
+                        // Call API or perform actions with the selected value
+                        //controller.getProfile();
+                        controller.weeklytest();
+
+                        //controller.getVideos();
+                        //controller.fetchData();
+                      }
+                      controller.isVisible.value = true;
+                      controller.seleectrdvalue1.value = newValue.toString();
+                    },
+                  ),
+                )),
+            //Text(controller.showpdf.length.toString()),
+          ]),
+          20.heightBox,
+          Obx(() {
+            return Container(
+              //width: 300,
+              height: Get.height,
+              child: allCourses(),
+            );
+          }),
+          //300.heightBox
+        ],
+      ),
     );
   }
 
   Widget allCourses() {
     return Container(
-      width: 600,
-      height: 120,
+      width: Get.width,
+      height: 110,
       alignment: Alignment.topCenter,
       //color: const Color.fromARGB(255, 64, 214, 255),
       child: GridView.builder(
@@ -31,11 +191,13 @@ class WeeklyTest extends GetView<TestsearisController> {
             crossAxisCount: 3,
             crossAxisSpacing: 4.0,
             mainAxisSpacing: 20.0,
-            childAspectRatio: 3 / 1.6,
+            childAspectRatio: 3 / 1.3,
           ),
-          itemCount: 30,
+          itemCount: controller.testSeries.length,
+
           //padding: const EdgeInsets.only(bottom: 10),
           itemBuilder: (context, index) {
+            var data = controller.testSeries[index];
             return Obx(
               () {
                 return controller.isLoading.isTrue
@@ -49,161 +211,187 @@ class WeeklyTest extends GetView<TestsearisController> {
                           ],
                         ),
                       )
-                    : Container(
-                        width: 350,
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          //gradient: cardcolor,
-                          color: Colors.white,
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black,
-                              blurRadius: 5.0,
-                              spreadRadius: 0.0,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 15.0),
-                            Center(
-                              child: const Text(
-                                "Algorithms Weekly Test", // Adjust 'maxLength' to your desired character limit
-                                maxLines: 1,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    overflow: TextOverflow.ellipsis),
-                                textAlign: TextAlign.center,
-                              ).centered(),
-                            )
-                                .paddingSymmetric(horizontal: 10)
-                                .w(300)
-                                .centered(),
-                            10.heightBox,
-                            Container(
-                              height: 40,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.note_alt,
-                                        color: Vx.gray200,
-                                      ),
-                                      2.widthBox,
-                                      const Text(
-                                        "data",
-                                        style: TextStyle(
-                                          color: Vx.black,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 15, horizontal: 8.0),
-                                    child: VerticalDivider(
-                                      width: .1,
-                                      thickness: 1,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  const Text(
-                                    "marks",
-                                    style: TextStyle(
-                                      color: Vx.black,
-                                    ),
-                                  ),
-                                  5.widthBox,
-                                  const Text(
-                                    "55",
-                                    style: TextStyle(
-                                      color: Vx.black,
-                                    ),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: 15,
-                                      horizontal: 8.0,
-                                    ),
-                                    child: VerticalDivider(
-                                      width: .1,
-                                      thickness: 1,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  const Text(
-                                    "99",
-                                    style: TextStyle(
-                                      color: Vx.black,
-                                    ),
-                                  ),
-                                  5.widthBox,
-                                  const Text(
-                                    "mins",
-                                    style: TextStyle(
-                                      color: Vx.black,
-                                    ),
-                                  ),
-                                ],
-                              ).w(700),
-                            ),
-                            buildCard("18 sep, 1999".toUpperCase(),
-                                    "Language - English'")
-                                .w(700)
-                                .p(8),
-                            18.heightBox,
-                            InkWell(
-                              onTap: () {
-                                //print("object${coursedetails.rating}");
-                                //print("purchase${coursedetails.purchased}");
-
-                                Get.toNamed(Routes.TESTSERIES_INSTRUCTION
-
-                                    //print("exam idddd${coursedetails.exam?.id}"),
-
-                                    // offercodes?.offerName,
-                                    );
-                              },
-                              child: Container(
-                                //padding: EdgeInsets.symmetric(horizontal: 8),
-                                alignment: Alignment.center,
-                                height: 45,
-                                decoration: const BoxDecoration(
-                                    //boxShadow: [
-                                    //  BoxShadow(
-                                    //    color: Colors.black,
-                                    //    blurRadius: 5.0,
-                                    //    spreadRadius: 0.0,
-                                    //    offset: Offset(0, 2),
-                                    //  ),
-                                    //],
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(15),
-                                    ),
-                                    //gradient: buttonColor,
-                                    color: Colors.green),
-                                child: const Text(
-                                  'Start',
+                    : GestureDetector(
+                        onTap: () {
+                          Get.toNamed(
+                            Routes.TESTSERIES_INSTRUCTION,
+                            arguments: {
+                              'duration':
+                                  data.timeData?.duration.toString() ?? '',
+                              'totalMarks': data.totalMarks.toString(),
+                              'questionCount':
+                                  data.questions?.length.toString() ?? '0',
+                              'questions': data.questions
+                            },
+                          );
+                        },
+                        child: Container(
+                          width: 350,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            //gradient: cardcolor,
+                            color: Colors.white,
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black,
+                                blurRadius: 5.0,
+                                spreadRadius: 0.0,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(data.questions![index].question.toString() ??
+                                  ""),
+                              const SizedBox(height: 15.0),
+                              Center(
+                                child: Text(
+                                  data.testName
+                                      .toString(), // Adjust 'maxLength' to your desired character limit
+                                  maxLines: 1,
                                   style: TextStyle(
-                                    color: Colors.black,
-                                  ),
+                                      color: Colors.black,
+                                      overflow: TextOverflow.ellipsis),
                                   textAlign: TextAlign.center,
+                                ).centered(),
+                              )
+                                  .paddingSymmetric(horizontal: 10)
+                                  .w(300)
+                                  .centered(),
+                              10.heightBox,
+                              Container(
+                                height: 40,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.note_alt,
+                                          color: Vx.gray200,
+                                        ),
+                                        2.widthBox,
+                                        Text(
+                                          data.questions!.length.toString(),
+                                          style: TextStyle(
+                                            color: Vx.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 15, horizontal: 8.0),
+                                      child: VerticalDivider(
+                                        width: .1,
+                                        thickness: 1,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    const Text(
+                                      "marks",
+                                      style: TextStyle(
+                                        color: Vx.black,
+                                      ),
+                                    ),
+                                    5.widthBox,
+                                    Text(
+                                      data.totalMarks.toString(),
+                                      style: TextStyle(
+                                        color: Vx.black,
+                                      ),
+                                    ),
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 15,
+                                        horizontal: 8.0,
+                                      ),
+                                      child: VerticalDivider(
+                                        width: .1,
+                                        thickness: 1,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    Text(
+                                      data.timeData!.duration.toString(),
+                                      style: TextStyle(
+                                        color: Vx.black,
+                                      ),
+                                    ),
+                                    5.widthBox,
+                                    const Text(
+                                      "mins",
+                                      style: TextStyle(
+                                        color: Vx.black,
+                                      ),
+                                    ),
+                                  ],
+                                ).w(700),
+                              ),
+                              buildCard(data.createdAt.toString().toUpperCase(),
+                                      "Language - English'")
+                                  .w(700)
+                                  .p(8),
+                              13.heightBox,
+                              InkWell(
+                                onTap: () {
+                                  //print("object${coursedetails.rating}");
+                                  //print("purchase${coursedetails.purchased}");
+                                  controller.setSelectedTestSeries(data);
+                                  Get.toNamed(Routes.TESTSERIES_INSTRUCTION,
+                                      arguments: [
+                                        data.timeData!.duration.toString() ??
+                                            "0",
+                                        data.totalMarks.toString() ?? "0",
+                                        data.questions!.length.toString() ??
+                                            "0",
+                                        data.questions ?? []
+                                      ]
+
+                                      //print("exam idddd${coursedetails.exam?.id}"),
+
+                                      // offercodes?.offerName,
+                                      );
+                                },
+                                child: Container(
+                                  //padding: EdgeInsets.symmetric(horizontal: 8),
+                                  alignment: Alignment.center,
+                                  height: 45,
+                                  decoration: const BoxDecoration(
+                                      //boxShadow: [
+                                      //  BoxShadow(
+                                      //    color: Colors.black,
+                                      //    blurRadius: 5.0,
+                                      //    spreadRadius: 0.0,
+                                      //    offset: Offset(0, 2),
+                                      //  ),
+                                      //],
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(15),
+                                      ),
+                                      //gradient: buttonColor,
+                                      color: Colors.green),
+                                  child: const Text(
+                                    'Start',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ).paddingSymmetric(horizontal: 8);
+                            ],
+                          ),
+                        ).paddingSymmetric(horizontal: 8),
+                      );
               },
-            ).marginOnly(bottom: 0);
+            );
           }),
     ).marginOnly(bottom: 0);
   }

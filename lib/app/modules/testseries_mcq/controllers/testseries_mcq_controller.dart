@@ -1,11 +1,44 @@
+import 'dart:developer';
+
+import 'package:exam_prep_tool/app/data/irepositry/itestseries_repo.dart';
+import 'package:exam_prep_tool/app/data/modal/test_series/random_question_testseries.dart';
+import 'package:exam_prep_tool/app/data/repositry/testseries_repo.dart';
+import 'package:exam_prep_tool/app/modules/testsearis/controllers/testsearis_controller.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 
 class TestseriesMcqController extends GetxController {
+  final arguments = Get.arguments;
+
+  final TestsearisController testcontroller = Get.find();
+  final TestSeriesRepo repositry1 = TestSeriesRepoIMPL();
+  //RxList<RandomQues>? data;
+  final randomques = <RandomQues>[].obs;
+  RxBool isLoading = false.obs;
   var currentQuestionIndex = 0.obs;
   var selectedOptionIndex = (-1).obs;
   var score = 0.obs;
   var reviewMarkedQuestions =
       <int>[].obs; // List to store indexes of questions marked for review
+  randomquestion() async {
+    try {
+      isLoading.value = true;
+
+      var response =
+          await repositry1.randomqueslist("668b8c6d024fee047e44b9a1");
+      if (response.data != null) {
+        randomques.value = response.data!.data ?? [];
+        print("TestSeries ${response.data.toString()}");
+        // If 'response.data.toString()' is a List, you might want to log each item separately
+        for (var item in randomques.value) {
+          print(item);
+        }
+      }
+      isLoading.value = false;
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 
   final List<Question> questions = [
     Question(
@@ -62,6 +95,8 @@ class TestseriesMcqController extends GetxController {
   final count = 0.obs;
   @override
   void onInit() {
+    //ques = arguments[0];
+    randomquestion();
     super.onInit();
   }
 

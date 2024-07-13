@@ -24,6 +24,10 @@ class TestseriesInstructionView
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                Text(controller.arguments[2]),
+                Text(controller.arguments[1]),
+                Text(controller.arguments[0]),
+                Text(controller.arguments[3]),
                 Text(
                   'Test Series (GATE CSE Algorithms)',
                   style: AppStyle.txtPoppinsSemiBold16Black,
@@ -210,7 +214,11 @@ class TestseriesInstructionView
                 20.heightBox,
                 InkWell(
                   onTap: () {
-                    Get.toNamed(Routes.TESTACTIVE_SCREEN);
+                    Get.toNamed(Routes.TESTACTIVE_SCREEN, arguments: [
+                      controller.arguments[1],
+                      controller.arguments[2],
+                      controller.arguments[0],
+                    ]);
                   },
                   child: Align(
                     alignment: Alignment.centerRight,

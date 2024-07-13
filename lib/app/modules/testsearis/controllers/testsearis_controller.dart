@@ -2,17 +2,26 @@ import 'dart:developer';
 
 import 'package:exam_prep_tool/app/data/irepositry/icourses_repo.dart';
 import 'package:exam_prep_tool/app/data/irepositry/ipayments_repo.dart';
+import 'package:exam_prep_tool/app/data/irepositry/itestseries_repo.dart';
 import 'package:exam_prep_tool/app/data/modal/buycourses_modal.dart';
+import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
 import 'package:exam_prep_tool/app/data/modal/vidio_lecturesresponse/vidio_lecturesresponse.dart';
 import 'package:exam_prep_tool/app/data/repositry/courses_repo.dart';
 import 'package:exam_prep_tool/app/data/repositry/payments_repo.dart';
+import 'package:exam_prep_tool/app/data/repositry/testseries_repo.dart';
+import 'package:exam_prep_tool/app/routes/app_pages.dart';
 import 'package:exam_prep_tool/app/utils/pref_utis.dart';
 import 'package:exam_prep_tool/app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 
 class TestsearisController extends GetxController
     with SingleGetTickerProviderMixin {
+  final TestSeriesRepo repositry1 = TestSeriesRepoIMPL();
+  var selectedTestSeries = Rxn<Testseries>();
+  RxList<Testseries>? data;
+
   TabController? tabController;
   var tabIndex = 0.obs;
   //TODO: Implement TestsearisController
@@ -45,8 +54,32 @@ class TestsearisController extends GetxController
   // purchased coursed
 
   final PaymentsRepo purchasesCourse = VerfypaymentRepoImpl();
+
   final userdetais = <CourseSub>[].obs;
+  final testSeries = <Testseries>[].obs;
   final count = 0.obs;
+  weeklytest() async {
+    try {
+      isLoading.value = true;
+
+      var response = await repositry1.weeklytestseries(
+        selectedSubject.value,
+        selectedid.value,
+      );
+      if (response.data != null) {
+        testSeries.value = response.data!.data ?? [];
+        print("TestSeries ${response.data.toString()}");
+        // If 'response.data.toString()' is a List, you might want to log each item separately
+        for (var item in testSeries.value) {
+          print(item);
+        }
+      }
+      isLoading.value = false;
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
   checkcourses() async {
     print("id ${prefutils.getID().toString()}");
     try {
@@ -91,6 +124,7 @@ class TestsearisController extends GetxController
 
   @override
   void onInit() {
+    //weeklytest();
     //getList();
     tabController = TabController(length: 3, vsync: this);
     tabController?.addListener(() {
@@ -126,25 +160,9 @@ class TestsearisController extends GetxController
     tabController!.dispose();
     super.onClose();
   }
+
+  void setSelectedTestSeries(Testseries testData) {
+    selectedTestSeries.value = testData;
+    //Get.toNamed(Routes.TESTACTIVE_SCREEN);
+  }
 }
-//class TestsearisController extends GetxController with SingleGetTickerProviderMixin {
-//  TabController tabController;
-//  var tabIndex = 0.obs;
-//  final List<String> imgList = [
-//    'https://example.com/image1.jpg',
-//    'https://example.com/image2.jpg',
-//    'https://example.com/image3.jpg',
-//  ];
-
-//  @override
-//  void onInit() {
-
-//    super.onInit();
-//  }
-
-//  @override
-//  void onClose() {
-
-//    super.onClose();
-//  }
-//}

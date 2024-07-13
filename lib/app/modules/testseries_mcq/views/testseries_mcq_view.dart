@@ -13,6 +13,8 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
   const TestseriesMcqView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    int itemCount = int.tryParse(controller.arguments[1].toString()) ?? 0;
+    final List<dynamic> arguments;
     var currentQuestion =
         controller.questions[controller.currentQuestionIndex.value];
     return Scaffold(
@@ -25,6 +27,10 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                //Text(controller.testcontroller.data.length
+                //    .toString()),
+                Text(controller.testcontroller.testSeries.length.toString() ??
+                    "ff"),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -49,7 +55,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                         padding: const EdgeInsets.all(16.0),
                                         child: Text(
                                           'Question : ${controller.currentQuestionIndex.value + 1}',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold),
                                         ));
@@ -75,7 +81,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                 borderRadius:
                                                     BorderRadius.circular(15),
                                                 color: Colors.red),
-                                            child: Text("-1"),
+                                            child: const Text("-1"),
                                           ),
                                           20.widthBox,
                                           Container(
@@ -86,7 +92,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                 borderRadius:
                                                     BorderRadius.circular(15),
                                                 color: Colors.green),
-                                            child: Text("+4"),
+                                            child: const Text("+4"),
                                           )
                                         ],
                                       ).paddingOnly(right: 20)
@@ -106,11 +112,11 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                     children: [
                                       Text(
                                         ' ${currentQuestion.questionText}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      SizedBox(height: 20),
+                                      const SizedBox(height: 20),
                                       ...List.generate(
                                           currentQuestion.options.length,
                                           (index) {
@@ -179,6 +185,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  //Text(controller.arguments[0]),
                                   "Time Remeaning"
                                       .text
                                       .size(18)
@@ -202,33 +209,67 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                   20.heightBox,
                                   Expanded(
                                     child: Container(
-                                      //height: Get.height,
-                                      width:
-                                          350, // Set the width of the container to 350
-                                      child: GridView.builder(
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount:
-                                              5, // Number of items per row
-                                          crossAxisSpacing:
-                                              8.0, // Spacing between items horizontally
-                                          mainAxisSpacing:
-                                              8.0, // Spacing between items vertically
-                                        ),
-                                        itemCount: 30, // Total number of items
-                                        itemBuilder: (context, index) {
-                                          return Card(
-                                            child: Center(
-                                              child: Text(
-                                                '${index + 1}', // Display the number from 1 to 30
-                                                style: TextStyle(fontSize: 24),
+                                        width:
+                                            350, // Set the width of the container to 350
+                                        child: GridView.builder(
+                                          gridDelegate:
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount:
+                                                5, // Number of items per row
+                                            crossAxisSpacing:
+                                                8.0, // Spacing between items horizontally
+                                            mainAxisSpacing:
+                                                8.0, // Spacing between items vertically
+                                          ),
+                                          itemCount: itemCount,
+                                          itemBuilder: (context, index) {
+                                            return Card(
+                                              child: Center(
+                                                child: Text(
+                                                  '${index + 1}', // Display the number from 1 to itemCount
+                                                  style: const TextStyle(
+                                                      fontSize: 24),
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
+                                            );
+                                          },
+                                        )),
                                   ),
+
+                                  //Expanded(
+                                  //  child: Container(
+                                  //      //height: Get.height,
+                                  //      width:
+                                  //          350, // Set the width of the container to 350
+                                  //      child: Obx(() {
+                                  //        int itemCount =
+                                  //            controller.arguments[0];
+                                  //        return GridView.builder(
+                                  //          gridDelegate:
+                                  //              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  //            crossAxisCount:
+                                  //                5, // Number of items per row
+                                  //            crossAxisSpacing:
+                                  //                8.0, // Spacing between items horizontally
+                                  //            mainAxisSpacing:
+                                  //                8.0, // Spacing between items vertically
+                                  //          ),
+                                  //          itemCount: itemCount.toInt(),
+                                  //          itemBuilder: (context, index) {
+                                  //            return Card(
+                                  //              child: Center(
+                                  //                child: Text(
+                                  //                  '${index + 1}', // Display the number from 1 to 30
+                                  //                  style: const TextStyle(
+                                  //                      fontSize: 24),
+                                  //                ),
+                                  //              ),
+                                  //            );
+                                  //          },
+                                  //        );
+                                  //      })),
+                                  //),
+
                                   buildEndButton()
                                 ],
                               ))),
@@ -246,7 +287,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
   buildAnswerContainer(text, color) {
     return Container(
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       height: 45,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -276,7 +317,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
     return Container(
       alignment: Alignment.center,
       height: 45,
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
           color: HexColor("#BACDFF"), borderRadius: BorderRadius.circular(5)),
       child: Text(text),
