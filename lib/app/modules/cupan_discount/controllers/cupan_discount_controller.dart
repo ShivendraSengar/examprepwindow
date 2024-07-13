@@ -30,7 +30,7 @@ class CupanDiscountController extends GetxController {
 
   RxDouble paynum = 0.0.obs;
 InAppWebViewController? webView;
-  final String url = 'https://devapi.exampreptool.com/api/payment/pay';
+  final String url = 'https://exampreptool.com/api/payment/pay';
   final PrefUtils prefutils = Get.find();
   // Replace 'your_token_here' with the actual token value
   final String token = prefUtils.getToken().toString();
@@ -206,7 +206,7 @@ InAppWebViewController? webView;
         "mode": "online"
       };
       final response = await https.post(
-        Uri.parse('https://devapi.exampreptool.com/api/payment/purchase'),
+        Uri.parse('https://exampreptool.com/api/payment/purchase'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${token}',
@@ -361,7 +361,7 @@ InAppWebViewController? webView;
 
     // Make the POST request
     final response = await https.post(
-      Uri.parse('https://devapi.exampreptool.com/api/payment/pay'),
+      Uri.parse('https://exampreptool.com/api/payment/pay'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -379,18 +379,18 @@ InAppWebViewController? webView;
         print('orderid: ${paymentId}');
         print('orderid1: ${orderidpay}');
 // for web app payment getwy
-        callRazorpay( paymentId);
+        // callRazorpay( paymentId);
 
      ////////////////////////// //   // Call the payment processing function Desktop app
-     ///
-      //   Get.toNamed(Routes.RAZOR_PAY_WINDOW, arguments: [
-      //     paynum.value.toString(),
-      //     arguments[6],
-      //     arguments[7],
-      //     arguments[4],
-      //  paymentId,
-      //   ]);
-      //   print("Response: ${response.body}");
+     
+        Get.toNamed(Routes.RAZOR_PAY_WINDOW, arguments: [
+          paynum.value.toString(),
+          arguments[6],
+          arguments[7],
+          arguments[4],
+       paymentId,
+        ]);
+        print("Response: ${response.body}");
 
         // Optionally, show a success message
         // showToastMessage('Success', 'Payment message sent successfully');

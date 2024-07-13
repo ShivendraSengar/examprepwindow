@@ -136,7 +136,7 @@ class PlayVidioController extends GetxController {
   void initializePlayer() {
     VideoPlayerController videoPlayerController =
         VideoPlayerController.network(imageUrl + playlist);
-    //'https://devapi.exampreptool.com/api/uploads/getFEFile/$playlist');
+    //'https://exampreptool.com/api/';uploads/getFEFile/$playlist');
     chewieController = ChewieController(
       videoPlayerController: videoPlayerController,
       autoPlay: true,

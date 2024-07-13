@@ -13,7 +13,7 @@ class _AppApis implements AppApis {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://devapi.exampreptool.com/api/';
+    baseUrl ??= 'https://exampreptool.com/api/';
   }
 
   final Dio _dio;

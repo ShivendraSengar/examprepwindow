@@ -65,7 +65,7 @@ class RazorPayWindowPageController extends GetxController {
 
       // Make the POST request
       final response = await https.post(
-        Uri.parse('https://devapi.exampreptool.com/api/payment/pay'),
+        Uri.parse('https://exampreptool.com/api/payment/pay'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${prefutils.getToken()}',
