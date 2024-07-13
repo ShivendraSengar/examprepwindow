@@ -648,15 +648,15 @@ final enteredReferralCode = controller.correctReferralCode.text;
                                  print("course type${controller.arguments[4]}");
                                 print("Time duration${controller.arguments[7]}");
                                 print("Time duration${controller.orderid}");
-//                        Get.toNamed(
-//   Routes.RAZOR_PAY_WINDOW,
-//   arguments: [
-//     controller.paynum.value.toString(),
-//     controller.arguments[6],
-//     controller.arguments[7],
-//     controller.arguments[4]
-//   ],
-// );
+                       Get.toNamed(
+  Routes.RAZOR_PAY_WINDOW,
+  arguments: [
+    controller.paynum.value.toString(),
+    controller.arguments[6],
+    controller.arguments[7],
+    controller.arguments[4]
+  ],
+);
 
 // Call the function after navigation
 controller.paymentGetId();

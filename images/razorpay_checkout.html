@@ -50,7 +50,7 @@
             })
           };
 
-          fetch('https://devapi.exampreptool.com/api/payment/pay', requestOptions)
+          fetch('https://exampreptool.com/api/';payment/pay', requestOptions)
             .then(response => response.json())
             .then(data => {
               console.log('Payment success:', data);
@@ -75,7 +75,7 @@
                 })
               };
 
-              return fetch('https://devapi.exampreptool.com/api/payment/purchase', verifyRequestOptions);
+              return fetch('https://exampreptool.com/api/';payment/purchase', verifyRequestOptions);
             })
             .then(response => response.json())
             .then(data => {
@@ -191,7 +191,7 @@
             })
           };
 
-          fetch('https://devapi.exampreptool.com/api/payment/purchase', verifyRequestOptions)
+          fetch('https://exampreptool.com/api/';payment/purchase', verifyRequestOptions)
             .then(response => response.json())
             .then(data => {
               console.log('Verification success:', data);
