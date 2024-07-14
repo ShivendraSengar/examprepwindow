@@ -2,7 +2,7 @@ import 'package:exam_prep_tool/app/modules/terms_conditionscreen/views/terms_con
 import 'package:exam_prep_tool/app/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'dart:io'; 
+import 'dart:io';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -13,16 +13,9 @@ class ShowPdfViewView extends GetView<ShowPdfViewController> {
 
   @override
   Widget build(BuildContext context) {
-
-
- 
-
-    return 
-    
-
-     Scaffold(
-        appBar: buildAppbar(),
-        body: GetBuilder<ShowPdfViewController>(
+    return Scaffold(
+      appBar: buildAppbar(),
+      body: GetBuilder<ShowPdfViewController>(
         init: ShowPdfViewController(),
         builder: (controller) {
           return RawKeyboardListener(
@@ -39,16 +32,16 @@ class ShowPdfViewView extends GetView<ShowPdfViewController> {
                 child: Stack(
                   children: [
                     Center(
-          child: Center(
-            child: Obx(
-              () => controller.isPdfLoaded.value
-                  ? CircularProgressIndicator() // Show loading indicator
-                  : SfPdfViewer.network(
-                      'https://exampreptool.com/api/uploads/getFilepdf/${controller.pdf}',
-                      controller: controller.pdfViewerController,
-                    ),
-            ),
-          )),
+                        child: Center(
+                      child: Obx(
+                        () => controller.isPdfLoaded.value
+                            ? CircularProgressIndicator() // Show loading indicator
+                            : SfPdfViewer.network(
+                                'https://devapi.exampreptool.com/api/uploads/getFilepdf/${controller.pdf}',
+                                controller: controller.pdfViewerController,
+                              ),
+                      ),
+                    )),
                     if (controller.opacity == 0.0)
                       Center(
                         child: Text(
@@ -75,7 +68,7 @@ class ShowPdfViewView extends GetView<ShowPdfViewController> {
     );
   }
 }
-        
+
 //         ));
 //   }
 // }

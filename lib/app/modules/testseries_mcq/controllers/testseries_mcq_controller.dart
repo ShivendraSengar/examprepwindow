@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:exam_prep_tool/app/data/irepositry/itestseries_repo.dart';
 import 'package:exam_prep_tool/app/data/modal/test_series/random_question_testseries.dart';
+import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
 import 'package:exam_prep_tool/app/data/repositry/testseries_repo.dart';
 import 'package:exam_prep_tool/app/modules/testsearis/controllers/testsearis_controller.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ import 'package:get/get_rx/get_rx.dart';
 
 class TestseriesMcqController extends GetxController {
   final arguments = Get.arguments;
+  final Map<String, dynamic>? args = Get.arguments as Map<String, dynamic>?;
 
   final TestsearisController testcontroller = Get.find();
   final TestSeriesRepo repositry1 = TestSeriesRepoIMPL();

@@ -265,12 +265,12 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.TESTSERIES_INSTRUCTION,
-      page: () => const TestseriesInstructionView(),
+      page: () => TestseriesInstructionView(),
       binding: TestseriesInstructionBinding(),
     ),
     GetPage(
       name: _Paths.TESTSERIES_MCQ,
-      page: () => const TestseriesMcqView(),
+      page: () => TestseriesMcqView(),
       binding: TestseriesMcqBinding(),
     ),
     GetPage(

@@ -191,7 +191,7 @@ class WeeklyTest extends GetView<TestsearisController> {
             crossAxisCount: 3,
             crossAxisSpacing: 4.0,
             mainAxisSpacing: 20.0,
-            childAspectRatio: 3 / 1.3,
+            childAspectRatio: 3 / 1.6,
           ),
           itemCount: controller.testSeries.length,
 
@@ -214,15 +214,8 @@ class WeeklyTest extends GetView<TestsearisController> {
                     : GestureDetector(
                         onTap: () {
                           Get.toNamed(
-                            Routes.TESTSERIES_INSTRUCTION,
-                            arguments: {
-                              'duration':
-                                  data.timeData?.duration.toString() ?? '',
-                              'totalMarks': data.totalMarks.toString(),
-                              'questionCount':
-                                  data.questions?.length.toString() ?? '0',
-                              'questions': data.questions
-                            },
+                            Routes.TESTSERIES_MCQ,
+                            arguments: data,
                           );
                         },
                         child: Container(
@@ -245,8 +238,6 @@ class WeeklyTest extends GetView<TestsearisController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(data.questions![index].question.toString() ??
-                                  ""),
                               const SizedBox(height: 15.0),
                               Center(
                                 child: Text(
@@ -344,20 +335,18 @@ class WeeklyTest extends GetView<TestsearisController> {
                                   //print("object${coursedetails.rating}");
                                   //print("purchase${coursedetails.purchased}");
                                   controller.setSelectedTestSeries(data);
-                                  Get.toNamed(Routes.TESTSERIES_INSTRUCTION,
-                                      arguments: [
-                                        data.timeData!.duration.toString() ??
-                                            "0",
-                                        data.totalMarks.toString() ?? "0",
-                                        data.questions!.length.toString() ??
-                                            "0",
-                                        data.questions ?? []
-                                      ]
+                                  Get.toNamed(
+                                    Routes.TESTSERIES_INSTRUCTION,
+                                    arguments: data,
+                                    //data.questions
+                                    //        ?.map((q) => q.toJson())
+                                    //        .toList() ??
+                                    //    []
 
-                                      //print("exam idddd${coursedetails.exam?.id}"),
+                                    //print("exam idddd${coursedetails.exam?.id}"),
 
-                                      // offercodes?.offerName,
-                                      );
+                                    // offercodes?.offerName,
+                                  );
                                 },
                                 child: Container(
                                   //padding: EdgeInsets.symmetric(horizontal: 8),

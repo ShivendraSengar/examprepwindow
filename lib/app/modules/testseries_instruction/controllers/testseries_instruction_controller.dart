@@ -1,8 +1,10 @@
+import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
 import 'package:exam_prep_tool/app/modules/testsearis/controllers/testsearis_controller.dart';
 import 'package:get/get.dart';
 
 class TestseriesInstructionController extends GetxController {
-  final arguments = Get.arguments;
+  //final Map<String, dynamic> arguments = Get.arguments;
+  //final Testseries testSeries = Get.arguments as Testseries;
 
   final count = 0.obs;
   @override

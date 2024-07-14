@@ -1,3 +1,4 @@
+import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
 import 'package:exam_prep_tool/app/routes/app_pages.dart';
 import 'package:exam_prep_tool/app/themes/app_style.dart';
 import 'package:exam_prep_tool/app/widgets/custom_colors.dart';
@@ -14,6 +15,12 @@ class TestseriesInstructionView
   const TestseriesInstructionView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final Testseries testSeries = Get.arguments as Testseries;
+    //final Map<String, dynamic> arguments = Get.arguments;
+    //final String duration = arguments['duration'];
+    //final String totalMarks = arguments['totalMarks'];
+    //final String questionCount = arguments['questionCount'];
+    //final Testseries testSeries = arguments['testSeries'];
     return Scaffold(
       appBar: buildAppbar(),
       body: SingleChildScrollView(
@@ -24,10 +31,11 @@ class TestseriesInstructionView
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(controller.arguments[2]),
-                Text(controller.arguments[1]),
-                Text(controller.arguments[0]),
-                Text(controller.arguments[3]),
+                Text('Duration: ${testSeries.timeData?.duration ?? '0'} mins'),
+                Text('Total Marks: ${testSeries.totalMarks ?? '0'}'),
+                Text('Questions: ${testSeries.questions?.length ?? '0'}'),
+                Text(
+                    'Test Series Name: ${testSeries.questions!.first.question ?? '0'}'),
                 Text(
                   'Test Series (GATE CSE Algorithms)',
                   style: AppStyle.txtPoppinsSemiBold16Black,
@@ -214,11 +222,17 @@ class TestseriesInstructionView
                 20.heightBox,
                 InkWell(
                   onTap: () {
-                    Get.toNamed(Routes.TESTACTIVE_SCREEN, arguments: [
-                      controller.arguments[1],
-                      controller.arguments[2],
-                      controller.arguments[0],
-                    ]);
+                    Get.toNamed(
+                      Routes.TESTACTIVE_SCREEN,
+                      arguments: {
+                        'duration':
+                            testSeries.timeData?.duration.toString() ?? '0',
+                        'totalMarks': testSeries.totalMarks.toString() ?? '0',
+                        'questionsCount':
+                            testSeries.questions?.length.toString() ?? '0',
+                        'testName': testSeries.questions?.first.question ?? '0',
+                      },
+                    );
                   },
                   child: Align(
                     alignment: Alignment.centerRight,

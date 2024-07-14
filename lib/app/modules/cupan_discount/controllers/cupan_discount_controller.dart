@@ -24,13 +24,13 @@ import '../../../data/modal/Referralmodal/check_referralcode_modal.dart';
 
 class CupanDiscountController extends GetxController {
   final arguments = Get.arguments;
-  
+
 // / Define arguments as per your logic
- var arguments1 = [].obs;
+  var arguments1 = [].obs;
 
   RxDouble paynum = 0.0.obs;
-InAppWebViewController? webView;
-  final String url = 'https://exampreptool.com/api/payment/pay';
+  InAppWebViewController? webView;
+  final String url = 'https://devapi.exampreptool.com/api/payment/pay';
   final PrefUtils prefutils = Get.find();
   // Replace 'your_token_here' with the actual token value
   final String token = prefUtils.getToken().toString();
@@ -91,41 +91,42 @@ InAppWebViewController? webView;
 
 //  Method to toggle the isCouponApplied variable
   void checkReferralData(id) async {
-  print("Referral code: ${referalCode}");
-  try {
-    isLoading.value = true;
-    final response = await repository1.checkreferrallist(
-      id,
-      prefUtils.getID().toString(),
-      'Bearer ${prefutils.getToken().toString()}',
-    );
+    print("Referral code: ${referalCode}");
+    try {
+      isLoading.value = true;
+      final response = await repository1.checkreferrallist(
+        id,
+        prefUtils.getID().toString(),
+        'Bearer ${prefutils.getToken().toString()}',
+      );
 
-    if (response.data != null) {
-      // Print the response data
-      print("Response Data: ${response.data}");
+      if (response.data != null) {
+        // Print the response data
+        print("Response Data: ${response.data}");
 
-      // Retrieve referral discount from the response
-      checkreferal.value = response.data!.data ?? [];
+        // Retrieve referral discount from the response
+        checkreferal.value = response.data!.data ?? [];
 
-      // Calculate the final amount after subtracting the referral discount
-      ReferaldiscountPercentage.value = calculateFinalAmount(
-          checkreferal.first.referralDiscount!.toDouble());
+        // Calculate the final amount after subtracting the referral discount
+        ReferaldiscountPercentage.value = calculateFinalAmount(
+            checkreferal.first.referralDiscount!.toDouble());
 
-      // Show toast message for successful application of referral code
-      showToastMessage("Referral code applied successfully", "");
+        // Show toast message for successful application of referral code
+        showToastMessage("Referral code applied successfully", "");
 
-      // Update the UI with the final amount
-      updateFinalAmount(ReferaldiscountPercentage.value);
-    } else {
-      // Show toast message for invalid referral code
-      showToastMessage("Own referal cannot be used", "");
+        // Update the UI with the final amount
+        updateFinalAmount(ReferaldiscountPercentage.value);
+      } else {
+        // Show toast message for invalid referral code
+        showToastMessage("Own referal cannot be used", "");
+      }
+    } catch (e) {
+      // Print the error message
+      print("Error: $e");
+      isLoading.value = false;
     }
-  } catch (e) {
-    // Print the error message
-    print("Error: $e");
-    isLoading.value = false;
   }
-}
+
 //   // cupon Applied
   // Function to calculate the final amount after subtracting referral discount
   double calculateFinalAmount(double referralDiscount) {
@@ -197,7 +198,7 @@ InAppWebViewController? webView;
     try {
       final requestBody = {
         'courseId': arguments[6].toString(),
-        "durationInMonths":  arguments[4].toString(),
+        "durationInMonths": arguments[4].toString(),
         'courseType': arguments[7].toString(),
         'userId': prefutils.getID(),
         'razorpay_order_id': orderid.toString(),
@@ -206,7 +207,7 @@ InAppWebViewController? webView;
         "mode": "online"
       };
       final response = await https.post(
-        Uri.parse('https://exampreptool.com/api/payment/purchase'),
+        Uri.parse('https://devapi.exampreptool.com/api/payment/purchase'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${token}',
@@ -329,84 +330,85 @@ InAppWebViewController? webView;
     }
   }
 
- void paymentGetId() async {
-  isLoading.value = true;
-  // final PaymentController paymentController = Get.find<PaymentController>();
-  
-  try {
-    // Calculate the final amount based on coupon and referral conditions
-    double amountValue;
-    if (isCouponApplied.value && !isReferralApplied.value) {
-      amountValue = finalCost.value;
-    } else if (!isCouponApplied.value && isReferralApplied.value) {
-      amountValue = ReferaldiscountPercentage.value.toDouble(); // Adjust calculation as needed
-    } else if (isCouponApplied.value && isReferralApplied.value) {
-      amountValue = finalCost.value; // Assuming finalCost includes both discounts
-    } else {
-      amountValue = coursePrice.value.toDouble();
-    }
+  void paymentGetId() async {
+    isLoading.value = true;
+    // final PaymentController paymentController = Get.find<PaymentController>();
 
-    // Convert amount to string and multiply by 100 to get the value in cents/paisa
-    final String amountStr = (amountValue * 100).toString();
-
-    // Prepare the request body
-    final Map<String, dynamic> requestBody = {
-      'amount': amountStr,
-      'courseId': id.toString(),
-      'currency': currencyin,
-      'type': courseType.toString(),
-      'userId': prefutils.getID(),
-      'notes': purchase,
-    };
-
-    // Make the POST request
-    final response = await https.post(
-      Uri.parse('https://exampreptool.com/api/payment/pay'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-      body: jsonEncode(requestBody),
-    );
-
-    // Handle the response
-    if (response.statusCode == 200) {
-      final dynamic responseData = jsonDecode(response.body);
-
-      if (responseData is Map<String, dynamic>) {
-        final String paymentId = responseData['data']['id'].toString();
-        setPaymentId(paymentId);
-        print('orderid: ${paymentId}');
-        print('orderid1: ${orderidpay}');
-// for web app payment getwy
-        // callRazorpay( paymentId);
-
-     ////////////////////////// //   // Call the payment processing function Desktop app
-     
-        Get.toNamed(Routes.RAZOR_PAY_WINDOW, arguments: [
-          paynum.value.toString(),
-          arguments[6],
-          arguments[7],
-          arguments[4],
-       paymentId,
-        ]);
-        print("Response: ${response.body}");
-
-        // Optionally, show a success message
-        // showToastMessage('Success', 'Payment message sent successfully');
+    try {
+      // Calculate the final amount based on coupon and referral conditions
+      double amountValue;
+      if (isCouponApplied.value && !isReferralApplied.value) {
+        amountValue = finalCost.value;
+      } else if (!isCouponApplied.value && isReferralApplied.value) {
+        amountValue = ReferaldiscountPercentage.value
+            .toDouble(); // Adjust calculation as needed
+      } else if (isCouponApplied.value && isReferralApplied.value) {
+        amountValue =
+            finalCost.value; // Assuming finalCost includes both discounts
+      } else {
+        amountValue = coursePrice.value.toDouble();
       }
-    } else {
-      print('Error: ${response.statusCode}, ${response.body}');
-      showToastMessage('Error', 'An error occurred during payment.');
-    }
-  } catch (e) {
-    print('Error: $e');
-    showToastMessage('Error', 'An error occurred during payment.');
-  } finally {
-    isLoading.value = false;
-  }
-}
 
+      // Convert amount to string and multiply by 100 to get the value in cents/paisa
+      final String amountStr = (amountValue * 100).toString();
+
+      // Prepare the request body
+      final Map<String, dynamic> requestBody = {
+        'amount': amountStr,
+        'courseId': id.toString(),
+        'currency': currencyin,
+        'type': courseType.toString(),
+        'userId': prefutils.getID(),
+        'notes': purchase,
+      };
+
+      // Make the POST request
+      final response = await https.post(
+        Uri.parse('https://devapi.exampreptool.com/api/payment/pay'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      // Handle the response
+      if (response.statusCode == 200) {
+        final dynamic responseData = jsonDecode(response.body);
+
+        if (responseData is Map<String, dynamic>) {
+          final String paymentId = responseData['data']['id'].toString();
+          setPaymentId(paymentId);
+          print('orderid: ${paymentId}');
+          print('orderid1: ${orderidpay}');
+// for web app payment getwy
+          // callRazorpay( paymentId);
+
+          ////////////////////////// //   // Call the payment processing function Desktop app
+
+          Get.toNamed(Routes.RAZOR_PAY_WINDOW, arguments: [
+            paynum.value.toString(),
+            arguments[6],
+            arguments[7],
+            arguments[4],
+            paymentId,
+          ]);
+          print("Response: ${response.body}");
+
+          // Optionally, show a success message
+          // showToastMessage('Success', 'Payment message sent successfully');
+        }
+      } else {
+        print('Error: ${response.statusCode}, ${response.body}');
+        showToastMessage('Error', 'An error occurred during payment.');
+      }
+    } catch (e) {
+      print('Error: $e');
+      showToastMessage('Error', 'An error occurred during payment.');
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   callRazorpay(String id) {
     log('dragonBall callRazorpay');

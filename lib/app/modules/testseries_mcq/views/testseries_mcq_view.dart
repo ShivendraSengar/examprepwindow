@@ -13,11 +13,32 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
   const TestseriesMcqView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    int itemCount = int.tryParse(controller.arguments[1].toString()) ?? 0;
-    final List<dynamic> arguments;
-    var currentQuestion =
-        controller.questions[controller.currentQuestionIndex.value];
-    return Scaffold(
+    //}
+    //final Map<String, dynamic>? args = Get.arguments as Map<String, dynamic>?;
+
+    if (controller.args == null) {
+      // Handle case where arguments are null or not properly received
+      return Scaffold(
+        body: Center(
+          child: Text('Arguments are null or invalid'),
+        ),
+      );
+    }
+
+    // Extract data from args map
+    final String duration = controller.args!['duration'] ?? '0';
+    final String totalMarks = controller.args!['totalMarks'] ?? '0';
+    final String questionsCount = controller.args!['questionsCount'] ?? '0';
+    final String testName = controller.args!['testName'] ?? 'Test Series';
+
+    int itemCount = int.tryParse(questionsCount.toString()) ?? 0;
+
+    return
+
+        //final List<dynamic> arguments;
+        //var currentQuestion =
+        //    controller.questions[controller.currentQuestionIndex.value];
+        Scaffold(
       appBar: buildAppbar(),
       body: SingleChildScrollView(
         child: Center(
@@ -27,10 +48,6 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                //Text(controller.testcontroller.data.length
-                //    .toString()),
-                Text(controller.testcontroller.testSeries.length.toString() ??
-                    "ff"),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -42,6 +59,10 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                           height: Get.height,
                           child: Column(
                             children: [
+                              Text('Test Name: $testName'),
+                              Text('Duration: $duration mins'),
+                              Text('Total Marks: $totalMarks'),
+                              Text('Total Questions: $questionsCount'),
                               20.heightBox,
                               Row(
                                 mainAxisAlignment:
@@ -206,35 +227,69 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                           "4 marked", Colors.purple)
                                     ],
                                   ),
+                                  Text(questionsCount.toString()),
                                   20.heightBox,
                                   Expanded(
                                     child: Container(
-                                        width:
-                                            350, // Set the width of the container to 350
-                                        child: GridView.builder(
-                                          gridDelegate:
-                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount:
-                                                5, // Number of items per row
-                                            crossAxisSpacing:
-                                                8.0, // Spacing between items horizontally
-                                            mainAxisSpacing:
-                                                8.0, // Spacing between items vertically
-                                          ),
-                                          itemCount: itemCount,
-                                          itemBuilder: (context, index) {
-                                            return Card(
-                                              child: Center(
-                                                child: Text(
-                                                  '${index + 1}', // Display the number from 1 to itemCount
-                                                  style: const TextStyle(
-                                                      fontSize: 24),
-                                                ),
+                                      width:
+                                          350, // Set the width of the container to 350
+                                      child: GridView.builder(
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount:
+                                              5, // Number of items per row
+                                          crossAxisSpacing:
+                                              8.0, // Spacing between items horizontally
+                                          mainAxisSpacing:
+                                              8.0, // Spacing between items vertically
+                                        ),
+                                        itemCount: itemCount,
+                                        itemBuilder: (context, index) {
+                                          //var question = questionsCount[index];
+                                          return Card(
+                                            child: Center(
+                                              child: Text(
+                                                '${index + 1}', // Display the number from 1 to itemCount
+                                                style: const TextStyle(
+                                                    fontSize: 24),
                                               ),
-                                            );
-                                          },
-                                        )),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
                                   ),
+
+                                  //Expanded(
+                                  //  child: Container(
+                                  //      width:
+                                  //          350, // Set the width of the container to 350
+                                  //      child: GridView.builder(
+                                  //        gridDelegate:
+                                  //            const SliverGridDelegateWithFixedCrossAxisCount(
+                                  //          crossAxisCount:
+                                  //              5, // Number of items per row
+                                  //          crossAxisSpacing:
+                                  //              8.0, // Spacing between items horizontally
+                                  //          mainAxisSpacing:
+                                  //              8.0, // Spacing between items vertically
+                                  //        ),
+                                  //        itemCount: questionsCount.length,
+                                  //        itemBuilder: (context, index) {
+                                  //          var question =
+                                  //              questionsCount[index];
+                                  //          return Card(
+                                  //            child: Center(
+                                  //              child: Text(
+                                  //                '${question}', // Display the number from 1 to itemCount
+                                  //                style: const TextStyle(
+                                  //                    fontSize: 24),
+                                  //              ),
+                                  //            ),
+                                  //          );
+                                  //        },
+                                  //      )),
+                                  //),
 
                                   //Expanded(
                                   //  child: Container(

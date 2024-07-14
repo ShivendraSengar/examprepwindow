@@ -1,3 +1,4 @@
+import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
 import 'package:exam_prep_tool/app/routes/app_pages.dart';
 import 'package:exam_prep_tool/app/themes/app_style.dart';
 import 'package:exam_prep_tool/app/widgets/custom_colors.dart';
@@ -13,6 +14,12 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
   const TestactiveScreenView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> args = Get.arguments;
+//final Testseries testSeries = Get.arguments as Testseries;
+    final String duration = args['duration'] as String;
+    final String totalMarks = args['totalMarks'] as String;
+    final String questionsCount = args['questionsCount'] as String;
+    final String testName = args['testName'] as String;
     return Scaffold(
       appBar: buildAppbar(),
       body: Container(
@@ -49,13 +56,13 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
               //Text(controller.testcontroller.data!.first.questions!.length
               //    .toString()),
               buildRow(Assets.images.totalQuestion.path,
-                  'total ${controller.arguments[1]} questions'.toUpperCase()),
-              buildRow(
-                  Assets.images.timer.path,
-                  'total time ${controller.arguments[2]} Minutes'
-                      .toUpperCase()),
+                  'total ${totalMarks} questions'.toUpperCase()),
+              buildRow(Assets.images.timer.path,
+                  'total time ${duration} Minutes'.toUpperCase()),
               buildRow(Assets.images.totalMarks.path,
-                  'total marks ${controller.arguments[0]}'.toUpperCase()),
+                  'total marks ${totalMarks}'.toUpperCase()),
+              buildRow(Assets.images.totalMarks.path,
+                  'total marks ${testName}'.toUpperCase()),
               buildRow(Assets.images.language.path,
                   'language- English'.toUpperCase()),
               "Declaration : ".text.size(18).make().paddingOnly(left: 20),
@@ -84,11 +91,12 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
               Obx(() => InkWell(
                     onTap: () {
                       if (controller.isChecked.value == true) {
-                        Get.toNamed(Routes.TESTSERIES_MCQ, arguments: [
-                          controller.arguments[2],
-                          controller.arguments[1],
-                          controller.arguments[0],
-                        ]);
+                        Get.toNamed(Routes.TESTSERIES_MCQ, arguments: {
+                          'duration': duration,
+                          'totalMarks': totalMarks,
+                          'questionsCount': questionsCount,
+                          'testName': testName,
+                        });
                       }
                     },
                     child: Align(
