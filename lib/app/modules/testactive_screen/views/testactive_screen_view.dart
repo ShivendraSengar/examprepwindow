@@ -14,12 +14,12 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
   const TestactiveScreenView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> args = Get.arguments;
-//final Testseries testSeries = Get.arguments as Testseries;
-    final String duration = args['duration'] as String;
-    final String totalMarks = args['totalMarks'] as String;
-    final String questionsCount = args['questionsCount'] as String;
-    final String testName = args['testName'] as String;
+    //final Map<String, dynamic> args = Get.arguments;
+    final Testseries testSeries = Get.arguments as Testseries;
+    //final String duration = args['duration'] as String;
+    //final String totalMarks = args['totalMarks'] as String;
+    //final String questionsCount = args['questionsCount'] as String;
+    //final String testName = args['testName'] as String;
     return Scaffold(
       appBar: buildAppbar(),
       body: Container(
@@ -29,9 +29,38 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(controller
-                      .testcontroller.selectedTestSeries.value?.testName ??
-                  'Detail Page'),
+              //Text(controller
+              //        .testcontroller.selectedTestSeries.value?.testName ??
+              //    'Detail Page'),
+              //Text('Duration: ${testSeries.timeData?.duration ?? '0'} mins'),
+              //Text('Total Marks: ${testSeries.totalMarks ?? '0'}'),
+              //Text('Questions: ${testSeries.questions?.length ?? '0'}'),
+              //Text(
+              //    'Test Series Name: ${testSeries.questions?.first.question ?? '0'}'),
+              //ListView.builder(
+              //  shrinkWrap: true, // Use this to avoid taking full screen height
+              //  physics:
+              //      NeverScrollableScrollPhysics(), // Disable scrolling in ListView.builder
+              //  itemCount: testSeries.questions?.length ?? 0,
+              //  itemBuilder: (context, index) {
+              //    final question = testSeries.questions?[index];
+              //    return Column(
+              //      crossAxisAlignment: CrossAxisAlignment.start,
+              //      children: [
+              //        Text(
+              //          'Question ${index + 1}: ${question?.question ?? 'No question'}',
+              //          style: TextStyle(fontWeight: FontWeight.bold),
+              //        ),
+              //        SizedBox(height: 5),
+              //        // If you want to display options as well, you can add them here
+              //        ...?question?.options
+              //            ?.map((option) => Text('Option: ${option.toJson()}'))
+              //            .toList(),
+              //        SizedBox(height: 10),
+              //      ],
+              //    );
+              //  },
+              //),
 
               20.widthBox,
               RichText(
@@ -53,16 +82,21 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
                 ),
               ),
               20.heightBox,
+
               //Text(controller.testcontroller.data!.first.questions!.length
               //    .toString()),
-              buildRow(Assets.images.totalQuestion.path,
-                  'total ${totalMarks} questions'.toUpperCase()),
-              buildRow(Assets.images.timer.path,
-                  'total time ${duration} Minutes'.toUpperCase()),
+              buildRow(
+                  Assets.images.totalQuestion.path,
+                  'total ${testSeries.questions?.length ?? '0'} questions'
+                      .toUpperCase()),
+              buildRow(
+                  Assets.images.timer.path,
+                  'total time ${testSeries.timeData?.duration ?? '0'}  Minutes'
+                      .toUpperCase()),
               buildRow(Assets.images.totalMarks.path,
-                  'total marks ${totalMarks}'.toUpperCase()),
-              buildRow(Assets.images.totalMarks.path,
-                  'total marks ${testName}'.toUpperCase()),
+                  'total marks ${testSeries.totalMarks ?? '0'}'.toUpperCase()),
+              //buildRow(Assets.images.totalMarks.path,
+              //    'total marks ${testName}'.toUpperCase()),
               buildRow(Assets.images.language.path,
                   'language- English'.toUpperCase()),
               "Declaration : ".text.size(18).make().paddingOnly(left: 20),
@@ -91,12 +125,12 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
               Obx(() => InkWell(
                     onTap: () {
                       if (controller.isChecked.value == true) {
-                        Get.toNamed(Routes.TESTSERIES_MCQ, arguments: {
-                          'duration': duration,
-                          'totalMarks': totalMarks,
-                          'questionsCount': questionsCount,
-                          'testName': testName,
-                        });
+                        Get.toNamed(Routes.TESTSERIES_MCQ, arguments: testSeries
+                            //'duration': duration,
+                            //'totalMarks': totalMarks,
+                            //'questionsCount': questionsCount,
+                            //'testName': testName,
+                            );
                       }
                     },
                     child: Align(

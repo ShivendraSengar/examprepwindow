@@ -1,3 +1,5 @@
+import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
+import 'package:exam_prep_tool/app/routes/app_pages.dart';
 import 'package:exam_prep_tool/app/themes/app_style.dart';
 import 'package:exam_prep_tool/app/widgets/custom_colors.dart';
 import 'package:exam_prep_tool/gen/assets.gen.dart';
@@ -13,32 +15,110 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
   const TestseriesMcqView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    //}
-    //final Map<String, dynamic>? args = Get.arguments as Map<String, dynamic>?;
-
-    if (controller.args == null) {
-      // Handle case where arguments are null or not properly received
-      return Scaffold(
-        body: Center(
-          child: Text('Arguments are null or invalid'),
-        ),
+    final Testseries testSeries = Get.arguments as Testseries;
+    controller.testSeries.value = testSeries;
+    // Define the onTimeUp function
+    void onTimeUp() {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            //title: Text('Time is up!${testSeries.questions!.length}'),
+            content: Container(
+              height: 300,
+              width: 400,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Obx(() {
+                      final duration = controller.duration.value;
+                      final hours = duration.inHours.toString().padLeft(2, '0');
+                      final minutes =
+                          (duration.inMinutes % 60).toString().padLeft(2, '0');
+                      final seconds =
+                          (duration.inSeconds % 60).toString().padLeft(2, '0');
+                      return Column(
+                        children: [
+                          Table(
+                            border: TableBorder.all(),
+                            children: [
+                              TableRow(children: [
+                                "Time Remain".text.make().p8(),
+                                "$hours:$minutes:$seconds".text.make().p8(),
+                              ]),
+                              TableRow(children: [
+                                "Total Questions".text.make().p8(),
+                                testSeries.questions!.length.text.make().p8(),
+                              ]),
+                              TableRow(children: [
+                                "Mark For Review".text.make().p8(),
+                                controller.markedForReviewQuestions.length.text
+                                    .make()
+                                    .p8(),
+                              ]),
+                              TableRow(children: [
+                                "Attempted".text.make().p8(),
+                                controller.attemptedCount
+                                    .toString()
+                                    .text
+                                    .make()
+                                    .p8(),
+                              ]),
+                              TableRow(children: [
+                                "Not Attempted".text.make().p8(),
+                                controller.notAttemptedCount.text.make().p8(),
+                              ]),
+                            ],
+                          ).p16(),
+                          10.heightBox,
+                          "Are You Sure To Submit The Test !"
+                              .text
+                              .purple500
+                              .size(18)
+                              .bold
+                              .make()
+                              .p16(),
+                          12.heightBox,
+                        ],
+                      );
+                    }),
+                  ],
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.toNamed(Routes.HOME);
+                    },
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    child: Text('YES'),
+                  ).p16(),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                    child: Text('NO'),
+                  ).p16(),
+                ],
+              ),
+            ],
+          );
+        },
       );
     }
 
-    // Extract data from args map
-    final String duration = controller.args!['duration'] ?? '0';
-    final String totalMarks = controller.args!['totalMarks'] ?? '0';
-    final String questionsCount = controller.args!['questionsCount'] ?? '0';
-    final String testName = controller.args!['testName'] ?? 'Test Series';
+    // Start the timer with 1 hour for example
+    controller.startTimer(testSeries.timeData!.duration!.toInt(), onTimeUp);
 
-    int itemCount = int.tryParse(questionsCount.toString()) ?? 0;
-
-    return
-
-        //final List<dynamic> arguments;
-        //var currentQuestion =
-        //    controller.questions[controller.currentQuestionIndex.value];
-        Scaffold(
+    return Scaffold(
       appBar: buildAppbar(),
       body: SingleChildScrollView(
         child: Center(
@@ -48,6 +128,8 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Text(controller.startTime.toString()),
+                Text(controller.endTime.toString()),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -56,24 +138,20 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(
-                          height: Get.height,
-                          child: Column(
-                            children: [
-                              Text('Test Name: $testName'),
-                              Text('Duration: $duration mins'),
-                              Text('Total Marks: $totalMarks'),
-                              Text('Total Questions: $questionsCount'),
-                              20.heightBox,
+                            height: Get.height,
+                            child: Column(children: [
+                              SizedBox(height: 20),
                               Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Obx(() {
-                                    var currentQuestion = controller.questions[
-                                        controller.currentQuestionIndex.value];
+                                    var currentQuestion = controller
+                                        .testSeries.value.questions?.length;
                                     return Padding(
-                                        padding: const EdgeInsets.all(16.0),
+                                        padding: const EdgeInsets.only(
+                                            left: 8, right: 60),
                                         child: Text(
                                           'Question : ${controller.currentQuestionIndex.value + 1}',
                                           style: const TextStyle(
@@ -81,14 +159,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                               fontWeight: FontWeight.bold),
                                         ));
                                   }),
-                                  //Obx(() {
-                                  //  'Question ${controller.currentQuestionIndex.value + 1}'
-                                  //      .text
-                                  //      .size(18)
-                                  //      .fontWeight(FontWeight.bold)
-                                  //      .make()
-                                  //      .paddingOnly(left: 20);
-                                  //}),
+                                  60.widthBox,
                                   Column(
                                     children: [
                                       "Marks".text.size(18).make(),
@@ -105,93 +176,117 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                             child: const Text("-1"),
                                           ),
                                           20.widthBox,
-                                          Container(
-                                            height: 25,
-                                            width: 45,
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                color: Colors.green),
-                                            child: const Text("+4"),
-                                          )
+                                          Obx(() {
+                                            return Container(
+                                              height: 25,
+                                              width: 45,
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  color: Colors.green),
+                                              child: Text(controller
+                                                  .finalMarks.value
+                                                  .toString()),
+                                            );
+                                          })
                                         ],
                                       ).paddingOnly(right: 20)
                                     ],
                                   )
                                 ],
                               ),
-
                               Obx(() {
-                                var currentQuestion = controller.questions[
-                                    controller.currentQuestionIndex.value];
-                                return Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
+                                var question =
+                                    controller.testSeries.value.questions?[
+                                        controller.currentQuestionIndex.value];
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    if (question != null) ...[
                                       Text(
-                                        ' ${currentQuestion.questionText}',
-                                        style: const TextStyle(
-                                            fontSize: 18,
+                                        ' ${question.question}',
+                                        style: TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      const SizedBox(height: 20),
-                                      ...List.generate(
-                                          currentQuestion.options.length,
+                                      SizedBox(height: 2),
+                                      ...List.generate(question.options!.length,
                                           (index) {
                                         return RadioListTile(
-                                          title: Text(
-                                              currentQuestion.options[index]),
+                                          title: Text(question
+                                              .options![index].option
+                                              .toString()),
                                           value: index,
                                           groupValue: controller
                                               .selectedOptionIndex.value,
                                           onChanged: (int? value) {
-                                            controller.selectOption(value!);
+                                            if (value != null) {
+                                              final selectedOptionIndex =
+                                                  question
+                                                      .options![value].isRight;
+
+                                              // Update total marks based on the selected option
+                                              if (selectedOptionIndex!) {
+                                                controller.totalMarks.value;
+                                                controller.finalMarks.value =
+                                                    controller.totalMarks.value;
+                                                print(
+                                                    "Final marks${controller.finalMarks.value}");
+                                              } else {
+                                                controller.totalMarks.value -
+                                                    0.33;
+                                              }
+
+                                              // Update the selected option index
+                                              controller.selectOption(value);
+
+                                              print(
+                                                  "Selected value: ${controller.selectedOptionIndex.value}, Correct: ${question.options![value].isRight}${controller.totalMarks.value}");
+                                            }
                                           },
                                         );
                                       }),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              if (controller
+                                                      .currentQuestionIndex
+                                                      .value >
+                                                  0) {
+                                                controller.previousQuestion();
+                                              }
+                                            },
+                                            child: buildButton("Previous"),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              controller.markForReview();
+                                            },
+                                            child:
+                                                buildButton("Mark for Review"),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              if (controller
+                                                      .selectedOptionIndex <
+                                                  testSeries.questions!.length -
+                                                      1) {
+                                                controller.submitAnswer();
+                                              } else {}
+                                            },
+                                            child: buildButton("Save and Next"),
+                                          ),
+                                        ],
+                                      ).w(400),
                                     ],
-                                  ),
-                                );
+                                  ],
+                                ).w(700);
                               }),
-                              //SizedBox(height: 20),
-                              //ElevatedButton(
-                              //  onPressed: () {
-                              //    controller.submitAnswer();
-                              //  },
-                              //  child: Text('Submit'),
-                              //),
-
-                              40.heightBox,
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  InkWell(
-                                      onTap: () {
-                                        controller.currentQuestionIndex.value >
-                                                0
-                                            ? controller.previousQuestion()
-                                            : null;
-                                      },
-                                      child: buildButton("Previous")),
-                                  InkWell(
-                                      onTap: () {
-                                        controller.markForReview();
-                                      },
-                                      child: buildButton("Mark for Review")),
-                                  InkWell(
-                                      onTap: () {
-                                        controller.submitAnswer();
-                                      },
-                                      child: buildButton("save and Next"))
-                                ],
-                              ).w(400)
-                            ],
-                          ).w(700),
-                        ),
+                            ])),
                       ),
                     ),
                     20.widthBox,
@@ -206,6 +301,27 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  'Time Remaining'
+                                      .text
+                                      .size(18)
+                                      .fontWeight(FontWeight.bold)
+                                      .make(),
+                                  8.heightBox,
+                                  Obx(() {
+                                    final duration = controller.duration.value;
+                                    final hours = duration.inHours
+                                        .toString()
+                                        .padLeft(2, '0');
+                                    final minutes = (duration.inMinutes % 60)
+                                        .toString()
+                                        .padLeft(2, '0');
+                                    final seconds = (duration.inSeconds % 60)
+                                        .toString()
+                                        .padLeft(2, '0');
+                                    return "$hours:$minutes:$seconds"
+                                        .text
+                                        .make();
+                                  }),
                                   //Text(controller.arguments[0]),
                                   "Time Remeaning"
                                       .text
@@ -213,119 +329,84 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                       .fontWeight(FontWeight.bold)
                                       .make(),
                                   8.heightBox,
-                                  "02:2:22 time".text.make(),
-                                  16.heightBox,
+
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      buildAnswerContainer(
-                                          "50 answered", Colors.green),
-                                      buildAnswerContainer(
-                                          "unanswered", Colors.red),
-                                      buildAnswerContainer(
-                                          "4 marked", Colors.purple)
+                                      Obx(() {
+                                        return buildAnswerContainer(
+                                            "${controller.answeredQuestions.value.length.toString()}  answered",
+                                            Colors.green);
+                                      }),
+                                      Obx(() {
+                                        return buildAnswerContainer(
+                                            "${controller.notAttemptedCount.toString()} unanswered",
+                                            Colors.red);
+                                      }),
+                                      Obx(() {
+                                        return buildAnswerContainer(
+                                            "${controller.markedForReviewQuestions.value.length.toString()} marked",
+                                            Colors.purple);
+                                      })
                                     ],
                                   ),
-                                  Text(questionsCount.toString()),
+                                  //Text(questionsCount.toString()),
                                   20.heightBox,
                                   Expanded(
                                     child: Container(
-                                      width:
-                                          350, // Set the width of the container to 350
-                                      child: GridView.builder(
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount:
-                                              5, // Number of items per row
-                                          crossAxisSpacing:
-                                              8.0, // Spacing between items horizontally
-                                          mainAxisSpacing:
-                                              8.0, // Spacing between items vertically
-                                        ),
-                                        itemCount: itemCount,
-                                        itemBuilder: (context, index) {
-                                          //var question = questionsCount[index];
-                                          return Card(
-                                            child: Center(
-                                              child: Text(
-                                                '${index + 1}', // Display the number from 1 to itemCount
-                                                style: const TextStyle(
-                                                    fontSize: 24),
-                                              ),
+                                        width:
+                                            350, // Set the width of the container to 350
+                                        child: GridView.builder(
+                                            gridDelegate:
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount:
+                                                  5, // Number of items per row
+                                              crossAxisSpacing:
+                                                  8.0, // Spacing between items horizontally
+                                              mainAxisSpacing:
+                                                  8.0, // Spacing between items vertically
                                             ),
-                                          );
-                                        },
-                                      ),
-                                    ),
+                                            itemCount:
+                                                testSeries.questions?.length,
+                                            itemBuilder: (context, index) {
+                                              var question =
+                                                  testSeries.questions?[index];
+                                              Color cardColor;
+                                              if (controller
+                                                  .markedForReviewQuestions
+                                                  .contains(index)) {
+                                                cardColor = Colors.purple[100]!;
+                                              } else if (controller
+                                                  .answeredQuestions
+                                                  .contains(index)) {
+                                                cardColor = Colors.green[100]!;
+                                              } else {
+                                                cardColor = Colors.grey[200]!;
+                                              }
+                                              return Card(
+                                                color: cardColor,
+                                                child: Center(
+                                                  child: Text(
+                                                    '${index + 1}', // Display the number from 1 to itemCount
+                                                    style: const TextStyle(
+                                                        fontSize: 24),
+                                                  ),
+                                                ),
+                                              ).onInkTap(() {
+                                                controller
+                                                    .updateCurrentQuestionIndex(
+                                                        index);
+                                              });
+                                              //  },
+                                              //);
+                                            })),
                                   ),
 
-                                  //Expanded(
-                                  //  child: Container(
-                                  //      width:
-                                  //          350, // Set the width of the container to 350
-                                  //      child: GridView.builder(
-                                  //        gridDelegate:
-                                  //            const SliverGridDelegateWithFixedCrossAxisCount(
-                                  //          crossAxisCount:
-                                  //              5, // Number of items per row
-                                  //          crossAxisSpacing:
-                                  //              8.0, // Spacing between items horizontally
-                                  //          mainAxisSpacing:
-                                  //              8.0, // Spacing between items vertically
-                                  //        ),
-                                  //        itemCount: questionsCount.length,
-                                  //        itemBuilder: (context, index) {
-                                  //          var question =
-                                  //              questionsCount[index];
-                                  //          return Card(
-                                  //            child: Center(
-                                  //              child: Text(
-                                  //                '${question}', // Display the number from 1 to itemCount
-                                  //                style: const TextStyle(
-                                  //                    fontSize: 24),
-                                  //              ),
-                                  //            ),
-                                  //          );
-                                  //        },
-                                  //      )),
-                                  //),
-
-                                  //Expanded(
-                                  //  child: Container(
-                                  //      //height: Get.height,
-                                  //      width:
-                                  //          350, // Set the width of the container to 350
-                                  //      child: Obx(() {
-                                  //        int itemCount =
-                                  //            controller.arguments[0];
-                                  //        return GridView.builder(
-                                  //          gridDelegate:
-                                  //              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  //            crossAxisCount:
-                                  //                5, // Number of items per row
-                                  //            crossAxisSpacing:
-                                  //                8.0, // Spacing between items horizontally
-                                  //            mainAxisSpacing:
-                                  //                8.0, // Spacing between items vertically
-                                  //          ),
-                                  //          itemCount: itemCount.toInt(),
-                                  //          itemBuilder: (context, index) {
-                                  //            return Card(
-                                  //              child: Center(
-                                  //                child: Text(
-                                  //                  '${index + 1}', // Display the number from 1 to 30
-                                  //                  style: const TextStyle(
-                                  //                      fontSize: 24),
-                                  //                ),
-                                  //              ),
-                                  //            );
-                                  //          },
-                                  //        );
-                                  //      })),
-                                  //),
-
-                                  buildEndButton()
+                                  buildEndButton().onTap(() {
+                                    onTimeUp();
+                                    //controller.timer!.cancel();
+                                  })
                                 ],
                               ))),
                     )
@@ -351,7 +432,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
     );
   }
 
-  buildEndButton() {
+  Widget buildEndButton() {
     return Container(
       height: 45,
       alignment: Alignment.center,
@@ -410,5 +491,70 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
         },
       ),
     );
+  }
+
+  Widget buildRow() {
+    return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+            height: 45,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(19)),
+            child: Column(
+              children: [
+                Table(
+                  border: TableBorder.all(),
+                  children: [
+                    //TableRow(children: [
+                    //  "Time Remain".text.make().p8(),
+                    //  "$hours:$minutes:$seconds".text.make().p8(),
+                    //]),
+                    TableRow(children: [
+                      "Total Questions".text.make().p8(),
+                      "65".text.make().p8(),
+                    ]),
+                    TableRow(children: [
+                      "Mark For Review".text.make().p8(),
+                      "5".text.make().p8(),
+                    ]),
+                    TableRow(children: [
+                      "Attempted".text.make().p8(),
+                      "45".text.make().p8(),
+                    ]),
+                    TableRow(children: [
+                      "Not Attempted".text.make().p8(),
+                      "15".text.make().p8(),
+                    ]),
+                  ],
+                ).p16(),
+                16.heightBox,
+                "Are You Sure To Submit The Test !"
+                    .text
+                    .purple500
+                    .size(18)
+                    .bold
+                    .make()
+                    .p16(),
+                16.heightBox,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        // Handle Yes action
+                      },
+                      //style: ElevatedButton.styleFrom(primary: Colors.green),
+                      child: Text('YES'),
+                    ).p16(),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Handle No action
+                      },
+                      //style: ElevatedButton.,
+                      child: Text('NO'),
+                    ).p16(),
+                  ],
+                ),
+              ],
+            )));
   }
 }

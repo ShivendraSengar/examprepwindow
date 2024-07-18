@@ -326,7 +326,7 @@ class WeeklyTest extends GetView<TestsearisController> {
                                 ).w(700),
                               ),
                               buildCard(data.createdAt.toString().toUpperCase(),
-                                      "Language - English'")
+                                      "Lang - English")
                                   .w(700)
                                   .p(8),
                               13.heightBox,
