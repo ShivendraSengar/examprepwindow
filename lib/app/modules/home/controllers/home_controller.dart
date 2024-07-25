@@ -40,7 +40,7 @@ class HomeController extends GetxController {
   CheckToken? data;
   final CourseRepo repositry = CoursesRepoIml();
 
-  final String url = 'https://exampreptool.com/api/payment/pay';
+  final String url = 'https://devapi.exampreptool.com/api/payment/pay';
 
   // Replace 'your_token_here' with the actual token value
   final String token = prefUtils.getToken().toString();
@@ -119,7 +119,7 @@ class HomeController extends GetxController {
         "mode": "online"
       };
       final response = await https.post(
-        Uri.parse('https://exampreptool.com/api/payment/purchase'),
+        Uri.parse('https://devapi.exampreptool.com/api/payment/purchase'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${token}',
@@ -184,7 +184,7 @@ class HomeController extends GetxController {
         'notes': purchase,
       };
       final response = await https.post(
-        Uri.parse('https://exampreptool.com/api/payment/pay'),
+        Uri.parse('https://devapi.exampreptool.com/api/payment/pay'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${token}',
@@ -271,45 +271,46 @@ class HomeController extends GetxController {
   }
 
   Future<void> onedevicelogin() async {
-  String? token = prefutils.getToken();
+    String? token = prefutils.getToken();
 
-  if (token == null || token.isEmpty) {
-    // Token not found or empty, redirect to login screen
-    Get.offAll(Routes.LOGIN_SCREEN);
-    return;
-  }
-
-  print("Token: $token");
-  isLoading.value = true;
-
-  try {
-    var response = await repositry1.onedevicelogin('Bearer $token');
-
-    if (response.data != null) {
-      // Token is valid
-      String? message = response.data!.message; // Access the message from the response
-      print('Token is valid');
-      print('Response message: $message');
-    } else {
-      // Token is invalid or expired
-      print('Token is invalid');
-      handleInvalidToken();
+    if (token == null || token.isEmpty) {
+      // Token not found or empty, redirect to login screen
+      Get.offAll(Routes.LOGIN_SCREEN);
+      return;
     }
-  } catch (e) {
-    // Handle errors
-    print('Error occurred: $e');
-    handleInvalidToken();
-  } finally {
-    isLoading.value = false; // Ensure loading state is reset
-  }
-}
 
-void handleInvalidToken() {
-  // Clear any stored token
-  prefutils.clearPreferencesData();
-  // Redirect user to login screen
-  Get.offAll(Routes.LOGIN_SCREEN);
-}
+    print("Token: $token");
+    isLoading.value = true;
+
+    try {
+      var response = await repositry1.onedevicelogin('Bearer $token');
+
+      if (response.data != null) {
+        // Token is valid
+        String? message =
+            response.data!.message; // Access the message from the response
+        print('Token is valid');
+        print('Response message: $message');
+      } else {
+        // Token is invalid or expired
+        print('Token is invalid');
+        handleInvalidToken();
+      }
+    } catch (e) {
+      // Handle errors
+      print('Error occurred: $e');
+      handleInvalidToken();
+    } finally {
+      isLoading.value = false; // Ensure loading state is reset
+    }
+  }
+
+  void handleInvalidToken() {
+    // Clear any stored token
+    prefutils.clearPreferencesData();
+    // Redirect user to login screen
+    Get.offAll(Routes.LOGIN_SCREEN);
+  }
 
   void handleExternalWalletSelected(ExternalWalletResponse response) {}
 

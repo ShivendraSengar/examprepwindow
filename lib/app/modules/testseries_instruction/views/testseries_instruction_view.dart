@@ -1,3 +1,4 @@
+import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
 import 'package:exam_prep_tool/app/routes/app_pages.dart';
 import 'package:exam_prep_tool/app/themes/app_style.dart';
 import 'package:exam_prep_tool/app/widgets/custom_colors.dart';
@@ -14,6 +15,8 @@ class TestseriesInstructionView
   const TestseriesInstructionView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final Testseries testSeries = Get.arguments as Testseries;
+
     return Scaffold(
       appBar: buildAppbar(),
       body: SingleChildScrollView(
@@ -24,6 +27,38 @@ class TestseriesInstructionView
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                //Text('Duration: ${testSeries.timeData?.duration ?? '0'} mins'),
+                //Text('Total Marks: ${testSeries.totalMarks ?? '0'}'),
+                //Text('Questions: ${testSeries.questions?.length ?? '0'}'),
+                //Text(
+                //    'Test Series Name: ${testSeries.questions!.first.question ?? '0'}'),
+                //ListView.builder(
+                //  shrinkWrap:
+                //      true, // Use this to avoid taking full screen height
+                //  physics:
+                //      NeverScrollableScrollPhysics(), // Disable scrolling in ListView.builder
+                //  itemCount: testSeries.questions?.length ?? 0,
+                //  itemBuilder: (context, index) {
+                //    final question = testSeries.questions?[index];
+                //    return Column(
+                //      crossAxisAlignment: CrossAxisAlignment.start,
+                //      children: [
+                //        Text(
+                //          'Question ${index + 1}: ${question?.question ?? 'No question'}',
+                //          style: TextStyle(fontWeight: FontWeight.bold),
+                //        ),
+                //        SizedBox(height: 5),
+                //        // If you want to display options as well, you can add them here
+                //        ...?question?.options
+                //            ?.map(
+                //                (option) => Text('Option: ${option.toJson()}'))
+                //            .toList(),
+                //        SizedBox(height: 10),
+                //      ],
+                //    );
+                //  },
+                //),
+
                 Text(
                   'Test Series (GATE CSE Algorithms)',
                   style: AppStyle.txtPoppinsSemiBold16Black,
@@ -210,7 +245,16 @@ class TestseriesInstructionView
                 20.heightBox,
                 InkWell(
                   onTap: () {
-                    Get.toNamed(Routes.TESTACTIVE_SCREEN);
+                    Get.toNamed(
+                      Routes.TESTACTIVE_SCREEN,
+                      arguments: testSeries,
+                      //'duration':
+                      //    testSeries.timeData?.duration.toString() ?? '0',
+                      //'totalMarks': testSeries.totalMarks.toString() ?? '0',
+                      //'questionsCount':
+                      //    testSeries.questions?.length.toString() ?? '0',
+                      //'testName': testSeries.questions?.first.question ?? '0',
+                    );
                   },
                   child: Align(
                     alignment: Alignment.centerRight,

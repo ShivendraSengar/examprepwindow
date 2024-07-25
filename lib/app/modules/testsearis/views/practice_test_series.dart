@@ -101,6 +101,7 @@ class PracticeTestSeries extends GetView<TestsearisController> {
                     child: SizedBox(
                       width: 800,
                       child: Column(children: [
+                        Text(controller.testSeries.length.toString()),
                         20.heightBox,
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,

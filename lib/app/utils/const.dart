@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 // Encrypt other URLs as needed
 
 final PrefUtils prefutils = Get.find();
-const baseUrl = 'https://exampreptool.com/api/';
+const baseUrl = 'https://devapi.exampreptool.com/api/';
 //const baseUrl = 'http://3.108.150.124:4000/api/'; //https://exampreptool.com/api/';
 final userData = UserData().obs;
 //const razorpayid = {`${rzp_test_PwgBzUCpnd1ZRt}`}
@@ -25,7 +25,7 @@ const purchase = "course purchase";
 final paaym = Payments().obs;
 const currencyin = "INR";
 const secret = "QSqT1Nk3o8x3yM0DYxIrvdkO";
-const orderidpay  = "";
+const orderidpay = "";
 
 
 

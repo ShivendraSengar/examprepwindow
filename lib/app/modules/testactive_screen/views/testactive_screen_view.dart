@@ -1,3 +1,4 @@
+import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
 import 'package:exam_prep_tool/app/routes/app_pages.dart';
 import 'package:exam_prep_tool/app/themes/app_style.dart';
 import 'package:exam_prep_tool/app/widgets/custom_colors.dart';
@@ -13,6 +14,12 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
   const TestactiveScreenView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    //final Map<String, dynamic> args = Get.arguments;
+    final Testseries testSeries = Get.arguments as Testseries;
+    //final String duration = args['duration'] as String;
+    //final String totalMarks = args['totalMarks'] as String;
+    //final String questionsCount = args['questionsCount'] as String;
+    //final String testName = args['testName'] as String;
     return Scaffold(
       appBar: buildAppbar(),
       body: Container(
@@ -22,6 +29,39 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              //Text(controller
+              //        .testcontroller.selectedTestSeries.value?.testName ??
+              //    'Detail Page'),
+              //Text('Duration: ${testSeries.timeData?.duration ?? '0'} mins'),
+              //Text('Total Marks: ${testSeries.totalMarks ?? '0'}'),
+              //Text('Questions: ${testSeries.questions?.length ?? '0'}'),
+              //Text(
+              //    'Test Series Name: ${testSeries.questions?.first.question ?? '0'}'),
+              //ListView.builder(
+              //  shrinkWrap: true, // Use this to avoid taking full screen height
+              //  physics:
+              //      NeverScrollableScrollPhysics(), // Disable scrolling in ListView.builder
+              //  itemCount: testSeries.questions?.length ?? 0,
+              //  itemBuilder: (context, index) {
+              //    final question = testSeries.questions?[index];
+              //    return Column(
+              //      crossAxisAlignment: CrossAxisAlignment.start,
+              //      children: [
+              //        Text(
+              //          'Question ${index + 1}: ${question?.question ?? 'No question'}',
+              //          style: TextStyle(fontWeight: FontWeight.bold),
+              //        ),
+              //        SizedBox(height: 5),
+              //        // If you want to display options as well, you can add them here
+              //        ...?question?.options
+              //            ?.map((option) => Text('Option: ${option.toJson()}'))
+              //            .toList(),
+              //        SizedBox(height: 10),
+              //      ],
+              //    );
+              //  },
+              //),
+
               20.widthBox,
               RichText(
                 text: TextSpan(
@@ -42,12 +82,21 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
                 ),
               ),
               20.heightBox,
-              buildRow(Assets.images.totalQuestion.path,
-                  'total 30 questions'.toUpperCase()),
-              buildRow(Assets.images.timer.path,
-                  'total time 30 Minutes'.toUpperCase()),
+
+              //Text(controller.testcontroller.data!.first.questions!.length
+              //    .toString()),
+              buildRow(
+                  Assets.images.totalQuestion.path,
+                  'total ${testSeries.questions?.length ?? '0'} questions'
+                      .toUpperCase()),
+              buildRow(
+                  Assets.images.timer.path,
+                  'total time ${testSeries.timeData?.duration ?? '0'}  Minutes'
+                      .toUpperCase()),
               buildRow(Assets.images.totalMarks.path,
-                  'total marks 60'.toUpperCase()),
+                  'total marks ${testSeries.totalMarks ?? '0'}'.toUpperCase()),
+              //buildRow(Assets.images.totalMarks.path,
+              //    'total marks ${testName}'.toUpperCase()),
               buildRow(Assets.images.language.path,
                   'language- English'.toUpperCase()),
               "Declaration : ".text.size(18).make().paddingOnly(left: 20),
@@ -73,42 +122,43 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
                 ),
               ),
               20.heightBox,
-              InkWell(
-                onTap: () {
-                  //print("object${coursedetails.rating}");
-                  //print("purchase${coursedetails.purchased}");
-                  if (controller.isChecked.value == true) {
-                    Get.toNamed(Routes.TESTSERIES_MCQ);
-                  }
-
-                  //print("exam idddd${coursedetails.exam?.id}"),
-
-                  // offercodes?.offerName,
-                },
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                    //padding: EdgeInsets.symmetric(horizontal: 8),
-                    alignment: Alignment.center,
-                    height: 45,
-                    width: 250,
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(15),
+              Obx(() => InkWell(
+                    onTap: () {
+                      if (controller.isChecked.value == true) {
+                        Get.toNamed(Routes.TESTSERIES_MCQ, arguments: testSeries
+                            //'duration': duration,
+                            //'totalMarks': totalMarks,
+                            //'questionsCount': questionsCount,
+                            //'testName': testName,
+                            );
+                      }
+                    },
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 45,
+                        width: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(15),
+                            ),
+                            color: controller.isChecked.value
+                                ? Colors.green
+                                : Vx.green100),
+                        child: Text(
+                          'Ready to Begin',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: controller.isChecked.value
+                                ? Colors.white
+                                : Colors.grey,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        //gradient: buttonColor,
-                        color: Colors.green),
-                    child: const Text(
-                      'Ready to Begin',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ),
-              ),
+                  )),
               20.heightBox
             ]),
       ),

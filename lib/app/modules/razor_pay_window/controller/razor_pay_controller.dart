@@ -14,23 +14,24 @@ import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:exam_prep_tool/app/utils/pref_utis.dart';
 import 'package:http/http.dart' as https;
+
 class RazorPayWindowPageController extends GetxController {
-   final CupanDiscountController paymentController = Get.find<CupanDiscountController>();
-    final PaymentsRepo repositry = VerfypaymentRepoImpl();
+  final CupanDiscountController paymentController =
+      Get.find<CupanDiscountController>();
+  final PaymentsRepo repositry = VerfypaymentRepoImpl();
   final arguments = Get.arguments;
   final webviewController = WebviewController().obs;
   final PrefUtils prefutils = Get.find();
   final isInitialized = false.obs;
-    final List<StreamSubscription> _subscriptions = [];
+  final List<StreamSubscription> _subscriptions = [];
   final isLoading = true.obs;
   final isWebviewSuspended = false.obs;
   final amount = 1;
-  final String token = 'YOUR_API_TOKEN'; 
+  final String token = 'YOUR_API_TOKEN';
   final String courseId = "6628ab03c164732b4ac30c13";
   final String type = "all";
   final String userId = "6628726ec164732b4ac30be3"; // Example token
   var orderid = "";
-
 
   @override
   void onInit() {
@@ -38,25 +39,25 @@ class RazorPayWindowPageController extends GetxController {
     initPlatformState();
     // paymentGetId();
   }
+
   void paymentGetId() async {
     isLoading.value = true;
     try {
       // Calculate the final amount based on coupon and referral conditions
-      
 
       // Convert amount to string and multiply by 100 to get the value in cents/paisa
       // final String amountStr = (amountValue * 100).toString();
 
       // Prepare the request body
       final Map<String, dynamic> requestBody = {
-          // window.amountFromFlutter ='${arguments[0]}';
-          // window.tokenFromFlutter = "${prefutils.getToken()}";
-          // window.courseIdFromFlutter = "${arguments[1]}";
-          // window.typeFromFlutter = "${arguments[2]}";
-          // window.userIdFromFlutter = "${prefutils.getID().toString()}";
-          // window.inmonthFromFlutter = "${arguments[3]}";
+        // window.amountFromFlutter ='${arguments[0]}';
+        // window.tokenFromFlutter = "${prefutils.getToken()}";
+        // window.courseIdFromFlutter = "${arguments[1]}";
+        // window.typeFromFlutter = "${arguments[2]}";
+        // window.userIdFromFlutter = "${prefutils.getID().toString()}";
+        // window.inmonthFromFlutter = "${arguments[3]}";
         'amount': arguments[0],
-        'courseId':arguments[1],
+        'courseId': arguments[1],
         'currency': currencyin,
         'type': arguments[2],
         'userId': prefutils.getID(),
@@ -65,7 +66,7 @@ class RazorPayWindowPageController extends GetxController {
 
       // Make the POST request
       final response = await https.post(
-        Uri.parse('https://exampreptool.com/api/payment/pay'),
+        Uri.parse('https://devapi.exampreptool.com/api/payment/pay'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${prefutils.getToken()}',
@@ -101,38 +102,36 @@ class RazorPayWindowPageController extends GetxController {
     }
   }
 
-  
+  Future<void> initPlatformState() async {
+    try {
+      await webviewController.value.initialize();
+      webviewController.value.url.listen((url) {
+        // handle URL changes if needed
+      });
 
-
-Future<void> initPlatformState() async {
-  try {
-    await webviewController.value.initialize();
-    webviewController.value.url.listen((url) {
-      // handle URL changes if needed
-    });
-
-    webviewController.value.containsFullScreenElementChanged.listen((flag) {
-      windowManager.setFullScreen(flag);
-    });
+      webviewController.value.containsFullScreenElementChanged.listen((flag) {
+        windowManager.setFullScreen(flag);
+      });
 // webviewController.add(_controller.containsFullScreenElementChanged.listen((flag) {
 //         debugPrint('Contains fullscreen element: $flag');
 //         windowManager.setFullScreen(flag);
 //       }));
-    await webviewController.value.setBackgroundColor(Colors.transparent);
-    await webviewController.value.setPopupWindowPolicy(WebviewPopupWindowPolicy.deny);
+      await webviewController.value.setBackgroundColor(Colors.transparent);
+      await webviewController.value
+          .setPopupWindowPolicy(WebviewPopupWindowPolicy.deny);
 
-    // Load the local HTML file
-    final String razorpayHtml = await rootBundle.loadString('images/razorpay_checkout.html');
-    await webviewController.value.loadUrl(Uri.dataFromString(
-      razorpayHtml,
-      mimeType: 'text/html',
-      encoding: Encoding.getByName('utf-8'),
-    ).toString());
+      // Load the local HTML file
+      final String razorpayHtml =
+          await rootBundle.loadString('images/razorpay_checkout.html');
+      await webviewController.value.loadUrl(Uri.dataFromString(
+        razorpayHtml,
+        mimeType: 'text/html',
+        encoding: Encoding.getByName('utf-8'),
+      ).toString());
 
-    // Example of updating amount and token dynamically
-    Future.delayed(Duration(seconds: 2), () {
-      
-     final String script = '''
+      // Example of updating amount and token dynamically
+      Future.delayed(Duration(seconds: 2), () {
+        final String script = '''
           window.amountFromFlutter ='${arguments[0]}';
           window.tokenFromFlutter = "${prefutils.getToken()}";
           window.courseIdFromFlutter = "${arguments[1]}";
@@ -147,16 +146,14 @@ Future<void> initPlatformState() async {
 // Listen for messages from the web view
       _subscriptions.add(webviewController.listen((message) {
         if (message == 'navigateToHome') {
-         Get.toNamed(Routes.COURSE_SCREEN);
+          Get.toNamed(Routes.COURSE_SCREEN);
         }
       }));
-    isInitialized.value = true;
-  } on PlatformException catch (e) {
-    Get.snackbar('Error', 'Code: ${e.code}\nMessage: ${e.message}');
+      isInitialized.value = true;
+    } on PlatformException catch (e) {
+      Get.snackbar('Error', 'Code: ${e.code}\nMessage: ${e.message}');
+    }
   }
-}
-
-
 
   Future<WebviewPermissionDecision> onPermissionRequested(
       String url, WebviewPermissionKind kind, bool isUserInitiated) async {

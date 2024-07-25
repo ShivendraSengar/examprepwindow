@@ -57,6 +57,8 @@
 #   flutter_test:
 #     sdk: flutter
 
+
+
 # flutter_launcher_icons:
 #   android: "launcher_icon"
 #   ios: true
@@ -120,7 +122,7 @@ dependencies:
   flutter_switch: ^0.3.0
   image_picker:
   shared_preferences:
-  syncfusion_flutter_pdfviewer: ^26.1.42
+  syncfusion_flutter_pdfviewer:
   # syncfusion_flutter_pdfviewer:
   readmore:
   razorpay_web:
@@ -128,8 +130,8 @@ dependencies:
   intl:
   carousel_slider: ^4.2.1
   flutter_html:
-  js: ^0.6.3
-
+  js:
+  video_player_win:
   msix: ^3.16.7
   fvp: ^0.22.0
   video_player:
@@ -146,7 +148,7 @@ dependencies:
   firebase_messaging:
   screen_protector: ^1.4.2
   http: ^1.2.0
-  dio: ^4.0.6
+  dio:
   url_strategy:
   encrypt: ^5.0.0
   share_plus: ^9.0.0
@@ -157,9 +159,9 @@ dependencies:
   webview_windows: ^0.4.0
 
 dev_dependencies:
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
   flutter_launcher_icons: "^0.13.1"
-  retrofit_generator: 4.2.0
+  retrofit_generator: 8.1.2
   flutter_gen_runner: any
   build_runner:
   flutter_test:

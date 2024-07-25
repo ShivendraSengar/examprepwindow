@@ -47,6 +47,8 @@ abstract class Routes {
   static const TESTSERIES_INSTRUCTION = _Paths.TESTSERIES_INSTRUCTION;
   static const TESTSERIES_MCQ = _Paths.TESTSERIES_MCQ;
   static const TESTACTIVE_SCREEN = _Paths.TESTACTIVE_SCREEN;
+  static const TESTSERIES_ANSWER_DETAILPAGE =
+      _Paths.TESTSERIES_ANSWER_DETAILPAGE;
 }
 
 abstract class _Paths {
@@ -96,4 +98,5 @@ abstract class _Paths {
   static const TESTSERIES_INSTRUCTION = '/testseries-instruction';
   static const TESTSERIES_MCQ = '/testseries-mcq';
   static const TESTACTIVE_SCREEN = '/testactive-screen';
+  static const TESTSERIES_ANSWER_DETAILPAGE = '/testseries-answer-detailpage';
 }

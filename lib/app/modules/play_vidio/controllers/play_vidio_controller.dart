@@ -80,4 +80,100 @@ class PlayVidioController extends GetxController {
     String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
     return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
   }
+
+  void setPlaybackSpeed(double speed) {
+    // Set playback speed
+    chewieController.videoPlayerController!.setPlaybackSpeed(speed);
+  }
+// static final VoidCallback videoPlayerListener = ()
+//   {
+  // ignore: unnecessary_null_comparison
+  // if ((chewieController != null) && (videoPlayerController != null) && (chewieController.isFullScreen) && (videoPlayerController.value.position >= const Duration(seconds: 234))) {
+  //     chewieController.exitFullScreen();
+  //   }};
+
+  void initializePlayer() {
+    VideoPlayerController videoPlayerController =
+        VideoPlayerController.network(imageUrl + playlist);
+    //'https://devapi.exampreptool.com/api/';uploads/getFEFile/$playlist');
+    chewieController = ChewieController(
+      videoPlayerController: videoPlayerController,
+      autoPlay: true,
+
+      looping: false,
+      showOptions: true,
+      showControls: showCustomControls.value,
+      deviceOrientationsOnEnterFullScreen: [
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ],
+      deviceOrientationsAfterFullScreen: [
+        DeviceOrientation.portraitDown,
+        DeviceOrientation.portraitUp,
+      ],
+      showControlsOnInitialize: true,
+      allowedScreenSleep: false,
+      systemOverlaysAfterFullScreen: [
+        SystemUiOverlay.top, // Show the status bar
+        SystemUiOverlay.bottom, // Show the system navigation buttons
+      ],
+      systemOverlaysOnEnterFullScreen: [
+        SystemUiOverlay.top, // Show the status bar
+        SystemUiOverlay.bottom,
+      ],
+      progressIndicatorDelay: Duration(seconds: 3),
+      allowPlaybackSpeedChanging: true,
+      zoomAndPan: true,
+      allowFullScreen: true,
+      autoInitialize: true, // Automatically initialize Chewie
+      aspectRatio: 16 / 9, // Set aspect ratio (e.g., 16:9)
+      playbackSpeeds: playbackSpeeds,
+
+      customControls: CustomControls(
+        onFullScreenToggle: () {
+          chewieController.enterFullScreen();
+        },
+        onSeekForward: () {
+          seekForward();
+        },
+        onSeekBackward: () {
+          seekBackward();
+        },
+        onPlayPauseToggle: () {
+          chewieController.videoPlayerController.value.isPlaying
+              ? chewieController.pause()
+              : chewieController.play();
+        },
+        isPlaying: true,
+        isFullScreen: false,
+      ),
+
+      overlay: Container(
+        height: 700,
+        width: 1500,
+        child: Watarmark(
+          title: logincontroller.email.text.toString() ?? "",
+          rowCount: 2,
+          columnCount: 2,
+          text: foget.getMobile().toString() ?? "77777777",
+        ),
+      ),
+    );
+  }
+
+  void seekForward() {
+    final newPosition = chewieController.videoPlayerController.value.position +
+        const Duration(seconds: 10);
+    chewieController.videoPlayerController.seekTo(newPosition);
+  }
+
+  void seekBackward() {
+    final newPosition = chewieController.videoPlayerController.value.position -
+        const Duration(seconds: 10);
+    chewieController.videoPlayerController.seekTo(newPosition);
+  }
+//   void startPlayback() {
+//   chewieController.play();
+//   hideCustomControls();
+// }
 }

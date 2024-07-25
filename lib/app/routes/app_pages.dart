@@ -68,6 +68,8 @@ import '../modules/testactive_screen/bindings/testactive_screen_binding.dart';
 import '../modules/testactive_screen/views/testactive_screen_view.dart';
 import '../modules/testsearis/bindings/testsearis_binding.dart';
 import '../modules/testsearis/views/testsearis_view.dart';
+import '../modules/testseries_Answer_detailpage/bindings/testseries_answer_detailpage_binding.dart';
+import '../modules/testseries_Answer_detailpage/views/testseries_answer_detailpage_view.dart';
 import '../modules/testseries_instruction/bindings/testseries_instruction_binding.dart';
 import '../modules/testseries_instruction/views/testseries_instruction_view.dart';
 import '../modules/testseries_mcq/bindings/testseries_mcq_binding.dart';
@@ -265,18 +267,23 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.TESTSERIES_INSTRUCTION,
-      page: () => const TestseriesInstructionView(),
+      page: () => TestseriesInstructionView(),
       binding: TestseriesInstructionBinding(),
     ),
     GetPage(
       name: _Paths.TESTSERIES_MCQ,
-      page: () => const TestseriesMcqView(),
+      page: () => TestseriesMcqView(),
       binding: TestseriesMcqBinding(),
     ),
     GetPage(
       name: _Paths.TESTACTIVE_SCREEN,
       page: () => const TestactiveScreenView(),
       binding: TestactiveScreenBinding(),
+    ),
+    GetPage(
+      name: _Paths.TESTSERIES_ANSWER_DETAILPAGE,
+      page: () => const TestseriesAnswerDetailpageView(),
+      binding: TestseriesAnswerDetailpageBinding(),
     ),
   ];
 }
