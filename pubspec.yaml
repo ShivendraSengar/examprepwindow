@@ -1,5 +1,7 @@
+
+
 # name: exam_prep_tool
-# version: 1.0.0+2
+# version: 1.0.2+3
 # publish_to: none
 # description: A new Flutter project.
 # environment:
@@ -8,23 +10,21 @@
 # dependencies:
 #   cupertino_icons: ^1.0.2
 #   get: 4.6.6
-#   velocity_x: ^4.1.0
+#   velocity_x: 
 #   flutter_switch: ^0.3.0
 #   image_picker:
 #   shared_preferences:
-#   syncfusion_flutter_pdfviewer:
+#   syncfusion_flutter_pdfviewer: ^23.2.4
+#   # syncfusion_flutter_pdfviewer:
 #   readmore:
 #   razorpay_web:
 #   intl:
 #   carousel_slider: ^4.2.1
-#   # flutter_zoom_sdk: ^1.1.0+4
 #   flutter_html:
 #   js: ^0.6.3
-#   video_player_win:
+#   video_player:
+#   fvp: ^0.22.0
 #   msix: ^3.16.7
-
-
-
 
 #   flutter:
 #     sdk: flutter
@@ -33,13 +33,10 @@
 #   flutter_svg: ^2.0.9
 #   hexcolor: ^3.0.1
 #   shimmer: ^3.0.0
-#   # flutter_inappwebview:
 #   retrofit:
 #   chewie: ^1.7.4
 #   firebase_messaging:
 #   screen_protector: ^1.4.2
-#   #firebase_messaging:
-#   # firebase_core:
 #   http: ^1.2.0
 #   dio: ^4.0.6
 #   url_strategy:
@@ -47,15 +44,9 @@
 #   share_plus: ^9.0.0
 #   flutter_inappwebview: ^6.0.0
 #   webview_flutter: ^4.0.0
-#   # razorpay_flutter: ^1.2.7
 #   window_manager: ^0.3.9
 #   desktop_webview_window: ^0.2.3
 #   webview_windows: ^0.4.0
-
-
-
-
-
 
 # dev_dependencies:
 #   flutter_lints: ^2.0.0
@@ -66,13 +57,11 @@
 #   flutter_test:
 #     sdk: flutter
 
-  
-
 # flutter_launcher_icons:
 #   android: "launcher_icon"
 #   ios: true
 #   image_path: "images/logo_256_256.png"
-#   min_sdk_android: 21 # android min sdk min:16, default 21
+#   min_sdk_android: 21
 #   web:
 #     generate: true
 #     image_path: "images/logo_256_256.png"
@@ -81,7 +70,7 @@
 #   windows:
 #     generate: true
 #     image_path: "images/logo_256_256.png"
-#     icon_size: 48 # min:48, max:256, default: 48
+#     icon_size: 48
 #   macos:
 #     generate: true
 #     image_path: "path/to/image.png"
@@ -92,7 +81,7 @@
 #   identity_name: EXAMPREPTOOL.Ept
 #   publisher: CN=8A0A7BCF-FE9D-4C6A-8512-32694D0B47DF
 #   logo_path: images/logo_256_256.png
-#   msix_version: 1.0.1.1
+#   msix_version: 1.0.2.0  # Incremented version
 #   store: true
 
 # flutter:
@@ -115,8 +104,10 @@
 #           weight: 800
 #         - asset: images/fonts/PoppinsLight.ttf
 
+
+
 name: exam_prep_tool
-version: 1.0.2+3
+version: 1.0.2+4
 publish_to: none
 description: A new Flutter project.
 environment:
@@ -125,20 +116,23 @@ environment:
 dependencies:
   cupertino_icons: ^1.0.2
   get: 4.6.6
-  velocity_x: ^4.1.0
+  velocity_x: ^4.1.2
   flutter_switch: ^0.3.0
   image_picker:
   shared_preferences:
-  syncfusion_flutter_pdfviewer: ^23.2.4
+  syncfusion_flutter_pdfviewer: ^26.1.42
   # syncfusion_flutter_pdfviewer:
   readmore:
   razorpay_web:
+ 
   intl:
   carousel_slider: ^4.2.1
   flutter_html:
   js: ^0.6.3
-  video_player_win:
+
   msix: ^3.16.7
+  fvp: ^0.22.0
+  video_player:
 
   flutter:
     sdk: flutter
@@ -148,7 +142,7 @@ dependencies:
   hexcolor: ^3.0.1
   shimmer: ^3.0.0
   retrofit:
-  chewie: ^1.7.4
+  
   firebase_messaging:
   screen_protector: ^1.4.2
   http: ^1.2.0
@@ -195,7 +189,7 @@ msix_config:
   identity_name: EXAMPREPTOOL.Ept
   publisher: CN=8A0A7BCF-FE9D-4C6A-8512-32694D0B47DF
   logo_path: images/logo_256_256.png
-  msix_version: 1.0.2.0  # Incremented version
+  msix_version: 1.0.3.0 # Incremented version
   store: true
 
 flutter:
