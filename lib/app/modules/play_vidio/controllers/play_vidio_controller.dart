@@ -1,10 +1,11 @@
-import 'package:chewie/chewie.dart';
+// import 'package:chewie/chewie.dart';
+
+import 'dart:async';
 
 import 'package:exam_prep_tool/app/modules/login_screen/controllers/login_screen_controller.dart';
 import 'package:exam_prep_tool/app/modules/play_vidio/views/custom_controllers.dart';
 
 import 'package:exam_prep_tool/app/modules/play_vidio/views/play_vidio_view.dart';
-//import 'package:exam_prep_tool/app/modules/play_vidio/views/stfpaly.dart';
 
 import 'package:exam_prep_tool/app/utils/const.dart';
 import 'package:exam_prep_tool/app/utils/pref_utis.dart';
@@ -13,113 +14,71 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:screen_protector/screen_protector.dart';
+
 import 'package:video_player/video_player.dart';
 
-import 'package:flutter/material.dart';
-
-enum VideoQuality { low, medium, high }
-
 class PlayVidioController extends GetxController {
-  VideoPlayerController? vidioplayer;
-
-  var play = false.obs;
-
-  // Methods to toggle visibility
-
-//   void screenon() async {
-//     await ScreenProtector.preventScreenshotOn();
-//   }
-
-//   @override
-//   void onInit() {
-//     screenon();
-
-//     super.onInit();
-
-//     print("dddddd${imageUrl + playlist.toString()}");
-//     // Assuming controller.playlist is a List<String> containing video URLs or paths
-//     //String videoUrl = playlist.toString();
-
-//     controllerss = VideoPlayerController.network(imageUrl + playlist);
-//     controllerss?.initialize().then((_) {
-//       update();
-//     });
-//     vidioplayer = VideoPlayerController.network(imageUrl + playlist);
-//     vidioplayer?.initialize().then((_) {
-//       update();
-//     });
-//   }
   final PrefUtils foget = Get.find();
-  final email = Get.arguments;
-  final playlist = Get.arguments;
+
   final LoginScreenController logincontroller = Get.find();
 
-  late ChewieController chewieController;
   List<double> playbackSpeeds = [0.5, 1.0, 1.5, 2.0];
 
-  final RxDouble volume = 1.0.obs; // Initialize volume to maximum
-  final RxBool muted = false.obs;
+  late VideoPlayerController controller;
+  var isInitialized = false.obs;
+  var controlsVisible = true.obs;
+  var volume = 1.0.obs;
+  Timer? hideTimer;
+  var previousVolume = 1.0;
 
-  final RxBool showPlaybackSpeedOptions = false.obs;
-  final RxBool showCustomControls = true.obs;
-
-  static get videoPlayerController => null;
-
-  void togglePlaycontrollerzsVisibility() {
-    showCustomControls.value = !showCustomControls.value;
-
-    // Wait for 4 seconds then set the value to false
-    Future.delayed(const Duration(seconds: 4), () {
-      hideCustomControls();
-    });
-  }
-
-  void hideCustomControls() {
-    showCustomControls.value = false;
-  }
-
-  // play back speed
-  void togglePlaybackSpeedOptionsVisibility() {
-    showPlaybackSpeedOptions.value = !showPlaybackSpeedOptions.value;
-  }
+  final videoUrl = Get.arguments;
 
   @override
   void onInit() {
+    print("image${imageUrl + videoUrl}");
     super.onInit();
-    // setPlaybackSpeed(double speed)
-    initializePlayer();
+    controller = VideoPlayerController.network(imageUrl + videoUrl)
+      ..addListener(() {
+        update();
+      })
+      ..setLooping(true)
+      ..initialize().then((_) {
+        isInitialized.value = true;
+        update();
+      })
+      ..play();
+    startHideTimer();
   }
 
   @override
   void onClose() {
-    chewieController.pause();
-    chewieController.dispose();
+    controller.dispose();
+    hideTimer?.cancel();
     super.onClose();
   }
 
-  void toggleCouponSection() {
-    play.value = !play.value;
+  void startHideTimer() {
+    hideTimer?.cancel();
+    hideTimer = Timer(const Duration(seconds: 3), () {
+      controlsVisible.value = false;
+      update();
+    });
   }
 
-  void setVolume(double value) {
-    volume.value = value;
-    chewieController.videoPlayerController!.setVolume(value);
-    if (value == 0.0) {
-      // If volume is set to 0, mute the video
-      muted.value = true;
-    } else {
-      muted.value = false;
+  void onTapVideo() {
+    controlsVisible.value = !controlsVisible.value;
+    if (controlsVisible.value) {
+      startHideTimer();
     }
+
+    update();
   }
 
-  void toggleMute() {
-    if (muted.value) {
-      // If currently muted, unmute the video
-      setVolume(1.0); // Set volume to maximum
-    } else {
-      // If not muted, mute the video
-      setVolume(0.0); // Set volume to 0
-    }
+  String formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
   }
 
   void setPlaybackSpeed(double speed) {
