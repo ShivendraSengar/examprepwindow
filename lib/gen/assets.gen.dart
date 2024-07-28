@@ -158,6 +158,16 @@ class $ImagesGen {
   AssetGenImage get loginTextAreaBg =>
       const AssetGenImage('images/login text area bg.png');
 
+  /// File path: images/logo 32_32.ico
+  String get logo3232 => 'images/logo 32_32.ico';
+
+  /// File path: images/logo 48_48.ico
+  String get logo4848 => 'images/logo 48_48.ico';
+
+  /// File path: images/logo_256_256.png
+  AssetGenImage get logo256256 =>
+      const AssetGenImage('images/logo_256_256.png');
+
   /// File path: images/mark review.png
   AssetGenImage get markReview => const AssetGenImage('images/mark review.png');
 
@@ -423,6 +433,9 @@ class $ImagesGen {
         liveIcons,
         loginHeaderBg,
         loginTextAreaBg,
+        logo3232,
+        logo4848,
+        logo256256,
         markReview,
         menuActiveOptionBg,
         menuContactUsIcon,

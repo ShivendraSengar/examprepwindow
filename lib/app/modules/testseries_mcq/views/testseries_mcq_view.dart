@@ -128,8 +128,10 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(controller.startTime.toString()),
-                Text(controller.endTime.toString()),
+                //Obx(() {
+                //  return Text(controller.startTimeFormatted.toString());
+                //}),
+                //Text(controller.endTime.toString()),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -19,6 +19,7 @@ import 'package:exam_prep_tool/app/data/modal/profile/profile_updated.dart';
 
 import 'package:exam_prep_tool/app/data/modal/signup/forget_password_response.dart';
 import 'package:exam_prep_tool/app/data/modal/test_series/random_question_testseries.dart';
+import 'package:exam_prep_tool/app/data/modal/test_series/submit_testseries_modal.dart';
 import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
 import 'package:exam_prep_tool/app/data/modal/verify_payments.dart';
 import 'package:exam_prep_tool/app/data/modal/vidio_lecturesresponse/get_exam_id.dart';
@@ -143,4 +144,8 @@ abstract class AppApis {
   Future<HttpResponse<RandomQuestionTestseriesModal>> randomqueslist(
     @Path("testId") String testId,
   );
+  //SumitAnswerForTestSeies
+  @POST('testAnswer/create')
+  Future<HttpResponse<SubmitTestseriesModal>> testSeriesAnswer(
+      @Header("Authorization") String token, @Body() submitAnswerparams);
 }
