@@ -301,10 +301,10 @@ packages:
     dependency: transitive
     description:
       name: device_info_plus
-      sha256: eead12d1a1ed83d8283ab4c2f3fca23ac4082f29f25f29dff0f758f57d06ec91
+      sha256: "77f757b789ff68e4eaf9c56d1752309bd9f7ad557cb105b938a7f8eb89e59110"
       url: "https://pub.dev"
     source: hosted
-    version: "10.1.0"
+    version: "9.1.2"
   device_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -1048,14 +1048,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
-  provider:
-    dependency: transitive
-    description:
-      name: provider
-      sha256: c8a055ee5ce3fd98d6fc872478b03823ffdb448699c6ebdbbc71d59b596fd48c
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.1.2"
   pub_semver:
     dependency: transitive
     description:
@@ -1589,6 +1581,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.1"
+  video_player_win:
+    dependency: "direct main"
+    description:
+      name: video_player_win
+      sha256: "6e66a2e88e0c50add3dd7ac0217393273793e8b4e1ac4233a257bb4a80413065"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.9"
   vm_service:
     dependency: transitive
     description:

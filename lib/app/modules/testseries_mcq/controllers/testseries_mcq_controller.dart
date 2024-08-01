@@ -122,6 +122,7 @@ class TestseriesMcqController extends GetxController {
   void submitAnswer() {
     if (selectedOptionIndex.value != -1) {
       answeredQuestions.add(currentQuestionIndex.value);
+
       finalMarks.value++;
       totalMarks++;
     }
