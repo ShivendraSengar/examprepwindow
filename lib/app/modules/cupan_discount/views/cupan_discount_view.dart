@@ -14,7 +14,7 @@ import 'package:velocity_x/velocity_x.dart';import 'package:url_launcher/url_lau
 
 import '../controllers/cupan_discount_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+// import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -648,21 +648,32 @@ final enteredReferralCode = controller.correctReferralCode.text;
                                  print("course type${controller.arguments[4]}");
                                 print("Time duration${controller.arguments[7]}");
                                 print("Time duration${controller.orderid}");
-                       Get.toNamed(
-  Routes.RAZOR_PAY_WINDOW,
-  arguments: [
-    controller.paynum.value.toString(),
-    controller.arguments[6],
-    controller.arguments[7],
-    controller.arguments[4]
-  ],
-);
+                                
+// onpage submiss in one page
 
-// Call the function after navigation
-controller.paymentGetId();
+    List<dynamic> arguments = [
+   controller.   paynum.value.toString(),
+    controller.   arguments[6],
+      controller. arguments[7],
+     controller.  arguments[4],
+      // other arguments if needed
+    ];
+   controller.  paymentGetId(context, arguments);
+// for going new page get paymeny 
 
-          //  controller.paymentGetId();
-            // controller.paymentGetId();
+                      //  Get.toNamed(
+//   Routes.RAZOR_PAY_WINDOW,
+//   arguments: [
+//     controller.paynum.value.toString(),
+//     controller.arguments[6],
+//     controller.arguments[7],
+//     controller.arguments[4]
+//   ],
+// );
+
+// // Call the function after navigation
+// controller.paymentGetId();
+
           }),
                             // controller.paymentGetId();
                          

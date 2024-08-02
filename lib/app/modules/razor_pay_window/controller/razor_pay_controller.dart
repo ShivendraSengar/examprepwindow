@@ -40,67 +40,7 @@ class RazorPayWindowPageController extends GetxController {
     // paymentGetId();
   }
 
-  void paymentGetId() async {
-    isLoading.value = true;
-    try {
-      // Calculate the final amount based on coupon and referral conditions
-
-      // Convert amount to string and multiply by 100 to get the value in cents/paisa
-      // final String amountStr = (amountValue * 100).toString();
-
-      // Prepare the request body
-      final Map<String, dynamic> requestBody = {
-        // window.amountFromFlutter ='${arguments[0]}';
-        // window.tokenFromFlutter = "${prefutils.getToken()}";
-        // window.courseIdFromFlutter = "${arguments[1]}";
-        // window.typeFromFlutter = "${arguments[2]}";
-        // window.userIdFromFlutter = "${prefutils.getID().toString()}";
-        // window.inmonthFromFlutter = "${arguments[3]}";
-        'amount': arguments[0],
-        'courseId': arguments[1],
-        'currency': currencyin,
-        'type': arguments[2],
-        'userId': prefutils.getID(),
-        'notes': purchase,
-      };
-
-      // Make the POST request
-      final response = await https.post(
-        Uri.parse('https://devapi.exampreptool.com/api/payment/pay'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${prefutils.getToken()}',
-        },
-        body: jsonEncode(requestBody),
-      );
-
-      // Handle the response
-      if (response.statusCode == 200) {
-        final dynamic responseData = jsonDecode(response.body);
-
-        if (responseData is Map<String, dynamic>) {
-          final String paymentId = responseData['data']['id'].toString();
-          orderid = paymentId;
-          print('orderid: $orderid');
-
-          // Call the payment processing function
-          // callRazorpay(paymentId);
-          print("Response: ${response.body}");
-
-          // Optionally, show a success message
-          // showToastMessage('Success', 'Payment message sent successfully');
-        }
-      } else {
-        print('Error: ${response.statusCode}, ${response.body}');
-        showToastMessage('Error', 'An error occurred during payment.');
-      }
-    } catch (e) {
-      print('Error: $e');
-      showToastMessage('Error', 'An error occurred during payment.');
-    } finally {
-      isLoading.value = false;
-    }
-  }
+  
 
   Future<void> initPlatformState() async {
     try {
@@ -112,10 +52,7 @@ class RazorPayWindowPageController extends GetxController {
       webviewController.value.containsFullScreenElementChanged.listen((flag) {
         windowManager.setFullScreen(flag);
       });
-// webviewController.add(_controller.containsFullScreenElementChanged.listen((flag) {
-//         debugPrint('Contains fullscreen element: $flag');
-//         windowManager.setFullScreen(flag);
-//       }));
+
       await webviewController.value.setBackgroundColor(Colors.transparent);
       await webviewController.value
           .setPopupWindowPolicy(WebviewPopupWindowPolicy.deny);

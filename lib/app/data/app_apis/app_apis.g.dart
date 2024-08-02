@@ -6,14 +6,14 @@ part of 'app_apis.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element
 
 class _AppApis implements AppApis {
   _AppApis(
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://devapi.exampreptool.com/api/';
+    baseUrl ??= 'https://exampreptool.com/api/';
   }
 
   final Dio _dio;
@@ -21,8 +21,8 @@ class _AppApis implements AppApis {
   String? baseUrl;
 
   @override
-  Future<HttpResponse<LoginResponse>> auth(loginparams) async {
-    const _extra = <String, dynamic>{};
+  Future<HttpResponse<LoginResponse>> auth(dynamic loginparams) async {
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = loginparams;
@@ -38,15 +38,19 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = LoginResponse.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = LoginResponse.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
-  Future<HttpResponse<SignupResponse>> signup(sendOtpResponse) async {
-    const _extra = <String, dynamic>{};
+  Future<HttpResponse<SignupResponse>> signup(dynamic sendOtpResponse) async {
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = sendOtpResponse;
@@ -62,15 +66,19 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = SignupResponse.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = SignupResponse.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
-  Future<HttpResponse<OtpResponse>> otpverify(otpparams) async {
-    const _extra = <String, dynamic>{};
+  Future<HttpResponse<OtpResponse>> otpverify(dynamic otpparams) async {
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = otpparams;
@@ -86,16 +94,20 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = OtpResponse.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = OtpResponse.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<ForgetpasswordResponse>> fogretpass(
-      forgetpassparams) async {
-    const _extra = <String, dynamic>{};
+      dynamic forgetpassparams) async {
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = forgetpassparams;
@@ -111,18 +123,22 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ForgetpasswordResponse.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = ForgetpasswordResponse.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<ChangePassword>> changepassword(
-    token,
-    changepassParams,
+    String token,
+    dynamic changepassParams,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Authorization': token};
     _headers.removeWhere((k, v) => v == null);
@@ -139,15 +155,20 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ChangePassword.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = ChangePassword.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
-  Future<HttpResponse<SendOtpResponse>> sendotprespo(sendOtpParams) async {
-    const _extra = <String, dynamic>{};
+  Future<HttpResponse<SendOtpResponse>> sendotprespo(
+      dynamic sendOtpParams) async {
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = sendOtpParams;
@@ -163,24 +184,28 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = SendOtpResponse.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = SendOtpResponse.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<Courses>> getcourses(
-    userId,
-    sortedby,
+    String userId,
+    String sortedby,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'userId': userId,
       r'sort': sortedby,
     };
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<Courses>>(Options(
       method: 'GET',
@@ -193,18 +218,22 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = Courses.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = Courses.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
-  Future<HttpResponse<VidioLecturesresponse>> getList(exam) async {
-    const _extra = <String, dynamic>{};
+  Future<HttpResponse<VidioLecturesresponse>> getList(String exam) async {
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'exam': exam};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<VidioLecturesresponse>>(Options(
       method: 'GET',
@@ -217,18 +246,22 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = VidioLecturesresponse.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = VidioLecturesresponse.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<GetExamid>> getexamid() async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<GetExamid>>(Options(
       method: 'GET',
@@ -241,20 +274,24 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = GetExamid.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = GetExamid.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<VidioLecturesresponse>> getvidioList(
-    exam,
-    subject,
-    uploadType,
-    sortedby,
+    String exam,
+    String subject,
+    String uploadType,
+    String sortedby,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'exam': exam,
       r'subject': subject,
@@ -262,7 +299,7 @@ class _AppApis implements AppApis {
       r'sort': sortedby,
     };
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<VidioLecturesresponse>>(Options(
       method: 'GET',
@@ -275,18 +312,22 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = VidioLecturesresponse.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = VidioLecturesresponse.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<Payments>> payments(
-    token,
-    paymentParams,
+    String token,
+    dynamic paymentParams,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Authorization': token};
     _headers.removeWhere((k, v) => v == null);
@@ -303,15 +344,20 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = Payments.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = Payments.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
-  Future<HttpResponse<Verifypayments>> verifypayments(verifypayment) async {
-    const _extra = <String, dynamic>{};
+  Future<HttpResponse<Verifypayments>> verifypayments(
+      dynamic verifypayment) async {
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = verifypayment;
@@ -327,18 +373,22 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = Verifypayments.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = Verifypayments.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
-  Future<HttpResponse<BuyCourses>> checkCourseBuy(userId) async {
-    const _extra = <String, dynamic>{};
+  Future<HttpResponse<BuyCourses>> checkCourseBuy(String userId) async {
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<BuyCourses>>(Options(
       method: 'GET',
@@ -351,22 +401,26 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BuyCourses.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = BuyCourses.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<EditProfile>> editUser(
-    userId,
-    token,
+    String userId,
+    String token,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Authorization': token};
     _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<EditProfile>>(Options(
       method: 'GET',
@@ -379,18 +433,22 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = EditProfile.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = EditProfile.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<ProfileUpdated>> updateProfile(
-    updateProfileParams,
-    token,
+    dynamic updateProfileParams,
+    String token,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Authorization': token};
     _headers.removeWhere((k, v) => v == null);
@@ -407,18 +465,23 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ProfileUpdated.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = ProfileUpdated.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
-  Future<HttpResponse<CoursesCategory>> getCoursescategory(sortedby) async {
-    const _extra = <String, dynamic>{};
+  Future<HttpResponse<CoursesCategory>> getCoursescategory(
+      String sortedby) async {
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'sort': sortedby};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<CoursesCategory>>(Options(
       method: 'GET',
@@ -431,24 +494,28 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = CoursesCategory.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = CoursesCategory.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<CategoriesFilter>> getFiltercategory(
-    userId,
-    category,
+    String userId,
+    String category,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'userId': userId,
       r'category': category,
     };
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<CategoriesFilter>>(Options(
       method: 'GET',
@@ -461,19 +528,23 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = CategoriesFilter.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = CategoriesFilter.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
-  Future<HttpResponse<CheckToken>> onedevicelogin(token) async {
-    const _extra = <String, dynamic>{};
+  Future<HttpResponse<CheckToken>> onedevicelogin(String token) async {
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Authorization': token};
     _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<CheckToken>>(Options(
       method: 'GET',
@@ -486,22 +557,26 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = CheckToken.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = CheckToken.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<Livechnalelist>> livelectureslist(
-    id,
-    token,
+    String id,
+    String token,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'courseId': id};
     final _headers = <String, dynamic>{r'Authorization': token};
     _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<Livechnalelist>>(Options(
       method: 'GET',
@@ -514,18 +589,22 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = Livechnalelist.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = Livechnalelist.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
-  Future<HttpResponse<CirculamModalList>> circulimdatalist(id) async {
-    const _extra = <String, dynamic>{};
+  Future<HttpResponse<CirculamModalList>> circulimdatalist(String id) async {
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'courseId': id};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<CirculamModalList>>(Options(
       method: 'GET',
@@ -538,22 +617,26 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = CirculamModalList.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = CirculamModalList.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<AccounteferralModal>> referraldatalist(
-    userId,
-    token,
+    String userId,
+    String token,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Authorization': token};
     _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<AccounteferralModal>>(Options(
       method: 'GET',
@@ -566,22 +649,26 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = AccounteferralModal.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = AccounteferralModal.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<SubscriptioneferralModal>> subscriptionreferrallist(
-    referID,
-    token,
+    String referID,
+    String token,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Authorization': token};
     _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<SubscriptioneferralModal>>(Options(
       method: 'GET',
@@ -594,23 +681,27 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = SubscriptioneferralModal.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = SubscriptioneferralModal.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<CheckReferralcode>> checkreferrallist(
-    referalID,
-    userId,
-    token,
+    String referalID,
+    String userId,
+    String token,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'userId': userId};
     final _headers = <String, dynamic>{r'Authorization': token};
     _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<CheckReferralcode>>(Options(
       method: 'GET',
@@ -623,24 +714,28 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = CheckReferralcode.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = CheckReferralcode.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<WeeklyTestseriesModal>> weeklytestseries(
-    subject,
-    courseid,
+    String subject,
+    String courseid,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'subject': subject,
       r'examId': courseid,
     };
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<WeeklyTestseriesModal>>(Options(
       method: 'GET',
@@ -653,19 +748,23 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = WeeklyTestseriesModal.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = WeeklyTestseriesModal.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<RandomQuestionTestseriesModal>> randomqueslist(
-      testId) async {
-    const _extra = <String, dynamic>{};
+      String testId) async {
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<RandomQuestionTestseriesModal>>(Options(
       method: 'GET',
@@ -678,9 +777,13 @@ class _AppApis implements AppApis {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = RandomQuestionTestseriesModal.fromJson(_result.data!);
-    final httpResponse = HttpResponse(value, _result);
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = RandomQuestionTestseriesModal.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
 
@@ -695,5 +798,22 @@ class _AppApis implements AppApis {
       }
     }
     return requestOptions;
+  }
+
+  String _combineBaseUrls(
+    String dioBaseUrl,
+    String? baseUrl,
+  ) {
+    if (baseUrl == null || baseUrl.trim().isEmpty) {
+      return dioBaseUrl;
+    }
+
+    final url = Uri.parse(baseUrl);
+
+    if (url.isAbsolute) {
+      return url.toString();
+    }
+
+    return Uri.parse(dioBaseUrl).resolveUri(url).toString();
   }
 }

@@ -1,203 +1,55 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Razorpay Checkout</title>
-</head>
-<body>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <button id="pay-button">Pay Now</button>
-  <script>
-    function setupRazorpay(amount, token, courseId, type, userId, inmonth) {
-      console.log('Amount:', amount);
-      console.log('Token:', token);
-      console.log('Course ID:', courseId);
-      console.log('Type:', type);
-      console.log('User ID:', userId);
-      console.log('Inmonth:', inmonth);
 
-      var options = {
-        "key": "rzp_test_gKANZdsNdLqaQs",
-        "amount": amount * 100, // Amount is in currency subunits. Default is INR. 100 = 1 INR
-        "name": "Adquasoft",
-        "description": "Purchase Description",
-        "order_id": response.razorpay_order_id,
-        "handler": function(response) {
-          // Print the payment details
-          console.log('Payment ID:', response.razorpay_payment_id);
-          console.log('Order ID:', response.razorpay_order_id);
-          console.log('Signature:', response.razorpay_signature);
-
-          // Perform API call after successful payment
-          var requestOptions = {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token // Use the token from Flutter
-            },
-            body: JSON.stringify({
-              amount: amount,
-              courseId: courseId,
-              currency: 'INR',
-              type: type,
-              userId: userId,
-              notes: 'course purchase',
-              paymentId: response.razorpay_payment_id, // Using Razorpay payment id here
-              orderId: response.razorpay_order_id,     // Using Razorpay order id here
-              signature: response.razorpay_signature,  // Using Razorpay signature here
-              // mode: 'online' // Added mode parameter
-            })
-          };
-
-          fetch('https://devapi.exampreptool.com/api/';payment/pay', requestOptions)
-            .then(response => response.json())
-            .then(data => {
-              console.log('Payment success:', data);
-              alert(`paymenyt: ${response.razorpay_payment_id}\norderid: ${ response.razorpay_order_id}\nsibn ID: ${response.razorpay_signature}\nType: ${type}\nUser ID: ${userId}\nInmonth: ${inmonth}`);
-
-              // Call verification API after successful payment
-              var verifyRequestOptions = {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': 'Bearer ' + token // Use the token from Flutter
-                },
-                body: JSON.stringify({
-                  courseId: courseId,
-                  durationInMonths: inmonth, // Example duration, replace with actual value
-                  courseType: type, // Example course type, replace with actual value
-                  userId: userId,
-                  razorpay_order_id: response.razorpay_order_id,
-                  razorpay_payment_id: response.razorpay_payment_id,
-                  razorpay_signature: response.razorpay_signature,
-                  mode: 'fwebonline'
-                })
-              };
-
-              return fetch('https://devapi.exampreptool.com/api/';payment/purchase', verifyRequestOptions);
-            })
-            .then(response => response.json())
-            .then(data => {
-              console.log('Verification success:', data);
-              // Handle success response as per your requirement
-              alert('Payment and verification successful!');
-              window.chrome.webview.postMessage('navigateToHome');
-            })
-            .catch(error => {
-              console.error('Payment or verification failed:', error);
-              alert('Payment or verification failed. Please try again later.');
-            });
-        },
-        "prefill": {
-          "name": "Customer Name",
-          "email": "customer@example.com",
-          "contact": "9999999999"
-        },
-        "notes": {
-          "address": "Customer Address"
-        },
-        "theme": {
-          "color": "#F37254"
-        }
-      };
-      var rzp1 = new Razorpay(options);
-      rzp1.open();
-    }
-
-    document.getElementById('pay-button').onclick = function(e) {
-      var amount = window.amountFromFlutter;
-      var token = window.tokenFromFlutter;
-      var courseId = window.courseIdFromFlutter;
-      var type = window.typeFromFlutter;
-      var userId = window.userIdFromFlutter;
-      var inmonth = window.inmonthFromFlutter; // Changed to inmonth
-
-      console.log('Button Clicked');
-      console.log('Amount:', amount);
-      console.log('Token:', token);
-      console.log('Course ID:', courseId);
-      console.log('Type:', type);
-      console.log('User ID:', userId);
-      console.log('Inmonth:', inmonth); // Log the inmonth value
-
-      // Show the values in an alert
-      alert(`Amount: ${amount}\nToken: ${token}\nCourse ID: ${courseId}\nType: ${type}\nUser ID: ${userId}\nInmonth: ${inmonth}`);
-
-      if (amount && token && courseId && type && userId && inmonth) {
-        alert("Redirecting to payment gateway...");
-        if (window.chrome.webview) {
-          window.chrome.webview.postMessage('navigateToHome');
-        }
-        setupRazorpay(amount, token, courseId, type, userId, inmonth); // Pass inmonth to the function
-      } else {
-        alert("Required parameters not set");
-      }
-      e.preventDefault();
-    }
-  </script>
-</body>
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Razorpay Checkout</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <button id="pay-button">Pay Now</button>
   <script>
-    function setupRazorpay(amount, token, courseId, type, userId, inmonth, razorpay) {
-      console.log('Amount:', amount);
-      console.log('Token:', token);
-      console.log('Course ID:', courseId);
-      console.log('Type:', type);
-      console.log('User ID:', userId);
-      console.log('Inmonth:', inmonth);
-
+    // Function to initialize Razorpay
+    function setupRazorpay(amount, token, courseId, type, userId, inmonth, orderidpay) {
       var options = {
         "key": "rzp_live_7ck6XrPcnXgzmw",
-        "amount": amount * 100, // Amount is in currency subunits. Default is INR. 100 = 1 INR
+        "amount": amount * 100, // Amount in subunits
         "name": "Adquasoft",
-        "order_id": razorpay,
+        "order_id": orderidpay,
         "description": "Purchase Description",
-        "handler": function(response) {
-          // Print the payment details
+       "handler": function(response) {
           console.log('Payment ID:', response.razorpay_payment_id);
           console.log('Order ID:', response.razorpay_order_id);
           console.log('Signature:', response.razorpay_signature);
 
-          // Show the payment details in an alert
-          alert(`Payment ID: ${response.razorpay_payment_id}\nOrder ID: ${response.razorpay_order_id}\nSignature: ${response.razorpay_signature}`);
-
-          // Directly perform verification API call after successful payment
           var verifyRequestOptions = {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token // Use the token from Flutter
+              'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify({
               courseId: courseId,
-              durationInMonths: inmonth, // Example duration, replace with actual value
-              courseType: type, // Example course type, replace with actual value
+              durationInMonths: inmonth,
+              courseType: type,
               userId: userId,
-              razorpay_order_id: razorpay,
+              razorpay_order_id: orderidpay,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
               mode: 'fwebonline'
             })
           };
 
-          fetch('https://devapi.exampreptool.com/api/payment/purchase', verifyRequestOptions)
+          fetch('https://exampreptool.com/api/payment/purchase', verifyRequestOptions)
             .then(response => response.json())
             .then(data => {
               console.log('Verification success:', data);
-              // Handle success response as per your requirement
               alert('Payment and verification successful!');
-              window.chrome.webview.postMessage('navigateToHome');
+              window.location.href = `myapp://success?paymentId=${response.razorpay_payment_id}`;
+              // if (window.chrome.webview) {
+              //   window.chrome.webview.postMessage('navigateToHome');
+              // }
             })
             .catch(error => {
               console.error('Verification failed:', error);
@@ -220,6 +72,8 @@
       rzp1.open();
     }
 
+    
+
     document.getElementById('pay-button').onclick = function(e) {
       var amount = window.amountFromFlutter;
       var token = window.tokenFromFlutter;
@@ -227,30 +81,34 @@
       var type = window.typeFromFlutter;
       var userId = window.userIdFromFlutter;
       var inmonth = window.inmonthFromFlutter;
-      var razorpay = window.orderidpayFromFlutter; // Changed to inmonth
-
+      var orderidpay = window.orderidpayFromFlutter;
+ 
       console.log('Button Clicked');
       console.log('Amount:', amount);
       console.log('Token:', token);
       console.log('Course ID:', courseId);
       console.log('Type:', type);
       console.log('User ID:', userId);
-      console.log('Inmonth:', inmonth); // Log the inmonth value
+      console.log('Inmonth:', inmonth);
+      console.log('Inmonth:', orderidpay);
 
-      // Show the values in an alert
-      alert(`Amount: ${razorpay}\nToken: ${token}\nCourse ID: ${courseId}\nType: ${type}\nUser ID: ${userId}\nInmonth: ${inmonth}`);
 
-      if (amount && token && courseId && type && userId && inmonth) {
-        alert("Redirecting to payment gateway...");
-        if (window.chrome.webview) {
-          window.chrome.webview.postMessage('navigateToHome');
-        }
-        setupRazorpay(amount, token, courseId, type, userId, inmonth, razorpay); // Pass inmonth to the function
+      if (amount && token && courseId && type && userId && inmonth && orderidpay) {
+        setupRazorpay(amount, token, courseId, type, userId, inmonth, orderidpay);
       } else {
         alert("Required parameters not set");
       }
       e.preventDefault();
     }
+
+    // Placeholder comments for dynamic values
+    // ##AMOUNT_PLACEHOLDER##
+    // ##TOKEN_PLACEHOLDER##
+    // ##COURSEID_PLACEHOLDER##
+    // ##TYPE_PLACEHOLDER##
+    // ##USERID_PLACEHOLDER##
+    // ##INMONTH_PLACEHOLDER##
+    // ##ORDERIDPAY_PLACEHOLDER##
   </script>
 </body>
 </html>
