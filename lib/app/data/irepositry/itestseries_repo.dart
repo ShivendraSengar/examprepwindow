@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:exam_prep_tool/app/data/modal/profile/edit_profile.dart';
 import 'package:exam_prep_tool/app/data/modal/profile/profile_updated.dart';
 import 'package:exam_prep_tool/app/data/modal/test_series/random_question_testseries.dart';
+import 'package:exam_prep_tool/app/data/modal/test_series/submit_testseries_modal.dart';
 import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
 import 'package:exam_prep_tool/app/data/params/updateProfile_params.dart';
 import 'package:exam_prep_tool/app/data/repositry/profile.dart';
@@ -45,6 +46,25 @@ class TestSeriesRepoIMPL implements TestSeriesRepo {
           requestOptions: httpresponse.response.requestOptions,
           error: httpresponse.response.statusMessage,
           response: httpresponse.response,
+          type: DioErrorType.cancel));
+    } on DioError catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<SubmitTestseriesModal>> testSeriesAnswer(
+      token, submitAnswerparams) async {
+    try {
+      final httpresponse = await CommonRepository.getApiService()
+          .testSeriesAnswer(token, submitAnswerparams);
+      if (httpresponse.response.statusCode == HttpStatus.ok) {
+        httpresponse.response;
+      }
+      return DataFailed(DioError(
+          requestOptions: httpresponse.response.requestOptions,
+          response: httpresponse.response,
+          error: httpresponse.response.statusMessage,
           type: DioErrorType.cancel));
     } on DioError catch (e) {
       return DataFailed(e);

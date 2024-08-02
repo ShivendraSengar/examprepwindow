@@ -784,6 +784,40 @@ class _AppApis implements AppApis {
             ))));
     final _value = RandomQuestionTestseriesModal.fromJson(_result.data!);
     final httpResponse = HttpResponse(_value, _result);
+
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<SubmitTestseriesModal>> testSeriesAnswer(
+    String token,
+    dynamic submitAnswerparams,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = submitAnswerparams;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<SubmitTestseriesModal>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'testAnswer/create',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = SubmitTestseriesModal.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
+
     return httpResponse;
   }
 

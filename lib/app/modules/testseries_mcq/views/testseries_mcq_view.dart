@@ -93,7 +93,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      Get.toNamed(Routes.HOME);
+                      Get.offAll(Routes.HOME);
                     },
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.green),
@@ -128,8 +128,10 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(controller.startTime.toString()),
-                Text(controller.endTime.toString()),
+                //Obx(() {
+                //  return Text(controller.startTimeFormatted.toString());
+                //}),
+                //Text(controller.endTime.toString()),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -173,7 +175,9 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                 borderRadius:
                                                     BorderRadius.circular(15),
                                                 color: Colors.red),
-                                            child: const Text("-1"),
+                                            child: Text(controller
+                                                .totalMarks.value
+                                                .toString()),
                                           ),
                                           20.widthBox,
                                           Obx(() {
@@ -225,6 +229,10 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                               final selectedOptionIndex =
                                                   question
                                                       .options![value].isRight;
+                                              controller.selectOption(value);
+
+                                              print(
+                                                  "Selected value: ${controller.selectedOptionIndex.value}, Correct: ${question.options![value].isRight}${controller.totalMarks.value}");
 
                                               // Update total marks based on the selected option
                                               if (selectedOptionIndex!) {
@@ -239,7 +247,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                               }
 
                                               // Update the selected option index
-                                              controller.selectOption(value);
+                                              //controller.selectOption(value);
 
                                               print(
                                                   "Selected value: ${controller.selectedOptionIndex.value}, Correct: ${question.options![value].isRight}${controller.totalMarks.value}");
@@ -355,52 +363,94 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                   20.heightBox,
                                   Expanded(
                                     child: Container(
-                                        width:
-                                            350, // Set the width of the container to 350
+                                        width: 350,
                                         child: GridView.builder(
-                                            gridDelegate:
-                                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount:
-                                                  5, // Number of items per row
-                                              crossAxisSpacing:
-                                                  8.0, // Spacing between items horizontally
-                                              mainAxisSpacing:
-                                                  8.0, // Spacing between items vertically
-                                            ),
-                                            itemCount:
-                                                testSeries.questions?.length,
-                                            itemBuilder: (context, index) {
-                                              var question =
-                                                  testSeries.questions?[index];
-                                              Color cardColor;
-                                              if (controller
-                                                  .markedForReviewQuestions
-                                                  .contains(index)) {
-                                                cardColor = Colors.purple[100]!;
-                                              } else if (controller
-                                                  .answeredQuestions
-                                                  .contains(index)) {
-                                                cardColor = Colors.green[100]!;
-                                              } else {
-                                                cardColor = Colors.grey[200]!;
-                                              }
-                                              return Card(
-                                                color: cardColor,
-                                                child: Center(
-                                                  child: Text(
-                                                    '${index + 1}', // Display the number from 1 to itemCount
-                                                    style: const TextStyle(
-                                                        fontSize: 24),
-                                                  ),
+                                          gridDelegate:
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 5,
+                                            crossAxisSpacing: 8.0,
+                                            mainAxisSpacing: 8.0,
+                                          ),
+                                          itemCount:
+                                              testSeries.questions?.length,
+                                          itemBuilder: (context, index) {
+                                            var question =
+                                                testSeries.questions?[index];
+                                            Color cardColor;
+                                            if (controller
+                                                .markedForReviewQuestions
+                                                .contains(index)) {
+                                              cardColor = Colors.purple[100]!;
+                                            } else if (controller
+                                                .answeredQuestions
+                                                .contains(index)) {
+                                              cardColor = Colors.green[100]!;
+                                            } else {
+                                              cardColor = Colors.grey[200]!;
+                                            }
+                                            return Card(
+                                              color: cardColor,
+                                              child: Center(
+                                                child: Text(
+                                                  '${index + 1}',
+                                                  style: const TextStyle(
+                                                      fontSize: 24),
                                                 ),
-                                              ).onInkTap(() {
-                                                controller
-                                                    .updateCurrentQuestionIndex(
-                                                        index);
-                                              });
-                                              //  },
-                                              //);
-                                            })),
+                                              ),
+                                            ).onInkTap(() {
+                                              controller
+                                                  .updateCurrentQuestionIndex(
+                                                      index);
+                                            });
+                                          },
+                                          //Expanded(
+                                          //  child: Container(
+                                          //      width:
+                                          //          350, // Set the width of the container to 350
+                                          //      child: GridView.builder(
+                                          //          gridDelegate:
+                                          //              const SliverGridDelegateWithFixedCrossAxisCount(
+                                          //            crossAxisCount:
+                                          //                5, // Number of items per row
+                                          //            crossAxisSpacing:
+                                          //                8.0, // Spacing between items horizontally
+                                          //            mainAxisSpacing:
+                                          //                8.0, // Spacing between items vertically
+                                          //          ),
+                                          //          itemCount:
+                                          //              testSeries.questions?.length,
+                                          //          itemBuilder: (context, index) {
+                                          //            var question =
+                                          //                testSeries.questions?[index];
+                                          //            Color cardColor;
+                                          //            if (controller
+                                          //                .markedForReviewQuestions
+                                          //                .contains(index)) {
+                                          //              cardColor = Colors.purple[100]!;
+                                          //            } else if (controller
+                                          //                .answeredQuestions
+                                          //                .contains(index)) {
+                                          //              cardColor = Colors.green[100]!;
+                                          //            } else {
+                                          //              cardColor = Colors.grey[200]!;
+                                          //            }
+                                          //            return Card(
+                                          //              color: cardColor,
+                                          //              child: Center(
+                                          //                child: Text(
+                                          //                  '${index + 1}', // Display the number from 1 to itemCount
+                                          //                  style: const TextStyle(
+                                          //                      fontSize: 24),
+                                          //                ),
+                                          //              ),
+                                          //            ).onInkTap(() {
+                                          //              controller
+                                          //                  .updateCurrentQuestionIndex(
+                                          //                      index);
+                                          //            });
+                                          //            //  },
+                                          //            //);
+                                        )),
                                   ),
 
                                   buildEndButton().onTap(() {

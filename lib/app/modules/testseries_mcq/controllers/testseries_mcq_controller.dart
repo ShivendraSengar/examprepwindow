@@ -4,18 +4,43 @@ import 'dart:developer';
 import 'package:exam_prep_tool/app/data/irepositry/itestseries_repo.dart';
 import 'package:exam_prep_tool/app/data/modal/test_series/random_question_testseries.dart';
 import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
+import 'package:exam_prep_tool/app/data/params/submit_testseries_Ans_params.dart';
 import 'package:exam_prep_tool/app/data/repositry/testseries_repo.dart';
 import 'package:exam_prep_tool/app/modules/testsearis/controllers/testsearis_controller.dart';
+import 'package:exam_prep_tool/app/routes/app_pages.dart';
 import 'package:exam_prep_tool/app/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:intl/intl.dart';
 
 class TestseriesMcqController extends GetxController {
-//  final TestSeriesRepo repositry1 = TestSeriesRepoIMPL();
+  final TestSeriesRepo repositry1 = TestSeriesRepoIMPL();
 //  //RxList<RandomQues>? data;
 //  final randomques = <RandomQues>[].obs;
-//  RxBool isLoading = false.obs;
+  RxBool isLoading = false.obs;
+  testAnswerquestion() {
+    try {
+      isLoading.value = false;
+      final param = SubmitAnswerparams()
+        ..marksGot = finalMarks.value
+        ..userId = prefUtils.getID().toString()
+        ..testId = ''
+        //..startTime = startTime.toString()
+        ..submit = 'yes'
+        //..endTime = endTime.toString()
+        ..answers = [];
+      var response =
+          repositry1.testSeriesAnswer(prefUtils.getToken().toString(), param);
+
+      if (response != null) {
+        Get.offAll(Routes.HOME);
+      }
+      isLoading.value = false;
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
 //  randomquestion() async {
 //    try {
 //      isLoading.value = true;
@@ -55,8 +80,8 @@ class TestseriesMcqController extends GetxController {
 
   Rx<Duration> duration = Duration().obs;
   Timer? timer;
-  RxString startTime = ''.obs;
-  RxString endTime = ''.obs;
+  //RxString startTimeFormatted = ''.obs;
+  //RxString endTime = ''.obs;
 
   void startTimer(int minutes, Function onTimeUp) {
     // Set the start time to the current time
@@ -97,6 +122,7 @@ class TestseriesMcqController extends GetxController {
   void submitAnswer() {
     if (selectedOptionIndex.value != -1) {
       answeredQuestions.add(currentQuestionIndex.value);
+
       finalMarks.value++;
       totalMarks++;
     }
