@@ -324,49 +324,50 @@ class CourseSubscribeView extends GetView<CourseSubscribeController> {
   }
 
   Widget buildCurriculumContainer() {
-    return Card(
-      elevation: 3,
-      child: controller.circulumdata.isEmpty
-          ? const Center(
-              child: Text("No data found"),
-            )
-          : Flexible(
-              child: ListView.builder(
-                  itemCount: controller.circulumdata.length,
-                  itemBuilder: (context, index) {
-                    var data = controller.circulumdata[index];
-                    return ExpansionTile(
-                      title: Text(data.heading.toString()),
-                      trailing: Icon(controller.isExpanded.value
-                          ? Icons.remove
-                          : Icons.add),
-                      onExpansionChanged: (expanded) {
-                        controller.isExpanded.value = expanded;
-                      },
-                      children: <Widget>[
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: data.subHeading!.length,
-                          itemBuilder: (context, subIndex) {
-                            var subHeading = data.subHeading![subIndex];
-                            return ListTile(
-                              leading: const Icon(
-                                Icons.circle,
-                                size: 8,
-                                color: Vx.black,
-                              ),
-                              title: Text(subHeading.toString()),
-                            );
-                          },
-                        ),
-                      ],
-                    );
-                  }),
-            ),
-    ).p(10).h(300);
-  }
-
+  return Obx(() => Card(
+    elevation: 3,
+    child: controller.isLoading.value
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : controller.circulumdata.isEmpty
+            ? const Center(
+                child: Text("No data found"),
+              )
+            : ListView.builder(
+                itemCount: controller.circulumdata.length,
+                itemBuilder: (context, index) {
+                  var data = controller.circulumdata[index];
+                  return ExpansionTile(
+                    title: Text(data.heading.toString()),
+                    trailing: Icon(controller.isExpanded.value
+                        ? Icons.remove
+                        : Icons.add),
+                    onExpansionChanged: (expanded) {
+                      controller.isExpanded.value = expanded;
+                    },
+                    children: <Widget>[
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: data.subHeading!.length,
+                        itemBuilder: (context, subIndex) {
+                          var subHeading = data.subHeading![subIndex];
+                          return ListTile(
+                            leading: const Icon(
+                              Icons.circle,
+                              size: 8,
+                              color: Vx.black,
+                            ),
+                            title: Text(subHeading.toString()),
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                }),
+  ).p(10).h(300));}
+  
   Widget buildLecture(BuildContext context) {
     // Group items by subject name
     var groupedData = groupBy(controller.vidiolistcorret, (obj) => obj.subject);

@@ -65,13 +65,13 @@ class SelectCoursesScreenView extends GetView<SelectCoursesScreenController> {
                                         .onTap(() {
                                       Get.toNamed(Routes.TWENYPYS_QUESTION);
                                     }),
-                                    buildselectcourses("Live Lectures")
-                                        .onTap(() {
-                                      Get.toNamed(Routes.LIVE_LETCTURE);
-                                    }),
-                                    buildselectcourses("TestSeries").onTap(() {
-                                      Get.toNamed(Routes.TESTSEARIS);
-                                    }),
+                                    // buildselectcourses("Live Lectures")
+                                    //     .onTap(() {
+                                    //   Get.toNamed(Routes.LIVE_LETCTURE);
+                                    // }),
+                                    // buildselectcourses("TestSeries").onTap(() {
+                                    //   Get.toNamed(Routes.TESTSEARIS);
+                                    // }),
                                   ]),
                             ),
                           ));

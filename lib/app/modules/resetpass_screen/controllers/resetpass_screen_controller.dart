@@ -13,8 +13,8 @@ import 'package:velocity_x/velocity_x.dart';
 
 class ResetpassScreenController extends GetxController {
   final TextEditingController otp = TextEditingController();
-  final TextEditingController newpassword = TextEditingController();
-  final TextEditingController confirmnewpassword = TextEditingController();
+   Rx<TextEditingController> newpassword = TextEditingController().obs;
+   Rx<TextEditingController> confirmnewpassword = TextEditingController().obs;
   final ForgetpassScreenController mobilenumber = Get.find();
   final email = Get.arguments;
   final PrefUtils prefUtils = Get.find();
@@ -63,9 +63,9 @@ class ResetpassScreenController extends GetxController {
     try {
       final param = Forgetpassparams()
         ..otp = otp.text
-        ..confirmPassword = confirmnewpassword.text
+        ..confirmPassword = confirmnewpassword.value.text
         ..email = email[1].toString()
-        ..newPassword = newpassword.text;
+        ..newPassword = newpassword.value.text;
 
       // Print all parameters
       print('OTP: ${param.otp}');

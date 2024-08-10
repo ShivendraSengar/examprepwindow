@@ -784,7 +784,6 @@ class _AppApis implements AppApis {
             ))));
     final _value = RandomQuestionTestseriesModal.fromJson(_result.data!);
     final httpResponse = HttpResponse(_value, _result);
-
     return httpResponse;
   }
 
@@ -817,7 +816,6 @@ class _AppApis implements AppApis {
             ))));
     final _value = SubmitTestseriesModal.fromJson(_result.data!);
     final httpResponse = HttpResponse(_value, _result);
-
     return httpResponse;
   }
 

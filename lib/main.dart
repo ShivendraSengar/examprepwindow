@@ -6,9 +6,11 @@ import 'package:exam_prep_tool/app/utils/initial_bindings.dart';
 import 'package:exam_prep_tool/app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:media_kit/media_kit.dart';
 import 'app/data/app_apis/app_apis.dart';
 import 'package:fvp/fvp.dart' as fvp;
 import 'package:window_manager/window_manager.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 // Import the URL strategy setup file
 
 // Uncomment and update the following if using Flutter web plugins
@@ -16,7 +18,8 @@ import 'package:window_manager/window_manager.dart';
 
 void main() async {
     fvp.registerWith();
-   
+    MediaKit.ensureInitialized();
+    setUrlStrategy(PathUrlStrategy());
   // await windowManager.ensureInitialized();
 
   WidgetsFlutterBinding.ensureInitialized();

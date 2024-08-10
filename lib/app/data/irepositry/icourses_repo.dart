@@ -206,7 +206,8 @@ Future<DataState<CheckReferralcode>> checkreferrallist(
     final httpresponse = await CommonRepository.getApiService()
         .checkreferrallist(referalID, UserId, token);
 
-    if (httpresponse.response.statusCode == HttpStatus.ok) {
+   if (httpresponse.response.statusCode == HttpStatus.ok ||
+        httpresponse.response.statusCode == HttpStatus.created){
       // Print the response data
       print("API Response Data: ${httpresponse.data.toJson()}");
       return DataSuccess(httpresponse.data);

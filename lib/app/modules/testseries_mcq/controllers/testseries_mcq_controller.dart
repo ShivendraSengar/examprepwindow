@@ -60,12 +60,16 @@ class TestseriesMcqController extends GetxController {
 //      log(e.toString());
 //    }
 //  }
-
-  var testSeries = Testseries().obs;
+var answeredQuestions = <int>[].obs;
+  var markedForReviewQuestions = <int>[].obs;
   var currentQuestionIndex = 0.obs;
+
+  
+  var testSeries = Testseries().obs;
+  // var currentQuestionIndex = 0.obs;
   var selectedOptionIndex = (-1).obs;
-  var answeredQuestions = <int>{}.obs;
-  var markedForReviewQuestions = <int>{}.obs;
+  // var answeredQuestions = <int>{}.obs;
+  // var markedForReviewQuestions = <int>{}.obs;
   var totalMarks = 0.obs;
   var finalMarks = 0.obs;
   var reviewMarks = 0.obs;
@@ -74,7 +78,7 @@ class TestseriesMcqController extends GetxController {
   // Add these getters
   int get attemptedCount => answeredQuestions.length;
   int get notAttemptedCount =>
-      (testSeries.value.questions?.length ?? 0) - attemptedCount - reviewCount;
+      (testSeries.value.questions?.length ?? 0) - attemptedCount ;
 
   int get reviewCount => markedForReviewQuestions.length;
 
@@ -115,11 +119,11 @@ class TestseriesMcqController extends GetxController {
     super.onClose();
   }
 
-  void selectOption(int index) {
+  void selectOption(int index,Function onTimeUp) {
     selectedOptionIndex.value = index;
   }
 
-  void submitAnswer() {
+  void submitAnswer(Function onTimeUp) {
     if (selectedOptionIndex.value != -1) {
       answeredQuestions.add(currentQuestionIndex.value);
 
@@ -133,7 +137,9 @@ class TestseriesMcqController extends GetxController {
     selectedOptionIndex.value = -1;
     if (currentQuestionIndex.value < testSeries.value.questions!.length - 1) {
       currentQuestionIndex.value++;
+       
     } else {
+    onTimeUp();
       // Quiz is finished
       // You can navigate to a score screen or show a dialog
     }

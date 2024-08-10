@@ -22,8 +22,8 @@ import 'package:intl/intl.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
-//import 'package:razorpay_flutter/razorpay_flutter.dart';
-// import 'package:razorpay_web/razorpay_web.dart';
+
+import 'package:razorpay_web/razorpay_web.dart';
 import '../../../data/modal/Referralmodal/check_referralcode_modal.dart';
 import 'dart:async';
 import 'dart:io';
@@ -46,7 +46,8 @@ class CupanDiscountController extends GetxController {
   // Replace 'your_token_here' with the actual token value
   final String token = prefUtils.getToken().toString();
   var finalPrice = "".obs;
-  // Razorpay razorpay = Razorpay();
+  // for website use
+  Razorpay razorpay = Razorpay();
   final PaymentsRepo repositry = VerfypaymentRepoImpl();
   final TextEditingController correctCouponCode = TextEditingController();
   final CourseRepo repository1 = CoursesRepoIml();
@@ -90,8 +91,7 @@ class CupanDiscountController extends GetxController {
   // Reactive variables to control visibility
   var showCouponSection = true.obs;
   var showReferralSection = true.obs;
-
-  // Methods to toggle visibility
+// Methods to toggle visibility
   void toggleCouponSection() {
     showCouponSection.value = !showCouponSection.value;
   }
@@ -99,50 +99,50 @@ class CupanDiscountController extends GetxController {
   void toggleReferralSection() {
     showReferralSection.value = !showReferralSection.value;
   }
+  // Methods to toggle visibility
+   Future<void> checkReferralData(String id) async {
+    print("Referral code: $referalCode");
 
-//  Method to toggle the isCouponApplied variable
-  void checkReferralData(id) async {
-  print("Referral code: ${referalCode}");
-  try {
-    isLoading.value = true;
-    final response = await repository1.checkreferrallist(
-      id,
-      prefUtils.getID().toString(),
-      'Bearer ${prefutils.getToken().toString()}',
-    );
+      isLoading.value = true;
+      final response = await repository1.checkreferrallist(
+        id,
+        prefUtils.getID().toString(),
+        'Bearer ${prefutils.getToken().toString()}',
+      );
 
-    if (response.data != null) {
-      // Print the response data
-      print("Response Data: ${response.data}");
+      if (response.data != null) {
+        if (response.data!.success!) {
+          // Retrieve referral discount from the response
+          checkreferal.value = response.data!.data ?? [];
 
-      // Retrieve referral discount from the response
-      checkreferal.value = response.data!.data ?? [];
+          // Calculate the final amount after subtracting the referral discount
+          ReferaldiscountPercentage.value = calculateFinalAmount(
+              checkreferal.first.referralDiscount!.toDouble());
 
-      // Calculate the final amount after subtracting the referral discount
-      ReferaldiscountPercentage.value = calculateFinalAmount(
-          checkreferal.first.referralDiscount!.toDouble());
+          // Show toast message for successful application of referral code
+          showToastMessage('${response.data!.message.toString()}', "");
 
-      // Show toast message for successful application of referral code
-      showToastMessage("Referral code applied successfully", "");
+          // Update the UI with the final amount
+          updateFinalAmount(ReferaldiscountPercentage.value);
 
-      // Update the UI with the final amount
-      updateFinalAmount(ReferaldiscountPercentage.value);
-    } else {
-      // Show toast message for invalid referral code
-      showToastMessage("Own referal cannot be used", "");
-    }
-  } catch (e) {
-    // Print the error message
-    print("Error: $e");
-    isLoading.value = false;
-  }
-}
-//   // cupon Applied
+        } else {
+          // Show toast message for invalid referral code or other error
+       showToastMessage('Own referal cannot be used"', "");
+          updateFinalAmount(coursePrice.value.toDouble());
+        }
+      } else {
+        // Show toast message for invalid referral code
+        showToastMessage("This referralId doesn't exist!", "");
+        updateFinalAmount(coursePrice.value.toDouble());
+      }
+    } 
+  
+
   // Function to calculate the final amount after subtracting referral discount
   double calculateFinalAmount(double referralDiscount) {
     // Get the initial amount (replace this with your actual calculation)
     int parsedCoursePrice = int.tryParse(arguments[3]) ?? 0;
-    print("final amountt${coursePrice.value}");
+    print("final amount: ${coursePrice.value}");
 
     // Assign values to reactive variables
     coursePrice.value = parsedCoursePrice;
@@ -151,19 +151,45 @@ class CupanDiscountController extends GetxController {
 
     // Subtract the referral discount from the initial amount
     final referralAmount = (referralDiscount / 100) * coursePrice.value;
-    print('ReferalAmont${referralAmount}');
+    print('Referral Amount: $referralAmount');
     referralDiscountAmount.value = referralAmount;
 
-    ReferaldiscountPercentage.value = initialAmount - referralAmount;
+    double finalAmount = initialAmount - referralAmount;
     // Ensure the final amount is non-negative
-    return ReferaldiscountPercentage.value >= 0
-        ? ReferaldiscountPercentage.value
-        : 0;
+    return finalAmount >= 0 ? finalAmount : 0;
   }
 
   void updateFinalAmount(double finalAmount) {
-    ReferaldiscountPercentage.value.toInt();
+    ReferaldiscountPercentage.value = finalAmount;
   }
+
+// //   // cupon Applied
+//   // Function to calculate the final amount after subtracting referral discount
+//   double calculateFinalAmount(double referralDiscount) {
+//     // Get the initial amount (replace this with your actual calculation)
+//     int parsedCoursePrice = int.tryParse(arguments[3]) ?? 0;
+//     print("final amountt${coursePrice.value}");
+
+//     // Assign values to reactive variables
+//     coursePrice.value = parsedCoursePrice;
+
+//     final initialAmount = coursePrice.value;
+
+//     // Subtract the referral discount from the initial amount
+//     final referralAmount = (referralDiscount / 100) * coursePrice.value;
+//     print('ReferalAmont${referralAmount}');
+//     referralDiscountAmount.value = referralAmount;
+
+//     ReferaldiscountPercentage.value = initialAmount - referralAmount;
+//     // Ensure the final amount is non-negative
+//     return ReferaldiscountPercentage.value >= 0
+//         ? ReferaldiscountPercentage.value
+//         : 0;
+//   }
+
+//   void updateFinalAmount(double finalAmount) {
+//     ReferaldiscountPercentage.value.toInt();
+//   }
 
 //   // cupon Applied
   void togglereferral() {
@@ -340,84 +366,12 @@ class CupanDiscountController extends GetxController {
       }
     }
   }
-//    void paymentGetId() async {
-//   isLoading.value = true;
-//   // final PaymentController paymentController = Get.find<PaymentController>();
-  
-//   try {
-//     // Calculate the final amount based on coupon and referral conditions
-//     double amountValue;
-//     if (isCouponApplied.value && !isReferralApplied.value) {
-//       amountValue = finalCost.value;
-//     } else if (!isCouponApplied.value && isReferralApplied.value) {
-//       amountValue = ReferaldiscountPercentage.value.toDouble(); // Adjust calculation as needed
-//     } else if (isCouponApplied.value && isReferralApplied.value) {
-//       amountValue = finalCost.value; // Assuming finalCost includes both discounts
-//     } else {
-//       amountValue = coursePrice.value.toDouble();
-//     }
-
-//     // Convert amount to string and multiply by 100 to get the value in cents/paisa
-//     final String amountStr = (amountValue * 100).toString();
-
-//     // Prepare the request body
-//     final Map<String, dynamic> requestBody = {
-//       'amount': amountStr,
-//       'courseId': id.toString(),
-//       'currency': currencyin,
-//       'type': courseType.toString(),
-//       'userId': prefutils.getID(),
-//       'notes': purchase,
-//     };
-
-//     // Make the POST request
-//     final response = await https.post(
-//       Uri.parse('https://exampreptool.com/api/payment/pay'),
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': 'Bearer $token',
-//       },
-//       body: jsonEncode(requestBody),
-//     );
-
-//     // Handle the response
-//     if (response.statusCode == 200) {
-//       final dynamic responseData = jsonDecode(response.body);
-
-//       if (responseData is Map<String, dynamic>) {
-//         final String paymentId = responseData['data']['id'].toString();
-//         setPaymentId(paymentId);
-//         print('orderid: ${paymentId}');
-//         print('orderid1: ${orderidpay}');
-
-//         // Call the payment processing function
-//         Get.toNamed(Routes.RAZOR_PAY_WINDOW, arguments: [
-//           paynum.value.toString(),
-//           arguments[6],
-//           arguments[7],
-//           arguments[4],
-//        paymentId,
-//         ]);
-//         print("Response: ${response.body}");
-
-//         // Optionally, show a success message
-//         // showToastMessage('Success', 'Payment message sent successfully');
-//       }
-//     } else {
-//       print('Error: ${response.statusCode}, ${response.body}');
-//       showToastMessage('Error', 'An error occurred during payment.');
-//     }
-//   } catch (e) {
-//     print('Error: $e');
-//     showToastMessage('Error', 'An error occurred during payment.');
-//   } finally {
-//     isLoading.value = false;
-//   }
-// }
-
-  void paymentGetId(BuildContext context, List<dynamic> arguments) async {
+////////////////////////////////
+  ///////////////////////////////////////////////////////////////////// web payment
+   void paymentGetId() async {
   isLoading.value = true;
-
+  // final PaymentController paymentController = Get.find<PaymentController>();
+  
   try {
     // Calculate the final amount based on coupon and referral conditions
     double amountValue;
@@ -432,7 +386,7 @@ class CupanDiscountController extends GetxController {
     }
 
     // Convert amount to string and multiply by 100 to get the value in cents/paisa
-    final String amountStr = (amountValue * 100).toStringAsFixed(0);
+    final String amountStr = (amountValue * 100).toString();
 
     // Prepare the request body
     final Map<String, dynamic> requestBody = {
@@ -461,10 +415,25 @@ class CupanDiscountController extends GetxController {
       if (responseData is Map<String, dynamic>) {
         final String paymentId = responseData['data']['id'].toString();
         setPaymentId(paymentId);
-        print('orderid: $paymentId');
+        print('orderid: ${paymentId}');
+        print('orderid1: ${orderidpay}');
 
-        // Launch Razorpay checkout with the context and arguments
-        await launchRazorpayCheckout(context, paymentId, arguments);
+
+          // Call the payment processing function for werb page
+          callRazorpay(paymentId);
+          print("Response: ${response.body}");
+        ///////////// Call the payment processing function in Windows
+      //   Get.toNamed(Routes.RAZOR_PAY_WINDOW, arguments: [
+      //     paynum.value.toString(),
+      //     arguments[6],
+      //     arguments[7],
+      //     arguments[4],
+      //  paymentId,
+      //   ]);
+      //   print("Response: ${response.body}");
+
+        // Optionally, show a success message
+        // showToastMessage('Success', 'Payment message sent successfully');
       }
     } else {
       print('Error: ${response.statusCode}, ${response.body}');
@@ -476,107 +445,170 @@ class CupanDiscountController extends GetxController {
   } finally {
     isLoading.value = false;
   }
-
 }
-Future<void> launchRazorpayCheckout(BuildContext context, String paymentId, List<dynamic> arguments) async {
-  try {
-    // Load Razorpay HTML content
-    String htmlContent = await rootBundle.loadString('images/razorpay_checkout.html');
+/////////////////////////////////////////////////////////////////////window page payment
+//   void paymentGetId(BuildContext context, List<dynamic> arguments) async {
+//   isLoading.value = true;
 
-    // Customize HTML content with dynamic values
-    String customizedHtml = htmlContent
-      .replaceFirst('// ##AMOUNT_PLACEHOLDER##', 'window.amountFromFlutter = ${arguments[0]};')
-      .replaceFirst('// ##TOKEN_PLACEHOLDER##', 'window.tokenFromFlutter = "${prefutils.getToken().toString()}";')
-      .replaceFirst('// ##COURSEID_PLACEHOLDER##', 'window.courseIdFromFlutter = "${arguments[1]}";')
-      .replaceFirst('// ##TYPE_PLACEHOLDER##', 'window.typeFromFlutter = "${arguments[2]}";')
-      .replaceFirst('// ##USERID_PLACEHOLDER##', 'window.userIdFromFlutter = "${prefutils.getID().toString()}";')
-      .replaceFirst('// ##INMONTH_PLACEHOLDER##', 'window.inmonthFromFlutter = "${arguments[3]}";')
-      .replaceFirst('// ##ORDERIDPAY_PLACEHOLDER##', 'window.orderidpayFromFlutter = "$paymentId";');
-
-    // Get temporary directory
-    Directory tempDir = await getTemporaryDirectory();
-    String filePath = '${tempDir.path}/razorpay_checkout.html';
-
-    // Write customized HTML content to file
-    File htmlFile = File(filePath);
-    await htmlFile.writeAsString(customizedHtml);
-
-    // Launch HTML file in default web browser
-    await launch('file://$filePath');
-
-    // Show a dialog or some indication to the user
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Redirecting to payment gateway...')));
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
-  }
-}
-
-
-
-
-//   callRazorpay(String id) {
-//     log('dragonBall callRazorpay');
-//     print("orderid.valueabahh ${orderid}");
-//     print("keyId ${key_id.runtimeType}");
-
-//     var options = {
-//       'key': key_id,
-//       'theme.color': '#ff7400',
-//       "order_id": id,
-//       'amount': (amount.value),
-//       'description': '',
-//       'prefill': {'contact': prefUtils.getMobile().toString(), 'email': ""}
-//     };
-//     print("Options$options");
-//     try {
-//       razorpay.open(options);
-//     } catch (e) {
-//       log(e.toString());
+//   try {
+//     // Calculate the final amount based on coupon and referral conditions
+//     double amountValue;
+//     if (isCouponApplied.value && !isReferralApplied.value) {
+//       amountValue = finalCost.value;
+//     } else if (!isCouponApplied.value && isReferralApplied.value) {
+//       amountValue = ReferaldiscountPercentage.value.toDouble(); // Adjust calculation as needed
+//     } else if (isCouponApplied.value && isReferralApplied.value) {
+//       amountValue = finalCost.value; // Assuming finalCost includes both discounts
+//     } else {
+//       amountValue = coursePrice.value.toDouble();
 //     }
+
+//     // Convert amount to string and multiply by 100 to get the value in cents/paisa
+//     final String amountStr = (amountValue * 100).toStringAsFixed(0);
+
+//     // Prepare the request body
+//     final Map<String, dynamic> requestBody = {
+//       'amount': amountStr,
+//       'courseId': id.toString(),
+//       'currency': currencyin,
+//       'type': courseType.toString(),
+//       'userId': prefutils.getID(),
+//       'notes': purchase,
+//     };
+
+//     // Make the POST request
+//     final response = await https.post(
+//       Uri.parse('https://exampreptool.com/api/payment/pay'),
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization': 'Bearer $token',
+//       },
+//       body: jsonEncode(requestBody),
+//     );
+
+//     // Handle the response
+//     if (response.statusCode == 200) {
+//       final dynamic responseData = jsonDecode(response.body);
+
+//       if (responseData is Map<String, dynamic>) {
+//         final String paymentId = responseData['data']['id'].toString();
+//         setPaymentId(paymentId);
+//         print('orderid: $paymentId');
+
+//         // Launch Razorpay checkout with the context and arguments
+//         await launchRazorpayCheckout(context, paymentId, arguments);
+//       }
+//     } else {
+//       print('Error: ${response.statusCode}, ${response.body}');
+//       showToastMessage('Error', 'An error occurred during payment.');
+//     }
+//   } catch (e) {
+//     print('Error: $e');
+//     showToastMessage('Error', 'An error occurred during payment.');
+//   } finally {
+//     isLoading.value = false;
 //   }
 
-//   void handlePaymentErrorResponse(PaymentFailureResponse response) {
-//     /*
-//     * PaymentFailureResponse contains three values:
-//     * 1. Error Code
-//     * 2. Error Description
+// }
+// Future<void> launchRazorpayCheckout(BuildContext context, String paymentId, List<dynamic> arguments) async {
+//   try {
+//     // Load Razorpay HTML content
+//     String htmlContent = await rootBundle.loadString('images/razorpay_checkout.html');
 
-//     * */
-//     //showAlertDialog(context, "Payment Failed",
-//     //    "Code: ${response.code}\nDescription: ${response.message}\n:${response.error.toString()}");
+//     // Customize HTML content with dynamic values
+//     String customizedHtml = htmlContent
+//       .replaceFirst('// ##AMOUNT_PLACEHOLDER##', 'window.amountFromFlutter = ${arguments[0]};')
+//       .replaceFirst('// ##TOKEN_PLACEHOLDER##', 'window.tokenFromFlutter = "${prefutils.getToken().toString()}";')
+//       .replaceFirst('// ##COURSEID_PLACEHOLDER##', 'window.courseIdFromFlutter = "${arguments[1]}";')
+//       .replaceFirst('// ##TYPE_PLACEHOLDER##', 'window.typeFromFlutter = "${arguments[2]}";')
+//       .replaceFirst('// ##USERID_PLACEHOLDER##', 'window.userIdFromFlutter = "${prefutils.getID().toString()}";')
+//       .replaceFirst('// ##INMONTH_PLACEHOLDER##', 'window.inmonthFromFlutter = "${arguments[3]}";')
+//       .replaceFirst('// ##ORDERIDPAY_PLACEHOLDER##', 'window.orderidpayFromFlutter = "$paymentId";');
+
+//     // Get temporary directory
+//     Directory tempDir = await getTemporaryDirectory();
+//     String filePath = '${tempDir.path}/razorpay_checkout.html';
+
+//     // Write customized HTML content to file
+//     File htmlFile = File(filePath);
+//     await htmlFile.writeAsString(customizedHtml);
+
+//     // Launch HTML file in default web browser
+//     await launch('file://$filePath');
+
+//     // Show a dialog or some indication to the user
+//     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Redirecting to payment gateway...')));
+//   } catch (e) {
+//     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
 //   }
+// }
 
-//   void handlePaymentSuccessResponse(PaymentSuccessResponse response) {
-//     /*
-//     * Payment Success Response contains three values:
-//     * 1. Order ID
-//     * 2. Payment ID
-//     * 3. Signature
-// //signature id
 
-//     //: {razorpay_signature: 23fa574cfe87148588091d086174e12d31ebc8cb43c9fe4b48f90060c6848251, razorpay_order_id: order_NPM8vIb8eENd8x, razorpay_payment_id: pay_NPM9pMfwzSEson}
-//     * */
-//     razorpaymentid.value = response.paymentId.toString();
-//     signature.value = response.signature.toString();
-//     log(" paymnet${response.paymentId} signature ${response.signature} ");
-//     //verifypayments();
-//     verify();
 
-//     print(response.toString());
-//   }
 
-//   void handleExternalWalletSelected(ExternalWalletResponse response) {}
+  callRazorpay(String id) {
+    log('dragonBall callRazorpay');
+    print("orderid.valueabahh ${orderid}");
+    print("keyId ${key_id.runtimeType}");
 
-//   @override
-//   void onReady() {
-//     super.onReady();
-//   }
+    var options = {
+      'key': key_id,
+      'theme.color': '#ff7400',
+      "order_id": id,
+      'amount': (amount.value),
+      'description': '',
+      'prefill': {'contact': prefUtils.getMobile().toString(), 'email': ""}
+    };
+    print("Options$options");
+    try {
+      razorpay.open(options);
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 
-//   @override
-//   void onClose() {
-//     razorpay.clear();
-//     super.onClose();
-//   }
+  void handlePaymentErrorResponse(PaymentFailureResponse response) {
+    /*
+    * PaymentFailureResponse contains three values:
+    * 1. Error Code
+    * 2. Error Description
 
-  //void increment() => count.value++;
+    * */
+    //showAlertDialog(context, "Payment Failed",
+    //    "Code: ${response.code}\nDescription: ${response.message}\n:${response.error.toString()}");
+  }
+
+  void handlePaymentSuccessResponse(PaymentSuccessResponse response) {
+    /*
+    * Payment Success Response contains three values:
+    * 1. Order ID
+    * 2. Payment ID
+    * 3. Signature
+//signature id
+
+    //: {razorpay_signature: 23fa574cfe87148588091d086174e12d31ebc8cb43c9fe4b48f90060c6848251, razorpay_order_id: order_NPM8vIb8eENd8x, razorpay_payment_id: pay_NPM9pMfwzSEson}
+    * */
+    razorpaymentid.value = response.paymentId.toString();
+    signature.value = response.signature.toString();
+    log(" paymnet${response.paymentId} signature ${response.signature} ");
+    //verifypayments();
+    verify();
+
+    print(response.toString());
+  }
+
+  void handleExternalWalletSelected(ExternalWalletResponse response) {}
+
+  @override
+  void onReady() {
+    super.onReady();
+  }
+
+  @override
+  void onClose() {
+    razorpay.clear();
+    super.onClose();
+  }
+
+ 
 }
