@@ -17,6 +17,60 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
   Widget build(BuildContext context) {
     final Testseries testSeries = Get.arguments as Testseries;
     controller.testSeries.value = testSeries;
+      void submitTest() {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            //title: Text('Time is up!${testSeries.questions!.length}'),
+            content: Container(
+              height: Get.height/5,
+              width: 400,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                  "Your TEst has been submmited".text.make(),
+                     
+                             10.heightBox,
+                            //  10.heightBox,
+"You got ${(controller.totalMarks.value - controller.incorrectMarks.toDouble()).toStringAsFixed(2)} marks"
+    .text
+    .purple500
+    .size(16)
+    .bold
+    .make()
+    .p16(),
+
+                  ]
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.back(); // Dismiss the dialog first
+  Get.offAll(Routes.HOME); 
+                    },
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    child: Text('YES'),
+                  ).p16(),
+                 
+                   
+                  
+                ],
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     // Define the onTimeUp function
     void onTimeUp() {
       showDialog(
@@ -25,7 +79,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
           return AlertDialog(
             //title: Text('Time is up!${testSeries.questions!.length}'),
             content: Container(
-              height: 300,
+              height: Get.height/4,
               width: 400,
               child: Center(
                 child: Column(
@@ -71,6 +125,14 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                               ]),
                             ],
                           ).p16(),
+                             10.heightBox,
+                       "You got ${(controller.totalMarks.value - controller.incorrectMarks.toDouble()).toStringAsFixed(2)} marks"
+    .text
+    .purple500
+    .size(16)
+    .bold
+    .make()
+    .p16(),
                           10.heightBox,
                           "Are You Sure To Submit The Test !"
                               .text
@@ -93,7 +155,8 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      Get.offAll(Routes.HOME);
+                      submitTest();
+                      
                     },
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.green),
@@ -101,6 +164,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                   ).p16(),
                   ElevatedButton(
                     onPressed: () {
+                   
                       Navigator.of(context).pop();
                     },
                     style:
@@ -117,6 +181,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
 
     // Start the timer with 1 hour for example
     controller.startTimer(testSeries.timeData!.duration!.toInt(), onTimeUp);
+// double usedTime = controller.calculateUsedTime(controller. startTimeFormatted.v, DateTime.now());
 
     return Scaffold(
       appBar: buildAppbar(),
@@ -128,10 +193,11 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                //Obx(() {
+                // Obx(() {
                 //  return Text(controller.startTimeFormatted.toString());
-                //}),
-                //Text(controller.endTime.toString()),
+                // }),
+               
+               
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -175,9 +241,12 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                 borderRadius:
                                                     BorderRadius.circular(15),
                                                 color: Colors.red),
-                                            child: Text(controller
-                                                .totalMarks.value
-                                                .toString()),
+                                            child: Obx(() {
+  return Text(
+    ' ${controller.incorrectMarks.value}',
+    style: TextStyle(fontSize: 16, color: Colors.white),
+  );
+}),
                                           ),
                                           20.widthBox,
                                           Obx(() {
@@ -190,7 +259,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                       BorderRadius.circular(15),
                                                   color: Colors.green),
                                               child: Text(controller
-                                                  .finalMarks.value
+                                                  .totalMarks.value
                                                   .toString()),
                                             );
                                           })
@@ -200,177 +269,190 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                   )
                                 ],
                               ),
-                              Obx(() {
-                                var question =
-                                    controller.testSeries.value.questions?[
-                                        controller.currentQuestionIndex.value];
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    if (question != null) ...[
-                                      Text(
-                                        ' ${question.question}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      
-SizedBox(height: 2),
-...List.generate(question.options!.length, (index) {
-  return RadioListTile(
-    title: Text(question.options![index].option.toString()),
-    value: index,
-    groupValue: controller.selectedOptionIndex.value,
-    onChanged: (int? value) {
-      if (controller.selectedOptionIndex.value == value) {
-        // Unselect the option if the same option is clicked again
-        controller.selectedOptionIndex.value = -1;
-      } else {
-        // Select the new option
-        controller.selectedOptionIndex.value = value!;
-        final selectedOptionIndex = question.options![value].isRight;
+Obx(() {
+  var question = controller.testSeries.value.questions?[
+      controller.currentQuestionIndex.value];
 
-        controller.selectOption(value, onTimeUp);
+  return SingleChildScrollView(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        if (question != null) ...[
+          Text(
+            ' ${question.question}',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 2),
+          ...List.generate(question.options!.length, (index) {
+            return RadioListTile(
+              title: Text(question.options![index].option.toString()),
+              value: index,
+              groupValue: controller.selectedOptionIndex.value,
+              onChanged: (int? value) {
+                if (controller.selectedOptionIndex.value == value) {
+                  // Unselect the option if the same option is clicked again
+                  controller.selectedOptionIndex.value = -1;
+                } else {
+                  // Select the new option
+                  controller.selectedOptionIndex.value = value!;
+                }
+              },
+            );
+          }),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: () {
+                  if (controller.currentQuestionIndex.value > 0) {
+                    controller.previousQuestion();
+                  }
+                },
+                child: buildButton("Previous"),
+              ),
+              InkWell(
+                onTap: () {
+                  controller.markForReview();
+                },
+                child: buildButton("Mark for Review"),
+              ),
+              InkWell(
+                onTap: () {
+                  if (controller.currentQuestionIndex.value <
+                      testSeries.questions!.length) {
 
-        print("Selected value: ${controller.selectedOptionIndex.value}, Correct: ${question.options![value].isRight}${controller.totalMarks.value}");
-        print("quest: ${testSeries.questions![index].question}");
-        print("Answer: ${testSeries.questions![index].explanation!.text.toString()}");
-        print("Marks: ${testSeries.questions![index].marks}");
-        print("Negative Marks: ${testSeries.questions![index].negativeMarks}");
+                    final selectedOptionIndex = controller.selectedOptionIndex.value;
 
-        // Update total marks based on the selected option
-        if (selectedOptionIndex!) {
-          controller.totalMarks.value += testSeries.questions![index].marks!;
-          controller.finalMarks.value += testSeries.questions![index].marks!;
-        } else {
-          controller.totalMarks.value -= testSeries.questions![index].negativeMarks!.toInt();
-          controller.finalMarks.value -= testSeries.questions![index].negativeMarks!.toInt();
-        }
+                    if (selectedOptionIndex != -1) {
+                      final selectedOption = question!.options![selectedOptionIndex].option;
 
-        print("Final marks: ${controller.finalMarks.value}");
-      }
-    },
+                      // Explanation के text से compare कर रहे हैं कि selected option सही है या नहीं
+                      bool isCorrect = question.explanation!.text!.contains(selectedOption!);
+// Create a map with the required data
+        final answerData = {
+          "answer": selectedOption,
+          "question": question.id,
+          "isRight": isCorrect,
+        };
+
+        // Add the answer data to the answersList
+       controller. answersList.add(answerData);
+        print("List data${controller.answerlist.length}");
+                      if (isCorrect) {
+                        // सही उत्तर है तो मार्क्स जोड़ें
+                        controller.totalMarks.value += question.marks!;
+                        // controller.finalMarks.value += question.marks!;
+                      } else {
+                        // गलत उत्तर है तो नेगेटिव मार्क्स सिर्फ incorrectMarks में जोड़ें
+                        controller.incorrectMarks.value += question.negativeMarks!.toDouble();
+                      }
+
+                      // Debugging के लिए print statements
+                      print("Question ID: ${question.id}");
+                      print("Selected Option: $selectedOption, Correct: $isCorrect");
+                      print("Total Marks: ${controller.totalMarks.value}");
+                      print("Incorrect Marks: ${controller.incorrectMarks.value}");
+                      print("Negative Marks from Model: ${question.negativeMarks}");
+                    }
+                  controller.   testAnswerquestion();
+
+                    // उत्तर को सबमिट करने के बाद अगला प्रश्न
+                    controller.submitAnswer(onTimeUp);
+                  }
+                },
+                child: buildButton("Save and Next"),
+              ),
+            ],
+          ).w(400),
+        ],
+      ],
+    ).w(Get.width),
   );
 }),
-Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    InkWell(
-      onTap: () {
-        if (controller.currentQuestionIndex.value > 0) {
-          controller.previousQuestion();
-        }
-      },
-      child: buildButton("Previous"),
-    ),
-    InkWell(
-      onTap: () {
-        controller.markForReview();
-      },
-      child: buildButton("Mark for Review"),
-    ),
-    InkWell(
-      onTap: () {
-        if (controller.currentQuestionIndex.value < testSeries.questions!.length - 1) {
-          controller.submitAnswer(onTimeUp);
-        }
-      },
-      child: buildButton("Save and Next"),
-    ),
-  ],
-).w(400),
 
-                                //       SizedBox(height: 2),
-                                //       ...List.generate(question.options!.length,
-                                //           (index) {
-                                //         return RadioListTile(
-                                //           title: Text(question
-                                //               .options![index].option
-                                //               .toString()),
-                                //           value: index,
-                                //           groupValue: controller
-                                //               .selectedOptionIndex.value,
-                                //           onChanged: (int? value) {
-                                //             if (value != null) {
-                                //               final selectedOptionIndex =
-                                //                   question
-                                //                       .options![value].isRight;
-                                //               controller.selectOption(value,onTimeUp);
+//           Obx(() {
+//   var question = controller.testSeries.value.questions?[
+//       controller.currentQuestionIndex.value];
+  
+//   return Column(
+//     crossAxisAlignment: CrossAxisAlignment.start,
+//     mainAxisAlignment: MainAxisAlignment.start,
+//     children: [
+//       if (question != null) ...[
+//         Text(
+//           ' ${question.question}',
+//           style: TextStyle(fontWeight: FontWeight.bold),
+//         ),
+//         SizedBox(height: 2),
+//         ...List.generate(question.options!.length, (index) {
+//           return RadioListTile(
+//             title: Text(question.options![index].option.toString()),
+//             value: index,
+//             groupValue: controller.selectedOptionIndex.value,
+//             onChanged: (int? value) {
+//               if (controller.selectedOptionIndex.value == value) {
+//                 // Unselect the option if the same option is clicked again
+//                 controller.selectedOptionIndex.value = -1;
+//               } else {
+//                 // Select the new option
+//                 controller.selectedOptionIndex.value = value!;
+//                 final selectedOption = question.options![value].option;
 
-                                //               print(
-                                //                   "Selected value: ${controller.selectedOptionIndex.value}, Correct: ${question.options![value].isRight}${controller.totalMarks.value}");
-                                //                       print( " answer${testSeries.questions![index].explanation!.text.toString()}");
-                                //                     print(
-                                //                     " marks${testSeries.questions![index].marks}");
-                                                
-                                //                     print(
-                                //                     "negative marks${testSeries.questions![index].negativeMarks}");
+//                 // Check if the selected answer matches the explanation text
+//                 bool isCorrect = question.explanation!.text!.contains(selectedOption!);
 
-                                //               // Update total marks based on the selected option
-                                //               if (selectedOptionIndex!) {
-                                //                 controller.totalMarks.value;
-                                //                 controller.finalMarks.value =
-                                //                 controller.finalMarks.value ;
-                                // print( "Final marks${testSeries.questions![index].explanation!.text.toString()}");
-                                //                     print(
-                                //                     "Final marks${testSeries.questions![index].marks}");
-                                //                 print(
-                                //                     "Final marks${testSeries.questions![index].marks}");
-                                //                     print(
-                                //                     "Final marks${testSeries.questions![index].negativeMarks}");
-                                //               } else {
-                                //                 controller.totalMarks.value -
-                                //                     0.33;
-                                //               }
+//                 // Update total marks and final marks based on the selected option
+//                 if (isCorrect) {
+//                   controller.totalMarks.value += question.marks!;
+//                   controller.finalMarks.value += question.marks!;
+//                 } else {
+//                   // controller.totalMarks.value -= question.negativeMarks!.toInt();
+//                   // controller.incorrectMarks.value += question.negativeMarks!.toInt(); // Save incorrect marks in a different variable
+//                 }
+//                 print("question id: ${testSeries.questions![index].id},");
+//                 print("total marks: ${question.negativeMarks!.toInt()},");
+//                 print("Selected value: ${controller.selectedOptionIndex.value}, Correct: $isCorrect");
+//                 print("Final marks: ${controller.finalMarks.value}");
+//                 print("Incorrect marks: ${controller.incorrectMarks.value}");
+//               }
+//             },
+//           );
+//         }),
+//         Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           children: [
+//             InkWell(
+//               onTap: () {
+//                 if (controller.currentQuestionIndex.value > 0) {
+//                   controller.previousQuestion();
+//                 }
+//               },
+//               child: buildButton("Previous"),
+//             ),
+//             InkWell(
+//               onTap: () {
+//                 controller.markForReview();
+//               },
+//               child: buildButton("Mark for Review"),
+//             ),
+//             InkWell(
+//               onTap: () {
+//                 if (controller.currentQuestionIndex.value <
+//                     testSeries.questions!.length ) {
+//                   controller.submitAnswer(onTimeUp);
+//                 }
+//               },
+//               child: buildButton("Save and Next"),
+//             ),
+//           ],
+//         ).w(400),
+//       ],
+//     ],
+//   ).w(700);
+// }),
 
-                                //               // Update the selected option index
-                                //               //controller.selectOption(value);
 
-                                //               print(
-                                //                   "Selected value: ${controller.selectedOptionIndex.value}, Correct: ${question.options![value].isRight}${controller.totalMarks.value}");
-                                //             }
-                                //           },
-                                //         );
-                                //       }),
-                                //       Row(
-                                //         mainAxisAlignment:
-                                //             MainAxisAlignment.spaceBetween,
-                                //         children: [
-                                //           InkWell(
-                                //             onTap: () {
-                                //               if (controller
-                                //                       .currentQuestionIndex
-                                //                       .value >
-                                //                   0) {
-                                //                 controller.previousQuestion();
-                                //               }
-                                //             },
-                                //             child: buildButton("Previous"),
-                                //           ),
-                                //           InkWell(
-                                //             onTap: () {
-                                //               controller.markForReview();
-                                //             },
-                                //             child:
-                                //                 buildButton("Mark for Review"),
-                                //           ),
-                                //           InkWell(
-                                //             onTap: () {
-                                //               if (controller
-                                //                       .selectedOptionIndex <
-                                //                   testSeries.questions!.length -
-                                //                       1) {
-                                //                 controller.submitAnswer(onTimeUp);
-                                //               } else {}
-                                //             },
-                                //             child: buildButton("Save and Next"),
-                                //           ),
-                                //         ],
-                                //       ).w(400),
-                                    ],
-                                  ],
-                                ).w(700);
-                              }),
                             ])),
                       ),
                     ),

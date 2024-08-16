@@ -37,7 +37,7 @@ class ShowPdfViewView extends GetView<ShowPdfViewController> {
                         () => controller.isPdfLoaded.value
                             ? CircularProgressIndicator() // Show loading indicator
                             : SfPdfViewer.network(
-                                'https://exampreptool.com/api/uploads/getFilepdf/${controller.pdf}',
+                                'https://devapi.exampreptool.com/api/uploads/getFilepdf/${controller.pdf}',
                                 controller: controller.pdfViewerController,
                               ),
                       ),

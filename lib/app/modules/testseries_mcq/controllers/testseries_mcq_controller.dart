@@ -11,26 +11,104 @@ import 'package:exam_prep_tool/app/routes/app_pages.dart';
 import 'package:exam_prep_tool/app/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:intl/intl.dart';
 
 class TestseriesMcqController extends GetxController {
   final TestSeriesRepo repositry1 = TestSeriesRepoIMPL();
-//  //RxList<RandomQues>? data;
-//  final randomques = <RandomQues>[].obs;
+
   RxBool isLoading = false.obs;
+
+  Rx<Duration> duration = Duration().obs;
+  Timer? timer;
+  RxString startTimeFormatted = ''.obs;
+  RxString endTimeFormatted = ''.obs;
+  RxDouble usedTime = 0.0.obs;
+  var answerlist = [].obs;
+  var answeredQuestions = <int>[].obs;
+  var markedForReviewQuestions = <int>[].obs;
+  var currentQuestionIndex = 0.obs;
+
+  final testSeries = Testseries().obs; // Rx<Testseries>
+  final arguments = Get.arguments;
+  var selectedOptionIndex = (-1).obs;
+  // var answeredQuestions = <int>{}.obs;
+  // var markedForReviewQuestions = <int>{}.obs;
+  var totalMarks = 0.obs;
+  var finalMarks = 0.obs;
+  var reviewMarks = 0.obs;
+  RxDouble incorrectMarks = 0.0.obs;
+  RxDouble submitanswermarks = 0.0.obs;
+  var attempted = 0.obs;
+  // AnswerList
+ final answersList = <Map<String, dynamic>>[].obs;
+
+
+
+
+// timer define duration
+  void startTimer(int minutes, Function onTimeUp) {
+    DateTime startTime = DateTime.now();
+    DateTime endTime = startTime.add(Duration(minutes: minutes));
+
+    // Format the start and end times
+    startTimeFormatted.value =
+        DateFormat('EEE MMM d yyyy HH:mm:ss \'GMT\'Z').format(startTime);
+    endTimeFormatted.value =
+        DateFormat('EEE MMM d yyyy HH:mm:ss \'GMT\'Z').format(endTime);
+
+    duration.value = Duration(minutes: minutes);
+    timer?.cancel();
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (duration.value.inSeconds > 0) {
+        duration.value = duration.value - Duration(seconds: 1);
+      } else {
+        timer.cancel();
+        onTimeUp();
+      }
+    });
+  }
+
+  void stopTimer() {
+    if (timer != null) {
+      timer?.cancel();
+      timer = null;
+    }
+  }
+  // Calculate used time in minutes
+  double calculateUsedTime(DateTime startTime, DateTime endTime) {
+    Duration usedDuration = endTime.difference(startTime);
+    double usedTime = usedDuration.inSeconds / 60.0;
+    return usedTime;
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+  }
+
+
+
+  final TestsearisController testcontroller = Get.find();
+
   testAnswerquestion() {
+
     try {
       isLoading.value = false;
+      List<Answer> answers = answersList
+        .map((item) => Answer.fromJson(item))
+        .toList().obs;
       final param = SubmitAnswerparams()
-        ..marksGot = finalMarks.value
+        ..marksGot = 0
         ..userId = prefUtils.getID().toString()
-        ..testId = ''
-        //..startTime = startTime.toString()
-        ..submit = 'yes'
-        //..endTime = endTime.toString()
-        ..answers = [];
-      var response =
-          repositry1.testSeriesAnswer(prefUtils.getToken().toString(), param);
+        ..testId = testcontroller.testSeries[0].id
+        ..startTime = startTimeFormatted.value
+        ..submit = 'null'
+        ..endTime = endTimeFormatted.value
+        ..usedTime = usedTime.value
+        ..answers = answers; 
+      var response = repositry1.testSeriesAnswer(
+          'Bearer ${prefUtils.getToken().toString()}', param);
 
       if (response != null) {
         Get.offAll(Routes.HOME);
@@ -41,77 +119,12 @@ class TestseriesMcqController extends GetxController {
     }
   }
 
-//  randomquestion() async {
-//    try {
-//      isLoading.value = true;
-
-//      var response =
-//          await repositry1.randomqueslist("668b8c6d024fee047e44b9a1");
-//      if (response.data != null) {
-//        randomques.value = response.data!.data ?? [];
-//        print("TestSeries ${response.data.toString()}");
-//        // If 'response.data.toString()' is a List, you might want to log each item separately
-//        for (var item in randomques.value) {
-//          print(item);
-//        }
-//      }
-//      isLoading.value = false;
-//    } catch (e) {
-//      log(e.toString());
-//    }
-//  }
-var answeredQuestions = <int>[].obs;
-  var markedForReviewQuestions = <int>[].obs;
-  var currentQuestionIndex = 0.obs;
-
-  
-  var testSeries = Testseries().obs;
-  // var currentQuestionIndex = 0.obs;
-  var selectedOptionIndex = (-1).obs;
-  // var answeredQuestions = <int>{}.obs;
-  // var markedForReviewQuestions = <int>{}.obs;
-  var totalMarks = 0.obs;
-  var finalMarks = 0.obs;
-  var reviewMarks = 0.obs;
-  //var notattempted = 0.obs;
-  var attempted = 0.obs;
   // Add these getters
   int get attemptedCount => answeredQuestions.length;
   int get notAttemptedCount =>
-      (testSeries.value.questions?.length ?? 0) - attemptedCount ;
+      (testSeries.value.questions?.length ?? 0) - attemptedCount;
 
   int get reviewCount => markedForReviewQuestions.length;
-
-  Rx<Duration> duration = Duration().obs;
-  Timer? timer;
-  //RxString startTimeFormatted = ''.obs;
-  //RxString endTime = ''.obs;
-
-  void startTimer(int minutes, Function onTimeUp) {
-    // Set the start time to the current time
-    DateTime startTime = DateTime.now();
-    DateTime endTime = startTime.add(Duration(minutes: minutes));
-
-    // Print start and end time in the desired format
-    String startTimeFormatted =
-        DateFormat('EEE MMM d yyyy HH:mm:ss \'GMT\'Z').format(startTime);
-    String endTimeFormatted =
-        DateFormat('EEE MMM d yyyy HH:mm:ss \'GMT\'Z').format(endTime);
-
-    print('Start Time: $startTimeFormatted');
-    print('End Time: $endTimeFormatted');
-    duration.value = Duration(minutes: minutes);
-    timer?.cancel();
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (duration.value.inSeconds > 0) {
-        duration.value = duration.value - Duration(seconds: 1);
-      } else {
-        timer.cancel();
-        onTimeUp();
-      }
-      // Calculate and set the end time
-    });
-  }
 
   @override
   void onClose() {
@@ -119,7 +132,7 @@ var answeredQuestions = <int>[].obs;
     super.onClose();
   }
 
-  void selectOption(int index,Function onTimeUp) {
+  void selectOption(int index, Function onTimeUp) {
     selectedOptionIndex.value = index;
   }
 
@@ -127,8 +140,9 @@ var answeredQuestions = <int>[].obs;
     if (selectedOptionIndex.value != -1) {
       answeredQuestions.add(currentQuestionIndex.value);
 
-      finalMarks.value++;
-      totalMarks++;
+      // finalMarks.value;
+      // incorrectMarks.vlaue.toDouble();
+      totalMarks;
     }
     //else {
     //  totalMarks--;
@@ -137,9 +151,8 @@ var answeredQuestions = <int>[].obs;
     selectedOptionIndex.value = -1;
     if (currentQuestionIndex.value < testSeries.value.questions!.length - 1) {
       currentQuestionIndex.value++;
-       
     } else {
-    onTimeUp();
+      onTimeUp();
       // Quiz is finished
       // You can navigate to a score screen or show a dialog
     }

@@ -41,7 +41,7 @@
             })
           };
 
-          fetch('https://exampreptool.com/api/payment/purchase', verifyRequestOptions)
+          fetch('https://devapi.exampreptool.com/api/payment/purchase', verifyRequestOptions)
             .then(response => response.json())
             .then(data => {
               console.log('Verification success:', data);

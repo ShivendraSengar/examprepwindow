@@ -28,7 +28,7 @@ import '../../../data/modal/circulam_lists/circulam_modal.dart';
 class CourseSubscribeController extends GetxController {
   final SelectedVidiolectureController vidiolectureController = Get.find();
   final PaymentsRepo repositry1 = VerfypaymentRepoImpl();
-  final String url = 'https://exampreptool.com/api/payment/pay';
+  final String url = 'https://devapi.exampreptool.com/api/payment/pay';
   final PrefUtils prefutils = Get.find();
   var selectedIndex = 0.obs;
   var selectedid = "".obs;
