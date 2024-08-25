@@ -1,4 +1,4 @@
-import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
+import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries_modal.dart';
 import 'package:exam_prep_tool/app/routes/app_pages.dart';
 import 'package:exam_prep_tool/app/themes/app_style.dart';
 import 'package:exam_prep_tool/app/widgets/custom_colors.dart';

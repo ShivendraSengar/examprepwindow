@@ -20,7 +20,9 @@ import 'package:exam_prep_tool/app/data/modal/profile/profile_updated.dart';
 import 'package:exam_prep_tool/app/data/modal/signup/forget_password_response.dart';
 import 'package:exam_prep_tool/app/data/modal/test_series/random_question_testseries.dart';
 import 'package:exam_prep_tool/app/data/modal/test_series/submit_testseries_modal.dart';
-import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
+import 'package:exam_prep_tool/app/data/modal/test_series/view_answerdetail_page_modal.dart';
+import 'package:exam_prep_tool/app/data/modal/test_series/view_answerdetail_page_modal.dart';
+import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries_modal.dart';
 import 'package:exam_prep_tool/app/data/modal/verify_payments.dart';
 import 'package:exam_prep_tool/app/data/modal/vidio_lecturesresponse/get_exam_id.dart';
 import 'package:exam_prep_tool/app/data/modal/vidio_lecturesresponse/vidio_lecturesresponse.dart';
@@ -138,6 +140,8 @@ abstract class AppApis {
   Future<HttpResponse<WeeklyTestseriesModal>> weeklytestseries(
     @Query("subject") String subject,
     @Query("examId") String courseid,
+    @Query("userId") String userid,
+    @Query("status") String status,
   );
   //test/id/668b8c6d024fee047e44b9a1
   @GET('test/id/{testId}')
@@ -148,4 +152,11 @@ abstract class AppApis {
   @POST('testAnswer/create')
   Future<HttpResponse<SubmitTestseriesModal>> testSeriesAnswer(
       @Header("Authorization") String token, @Body() submitAnswerparams);
+
+  // view solution
+  @GET('testAnswer')
+  Future<HttpResponse<ViewAnswerDetailModal>> viewAnswerdetail(
+    @Query("userId") String userid,
+    @Query("testId") String testid,
+  );
 }

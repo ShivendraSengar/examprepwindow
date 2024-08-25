@@ -1,4 +1,4 @@
-import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
+import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries_modal.dart';
 import 'package:exam_prep_tool/app/modules/testsearis/controllers/testsearis_controller.dart';
 import 'package:get/get.dart';
 

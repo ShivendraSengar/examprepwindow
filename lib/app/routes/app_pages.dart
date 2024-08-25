@@ -1,3 +1,5 @@
+import 'package:exam_prep_tool/app/modules/testseries_value_analysis/bindings/testseries_value_analysisbinding.dart';
+import 'package:exam_prep_tool/app/modules/testseries_value_analysis/views/testseries_view_analysis.dart';
 import 'package:get/get.dart';
 
 import '../modules/account_referal/bindings/account_referal_binding.dart';
@@ -284,6 +286,12 @@ class AppPages {
       name: _Paths.TESTSERIES_ANSWER_DETAILPAGE,
       page: () => const TestseriesAnswerDetailpageView(),
       binding: TestseriesAnswerDetailpageBinding(),
+    ),
+    // TESTSERIES_VALUE_ANALYSIS 
+     GetPage(
+      name: _Paths.TESTSERIES_VALUE_ANALYSIS ,
+      page: () => const TestseriesViewAnlysispage(),
+      binding: TestseriesViewAnlysisBinding(),
     ),
   ];
 }

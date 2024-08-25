@@ -728,11 +728,15 @@ class _AppApis implements AppApis {
   Future<HttpResponse<WeeklyTestseriesModal>> weeklytestseries(
     String subject,
     String courseid,
+    String userid,
+    String status,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'subject': subject,
       r'examId': courseid,
+      r'userId': userid,
+      r'status': status,
     };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
@@ -815,6 +819,40 @@ class _AppApis implements AppApis {
               baseUrl,
             ))));
     final _value = SubmitTestseriesModal.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<ViewAnswerDetailModal>> viewAnswerdetail(
+    String userid,
+    String testid,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'userId': userid,
+      r'testId': testid,
+    };
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<ViewAnswerDetailModal>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'testAnswer',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = ViewAnswerDetailModal.fromJson(_result.data!);
     final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }

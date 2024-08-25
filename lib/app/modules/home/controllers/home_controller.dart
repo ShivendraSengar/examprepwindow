@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -143,7 +144,7 @@ class HomeController extends GetxController {
       isLoading.value = false;
     }
   }
-
+  Timer? _timer;
   @override
   void onInit() async {
     getList();
@@ -151,7 +152,10 @@ class HomeController extends GetxController {
     // screenon();
     // await onedevicelogin();
     //  ProfileData();
-
+ // 5 मिनट का टाइमर सेट करें
+    _timer = Timer.periodic(const Duration(seconds: 25), (Timer timer) {
+      onedevicelogin(); // हर 5 मिनट में टोकन को वेरिफाई करें
+    });
     final data = Get.arguments;
 
     if (data != null && data is List && data.length >= 8) {

@@ -1,9 +1,10 @@
-import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
+import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries_modal.dart';
 import 'package:exam_prep_tool/app/routes/app_pages.dart';
 import 'package:exam_prep_tool/app/themes/app_style.dart';
 import 'package:exam_prep_tool/app/widgets/custom_colors.dart';
 import 'package:exam_prep_tool/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -16,6 +17,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
   @override
   Widget build(BuildContext context) {
     final Testseries testSeries = Get.arguments as Testseries;
+   
     controller.testSeries.value = testSeries;
       void submitTest() {
       showDialog(
@@ -24,13 +26,14 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
           return AlertDialog(
             //title: Text('Time is up!${testSeries.questions!.length}'),
             content: Container(
-              height: Get.height/5,
+              height: Get.height/4,
               width: 400,
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                  "Your TEst has been submmited".text.make(),
+                    
+                  "Your Tsst has been submmited".text.size(20).fontWeight(FontWeight.bold).bold.make(),
                      
                              10.heightBox,
                             //  10.heightBox,
@@ -54,14 +57,29 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                   ElevatedButton(
                     onPressed: () {
                       Get.back(); // Dismiss the dialog first
-  Get.offAll(Routes.HOME); 
+ 
+                    },
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                    child: Text('Cancel'),
+                  ).p16(),
+                 
+                    Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                 
+                  ElevatedButton(
+                    onPressed: () {
+                      onSomeEvent();
+                      
+                   
                     },
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                    child: Text('YES'),
+                    child: Text('View Analysis'),
                   ).p16(),
-                 
-                   
+                ],
+              ),
                   
                 ],
               ),
@@ -79,7 +97,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
           return AlertDialog(
             //title: Text('Time is up!${testSeries.questions!.length}'),
             content: Container(
-              height: Get.height/4,
+              height: Get.height/2.5,
               width: 400,
               child: Center(
                 child: Column(
@@ -125,14 +143,14 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                               ]),
                             ],
                           ).p16(),
-                             10.heightBox,
-                       "You got ${(controller.totalMarks.value - controller.incorrectMarks.toDouble()).toStringAsFixed(2)} marks"
-    .text
-    .purple500
-    .size(16)
-    .bold
-    .make()
-    .p16(),
+    //                          10.heightBox,
+    //                    "You got ${(controller.totalMarks.value - controller.incorrectMarks.toDouble()).toStringAsFixed(2)} marks"
+    // .text
+    // .purple500
+    // .size(16)
+    // .bold
+    // .make()
+    // .p16(),
                           10.heightBox,
                           "Are You Sure To Submit The Test !"
                               .text
@@ -193,9 +211,9 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Obx(() {
-                //  return Text(controller.startTimeFormatted.toString());
-                // }),
+                
+             Text("${controller.testcontroller.testSeries[0].id}.toString()"),
+               
                
                
                 Row(
@@ -303,33 +321,68 @@ Obx(() {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              InkWell(
-                onTap: () {
-                  if (controller.currentQuestionIndex.value > 0) {
-                    controller.previousQuestion();
-                  }
-                },
-                child: buildButton("Previous"),
-              ),
-              InkWell(
-                onTap: () {
-                  controller.markForReview();
-                },
-                child: buildButton("Mark for Review"),
-              ),
-              InkWell(
-                onTap: () {
-                  if (controller.currentQuestionIndex.value <
-                      testSeries.questions!.length) {
+             InkWell(
+  onTap: () {
+    if (controller.currentQuestionIndex.value > 0) {
+      controller.previousQuestion();
+    }
+  },
+  child: buildButton("Previous"),
+),
+InkWell(
+  onTap: () {
+    final selectedOptionIndex = controller.selectedOptionIndex.value;
 
-                    final selectedOptionIndex = controller.selectedOptionIndex.value;
+    if (selectedOptionIndex != -1) {
+      final selectedOption = question!.options![selectedOptionIndex].option;
 
-                    if (selectedOptionIndex != -1) {
-                      final selectedOption = question!.options![selectedOptionIndex].option;
+      // Compare with the explanation text to check if the selected option is correct
+      bool isCorrect = question.explanation!.text!.contains(selectedOption!);
 
-                      // Explanation के text से compare कर रहे हैं कि selected option सही है या नहीं
-                      bool isCorrect = question.explanation!.text!.contains(selectedOption!);
-// Create a map with the required data
+      // Create a map with the required data
+      final answerData = {
+        "answer": selectedOption,
+        "question": question.id,
+        "isRight": isCorrect,
+      };
+
+      // Add the answer data to the answersList
+      controller.answersList.add(answerData);
+
+      if (isCorrect) {
+        // Add marks if the answer is correct
+        controller.totalMarks.value += question.marks!;
+      } else {
+        // Add negative marks if the answer is incorrect
+        controller.incorrectMarks.value += question.negativeMarks!.toDouble();
+      }
+
+      // Debugging print statements
+      print("Question ID: ${question.id}");
+      print("Selected Option: $selectedOption, Correct: $isCorrect");
+      print("Total Marks: ${controller.totalMarks.value}");
+      print("Incorrect Marks: ${controller.incorrectMarks.value}");
+      print("Negative Marks from Model: ${question.negativeMarks}");
+    }
+
+    controller.markForReview();
+  },
+  child: buildButton("Mark for Review"),
+),
+InkWell(
+  onTap: () {
+    if (controller.currentQuestionIndex.value <
+        controller.testSeries.value.questions!.length) {
+
+      final selectedOptionIndex = controller.selectedOptionIndex.value;
+
+      if (selectedOptionIndex != -1) {
+        final selectedOption = question!.options![selectedOptionIndex].option;
+
+        // Compare with the explanation text to check if the selected option is correct
+        bool isCorrect = question.explanation!.text!.contains(selectedOption!);
+
+        // Create a map with the required data
         final answerData = {
           "answer": selectedOption,
           "question": question.id,
@@ -337,121 +390,40 @@ Obx(() {
         };
 
         // Add the answer data to the answersList
-       controller. answersList.add(answerData);
-        print("List data${controller.answerlist.length}");
-                      if (isCorrect) {
-                        // सही उत्तर है तो मार्क्स जोड़ें
-                        controller.totalMarks.value += question.marks!;
-                        // controller.finalMarks.value += question.marks!;
-                      } else {
-                        // गलत उत्तर है तो नेगेटिव मार्क्स सिर्फ incorrectMarks में जोड़ें
-                        controller.incorrectMarks.value += question.negativeMarks!.toDouble();
-                      }
+        controller.answersList.add(answerData);
 
-                      // Debugging के लिए print statements
-                      print("Question ID: ${question.id}");
-                      print("Selected Option: $selectedOption, Correct: $isCorrect");
-                      print("Total Marks: ${controller.totalMarks.value}");
-                      print("Incorrect Marks: ${controller.incorrectMarks.value}");
-                      print("Negative Marks from Model: ${question.negativeMarks}");
-                    }
-                  controller.   testAnswerquestion();
+        if (isCorrect) {
+          // Add marks if the answer is correct
+          controller.totalMarks.value += question.marks!;
+        } else {
+          // Add negative marks if the answer is incorrect
+          controller.incorrectMarks.value += question.negativeMarks!.toDouble();
+        }
 
-                    // उत्तर को सबमिट करने के बाद अगला प्रश्न
-                    controller.submitAnswer(onTimeUp);
-                  }
-                },
-                child: buildButton("Save and Next"),
-              ),
+        // Debugging print statements
+        print("Question ID: ${question.id}");
+        print("Selected Option: $selectedOption, Correct: $isCorrect");
+        print("Total Marks: ${controller.totalMarks.value}");
+        print("Incorrect Marks: ${controller.incorrectMarks.value}");
+        print("Negative Marks from Model: ${question.negativeMarks}");
+      }
+
+      controller.testAnswerquestion();
+
+      // Move to the next question after submitting the answer
+      controller.submitAnswer(onTimeUp);
+    }
+  },
+  child: buildButton("Save and Next"),
+),
+
             ],
           ).w(400),
         ],
       ],
-    ).w(Get.width),
+    ).w(Get.width/3),
   );
 }),
-
-//           Obx(() {
-//   var question = controller.testSeries.value.questions?[
-//       controller.currentQuestionIndex.value];
-  
-//   return Column(
-//     crossAxisAlignment: CrossAxisAlignment.start,
-//     mainAxisAlignment: MainAxisAlignment.start,
-//     children: [
-//       if (question != null) ...[
-//         Text(
-//           ' ${question.question}',
-//           style: TextStyle(fontWeight: FontWeight.bold),
-//         ),
-//         SizedBox(height: 2),
-//         ...List.generate(question.options!.length, (index) {
-//           return RadioListTile(
-//             title: Text(question.options![index].option.toString()),
-//             value: index,
-//             groupValue: controller.selectedOptionIndex.value,
-//             onChanged: (int? value) {
-//               if (controller.selectedOptionIndex.value == value) {
-//                 // Unselect the option if the same option is clicked again
-//                 controller.selectedOptionIndex.value = -1;
-//               } else {
-//                 // Select the new option
-//                 controller.selectedOptionIndex.value = value!;
-//                 final selectedOption = question.options![value].option;
-
-//                 // Check if the selected answer matches the explanation text
-//                 bool isCorrect = question.explanation!.text!.contains(selectedOption!);
-
-//                 // Update total marks and final marks based on the selected option
-//                 if (isCorrect) {
-//                   controller.totalMarks.value += question.marks!;
-//                   controller.finalMarks.value += question.marks!;
-//                 } else {
-//                   // controller.totalMarks.value -= question.negativeMarks!.toInt();
-//                   // controller.incorrectMarks.value += question.negativeMarks!.toInt(); // Save incorrect marks in a different variable
-//                 }
-//                 print("question id: ${testSeries.questions![index].id},");
-//                 print("total marks: ${question.negativeMarks!.toInt()},");
-//                 print("Selected value: ${controller.selectedOptionIndex.value}, Correct: $isCorrect");
-//                 print("Final marks: ${controller.finalMarks.value}");
-//                 print("Incorrect marks: ${controller.incorrectMarks.value}");
-//               }
-//             },
-//           );
-//         }),
-//         Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           children: [
-//             InkWell(
-//               onTap: () {
-//                 if (controller.currentQuestionIndex.value > 0) {
-//                   controller.previousQuestion();
-//                 }
-//               },
-//               child: buildButton("Previous"),
-//             ),
-//             InkWell(
-//               onTap: () {
-//                 controller.markForReview();
-//               },
-//               child: buildButton("Mark for Review"),
-//             ),
-//             InkWell(
-//               onTap: () {
-//                 if (controller.currentQuestionIndex.value <
-//                     testSeries.questions!.length ) {
-//                   controller.submitAnswer(onTimeUp);
-//                 }
-//               },
-//               child: buildButton("Save and Next"),
-//             ),
-//           ],
-//         ).w(400),
-//       ],
-//     ],
-//   ).w(700);
-// }),
-
 
                             ])),
                       ),
@@ -622,8 +594,14 @@ Obx(() {
 ),
 
                                   buildEndButton().onTap(() {
+                            
+            controller.testcontroller.startTest(); (); // End test and show solution
+          
+            // Solution view logic
+          
                                     onTimeUp();
-                                    //controller.timer!.cancel();
+                                controller.submitAnswerquestion();
+                                   
                                   })
                                 ],
                               ))),
@@ -775,4 +753,12 @@ Obx(() {
               ],
             )));
   }
+ void onSomeEvent() {
+
+  // Calculation function ko call karna
+  controller.calculateFinalMarks();
+
+  // Navigate to the next page
+  Get.toNamed(Routes.TESTSERIES_VALUE_ANALYSIS, arguments: [controller.finalMarks.value,controller.testcontroller.testSeries[0].id]);
+}
 }

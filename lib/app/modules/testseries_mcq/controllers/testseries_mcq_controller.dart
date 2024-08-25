@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:exam_prep_tool/app/data/irepositry/itestseries_repo.dart';
 import 'package:exam_prep_tool/app/data/modal/test_series/random_question_testseries.dart';
-import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
+import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries_modal.dart';
 import 'package:exam_prep_tool/app/data/params/submit_testseries_Ans_params.dart';
 import 'package:exam_prep_tool/app/data/repositry/testseries_repo.dart';
 import 'package:exam_prep_tool/app/modules/testsearis/controllers/testsearis_controller.dart';
@@ -17,7 +17,9 @@ import 'package:intl/intl.dart';
 class TestseriesMcqController extends GetxController {
   final TestSeriesRepo repositry1 = TestSeriesRepoIMPL();
 
+
   RxBool isLoading = false.obs;
+  
 
   Rx<Duration> duration = Duration().obs;
   Timer? timer;
@@ -28,23 +30,32 @@ class TestseriesMcqController extends GetxController {
   var answeredQuestions = <int>[].obs;
   var markedForReviewQuestions = <int>[].obs;
   var currentQuestionIndex = 0.obs;
-
   final testSeries = Testseries().obs; // Rx<Testseries>
   final arguments = Get.arguments;
   var selectedOptionIndex = (-1).obs;
-  // var answeredQuestions = <int>{}.obs;
-  // var markedForReviewQuestions = <int>{}.obs;
-  var totalMarks = 0.obs;
-  var finalMarks = 0.obs;
+
   var reviewMarks = 0.obs;
-  RxDouble incorrectMarks = 0.0.obs;
+  // RxDouble incorrectMarks = 0.0.obs;
   RxDouble submitanswermarks = 0.0.obs;
   var attempted = 0.obs;
   // AnswerList
  final answersList = <Map<String, dynamic>>[].obs;
 
 
+  // void endTest() {
+  //  testcontroller. isTestEnded.value = true;
+  // }
 
+ var totalMarks = 0.0.obs;
+  var incorrectMarks = 0.0.obs;
+  var finalMarks = 0.0.obs;
+
+  void calculateFinalMarks() {
+    finalMarks.value = totalMarks.value - incorrectMarks.value;
+    print("finalMarks.toDouble()${finalMarks.toDouble()}");
+  }
+
+  
 
 // timer define duration
   void startTimer(int minutes, Function onTimeUp) {
@@ -104,6 +115,37 @@ class TestseriesMcqController extends GetxController {
         ..testId = testcontroller.testSeries[0].id
         ..startTime = startTimeFormatted.value
         ..submit = 'null'
+        ..endTime = endTimeFormatted.value
+        ..usedTime = usedTime.value
+        ..answers = answers; 
+      var response = repositry1.testSeriesAnswer(
+          'Bearer ${prefUtils.getToken().toString()}', param);
+
+      if (response != null) {
+        Get.offAll(Routes.HOME);
+      }
+      isLoading.value = false;
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  ///////////////////////////// submit test
+
+  
+  submitAnswerquestion() {
+
+    try {
+      isLoading.value = false;
+      List<Answer> answers = answersList
+        .map((item) => Answer.fromJson(item))
+        .toList().obs;
+      final param = SubmitAnswerparams()
+        ..marksGot = 0
+        ..userId = prefUtils.getID().toString()
+        ..testId = testcontroller.testSeries[0].id
+        ..startTime = startTimeFormatted.value
+        ..submit = 'yes'
         ..endTime = endTimeFormatted.value
         ..usedTime = usedTime.value
         ..answers = answers; 

@@ -4,7 +4,7 @@ import 'package:exam_prep_tool/app/data/irepositry/icourses_repo.dart';
 import 'package:exam_prep_tool/app/data/irepositry/ipayments_repo.dart';
 import 'package:exam_prep_tool/app/data/irepositry/itestseries_repo.dart';
 import 'package:exam_prep_tool/app/data/modal/buycourses_modal.dart';
-import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries.dart';
+import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries_modal.dart';
 import 'package:exam_prep_tool/app/data/modal/vidio_lecturesresponse/vidio_lecturesresponse.dart';
 import 'package:exam_prep_tool/app/data/repositry/courses_repo.dart';
 import 'package:exam_prep_tool/app/data/repositry/payments_repo.dart';
@@ -23,6 +23,40 @@ class TestsearisController extends GetxController
   RxList<Testseries>? data;
 
   TabController? tabController;
+  var isTestStarted = false.obs;
+
+  void startTest() {
+    isTestStarted.value = true;
+  }
+
+  // Map to track the test start state for each item
+  var testStates = <int, bool>{}.obs;
+
+  // Method to update the state of a test item
+  void updateTestState(int index, bool isStarted) {
+    testStates[index] = isStarted;
+  }
+  List<Testseries> allTestSeries = [];
+
+  List<Testseries> get attemptedTests =>
+      allTestSeries.where((test) => test.attempted == 'YES').toList();
+
+  var selectedFilter = 'All'.obs;
+  var testSeries = <Testseries>[].obs; // Your test series list
+  var livetestSeries = <Testseries>[].obs; //
+  var filteredTestSeries = <Testseries>[].obs; // Filtered list based on selection
+
+  void filterTestSeries() {
+    if (selectedFilter.value == 'All') {
+      filteredTestSeries.value = testSeries;
+    } else if (selectedFilter.value == 'Attempted') {
+      filteredTestSeries.value = testSeries.where((test) => test.attempted == 'YES').toList();
+    } else {
+      filteredTestSeries.value = testSeries.where((test) => test.attempted != 'YES').toList();
+    }
+  }
+
+
   var tabIndex = 0.obs;
   //TODO: Implement TestsearisController
   final List<String> imgList = [
@@ -56,19 +90,43 @@ class TestsearisController extends GetxController
   final PaymentsRepo purchasesCourse = VerfypaymentRepoImpl();
 
   final userdetais = <CourseSub>[].obs;
-  final testSeries = <Testseries>[].obs;
+  // final testSeries = <Testseries>[].obs;
   final count = 0.obs;
+  // /////////////////////////////////////////////////////Live test
+  void livetest() async {
+    try {
+      isLoading.value = true;
+      print("id ${selectedid.value}");
+      print("subject ${selectedSubject.value}");
+
+      var response = await repositry1.weeklytestseries(selectedSubject.value,
+          selectedid.value, prefutils.getID().toString(),"live");
+      if (response.data != null) {
+        livetestSeries.value = response.data!.data ?? [];
+        print("TestSeries ${response.data!.toJson()}");
+        // If 'response.data.toString()' is a List, you might want to log each item separately
+        for (var item in testSeries.value) {
+          print(item);
+        }
+      }
+      isLoading.value = false;
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+////////////////////////weekely test//////////////////////////////////
+
   weeklytest() async {
     try {
       isLoading.value = true;
+      print("id ${selectedid.value}");
+      print("subject ${selectedSubject.value}");
 
-      var response = await repositry1.weeklytestseries(
-        selectedSubject.value,
-        selectedid.value,
-      );
+      var response = await repositry1.weeklytestseries(selectedSubject.value,
+          selectedid.value, prefutils.getID().toString(),"");
       if (response.data != null) {
         testSeries.value = response.data!.data ?? [];
-        print("TestSeries ${response.data.toString()}");
+        print("TestSeries ${response.data!.toJson()}");
         // If 'response.data.toString()' is a List, you might want to log each item separately
         for (var item in testSeries.value) {
           print(item);
@@ -127,9 +185,15 @@ class TestsearisController extends GetxController
     //weeklytest();
     //getList();
     tabController = TabController(length: 3, vsync: this);
-    tabController?.addListener(() {
-      tabIndex.value = tabController!.index;
+
+    // Add listener to TabController
+    tabController!.addListener(() {
+      if (tabController!.indexIsChanging) {
+        tabIndex.value = tabController!.index;
+        refreshTabData(tabController!.index);
+      }
     });
+
     checkcourses();
     //getorderidin();
     final data = Get.arguments;
@@ -148,6 +212,34 @@ class TestsearisController extends GetxController
     });
 
     super.onInit();
+  }
+
+  // Refresh data based on tab index
+  void refreshTabData(int index) {
+    if (index == 0) {
+      fetchPracticeTestSeries(); // Refresh Practice Test Data
+    } else if (index == 1) {
+      fetchWeeklyTestSeries(); // Refresh Weekly Test Data
+    } else if (index == 2) {
+      fetchLiveTestSeries(); // Refresh Live Test Data
+    }
+  }
+
+  void fetchPracticeTestSeries() {
+    showpdfview();
+    // Add your API call or data fetching logic here for Practice Test
+    print("Fetching Practice Test Data");
+  }
+
+  void fetchWeeklyTestSeries() {
+    // Add your API call or data fetching logic here for Weekly Test
+    print("Fetching Weekly Test Data");
+    weeklytest();
+  }
+
+  void fetchLiveTestSeries() {
+    // Add your API call or data fetching logic here for Live Test
+    print("Fetching Live Test Data");
   }
 
   @override

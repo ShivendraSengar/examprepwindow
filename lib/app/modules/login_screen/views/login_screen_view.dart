@@ -167,7 +167,8 @@ class LoginScreenView extends GetView<LoginScreenController> {
             ),
             InkWell(
               onTap: () {
-                Get.toNamed(Routes.FORGETPASS_SCREEN);
+                Get.toNamed(Routes.TESTSERIES_VALUE_ANALYSIS);
+                // Get.toNamed(Routes.FORGETPASS_SCREEN);
               },
               child: const Padding(
                 padding: EdgeInsets.only(right: 15),

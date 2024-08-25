@@ -21,64 +21,13 @@ class PracticeTestSeries extends GetView<TestsearisController> {
   const PracticeTestSeries({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-//    return Scaffold(
-//      body: Center(
-//        child: Container(
-//          color: Colors.grey.shade300,
-//          height: 190,
-//          width: 650,
-//          child: Column(
-//            mainAxisAlignment: MainAxisAlignment.center,
-//            crossAxisAlignment: CrossAxisAlignment.center,
-//            children: [
-//              8.heightBox,
-//              "We Are offering".text.size(16).make(),
-//              5.heightBox,
-//              Row(
-//                mainAxisAlignment: MainAxisAlignment.center,
-//                children: [
-//                  "Online Test Series".text.size(16).make(),
-//                  5.widthBox,
-//                  "for"
-//                      .text
-//                      .size(16)
-//                      .color(const Color.fromARGB(255, 228, 121, 7))
-//                      .make()
-//                ],
-//              ),
-//              8.heightBox,
-//              Row(
-//                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                children: [
-//                  buildCard("GATE CSE"),
-//                  buildCard("GATE DA"),
-//                  buildCard("DSA COURES"),
-//                ],
-//              ).w(500)
-//            ],
-//          ),
-//        ),
-//      ),
-//    );
-//  }
-
-//  buildCard(text) {
-//    return Card(
-//      color: Vx.gray100,
-//      child: Container(
-//        height: 45,
-//        padding: EdgeInsets.symmetric(horizontal: 8),
-//        alignment: Alignment.center,
-//        child: Text(text),
-//      ),
-//    );
-//  }
-//}
     final List<CourseSub>? activeCourses;
     return Container(
         height: double.infinity,
         width: double.infinity,
-        decoration: BoxDecoration(gradient: lineargrdient),
+        decoration: BoxDecoration(
+            // gradient: lineargrdient
+            color: Vx.white),
         child: SafeArea(child: Scaffold(
             //appBar: buildAppbar(),
             body: Obx(() {
@@ -102,173 +51,6 @@ class PracticeTestSeries extends GetView<TestsearisController> {
                       width: 800,
                       child: Column(children: [
                         Text(controller.testSeries.length.toString()),
-                        20.heightBox,
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              20.heightBox,
-                              Container(
-                                height: 52,
-                                width: 350,
-                                decoration: BoxDecoration(
-                                    color: HexColor("#F3FFFF"),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(25)),
-                                    border: Border.all(
-                                        width: 1, color: Colors.grey)),
-                                padding:
-                                    const EdgeInsets.only(left: 0, right: 0),
-                                // alignment: Alignment.center,
-                                child: Obx(() {
-                                  final filteredData = controller.userdetais
-                                      .where((coursedetails) =>
-                                          coursedetails.active == "yes")
-                                      .toList();
-                                  return Container(
-                                    height: 52,
-                                    // width: 380,
-                                    decoration: BoxDecoration(
-                                      color: HexColor("#F3FFFF"),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(25)),
-                                      border: Border.all(
-                                          width: 1, color: Colors.grey),
-                                    ),
-                                    padding: const EdgeInsets.only(
-                                        left: 18, right: 0),
-                                    child: DropdownButton<CourseSub>(
-                                      hint: "Choose Course".text.make(),
-                                      dropdownColor: Colors.grey.shade300,
-                                      items:
-                                          filteredData.map((CourseSub value) {
-                                        return DropdownMenuItem<CourseSub>(
-                                          value: value,
-                                          child: Text(
-                                            value.name.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        );
-                                      }).toList(),
-                                      value: controller.seleectrdvalue.value,
-                                      underline: Container(color: Colors.black),
-                                      isExpanded: true,
-                                      icon: Container(
-                                        clipBehavior:
-                                            Clip.antiAliasWithSaveLayer,
-                                        alignment: Alignment.center,
-                                        height: 95,
-                                        width: 50,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          gradient: buttonColor,
-                                        ),
-                                        child: const Icon(
-                                          Icons.arrow_drop_down,
-                                          color: Colors.white,
-                                          size: 38,
-                                        ),
-                                      ),
-                                      onChanged: (CourseSub? newVal) {
-                                        controller.subjectList.clear();
-                                        controller.subjectList.addAll(newVal!
-                                            .courseId!.exam!.subjects!
-                                            .toList());
-                                        if (newVal != null) {
-                                          controller.selectedid.value = newVal
-                                              .courseId!.exam!.id
-                                              .toString();
-                                          // Update the selected ID in the controller
-                                          print(
-                                              'Selected ID: ${controller.selectedid.value}');
-                                          // Call API or perform actions with the selected value
-                                          //controller.getProfile();
-                                          controller.seleectrdvalue.value =
-                                              newVal;
-                                        }
-                                      },
-                                    ),
-                                  );
-                                }),
-                              ),
-                              20.heightBox,
-                              //Text(subjectid.toString()),
-                              Container(
-                                  height: 52,
-                                  width: 350,
-                                  decoration: BoxDecoration(
-                                      color: HexColor("#F3FFFF"),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(25)),
-                                      border: Border.all(
-                                          width: 1, color: Colors.grey)),
-                                  padding:
-                                      const EdgeInsets.only(left: 18, right: 0),
-                                  // alignment: Alignment.center,
-                                  child: Obx(
-                                    () => DropdownButton<String>(
-                                      hint: "Choose subject".text.make(),
-                                      dropdownColor: Colors.grey.shade300,
-                                      items: controller.subjectList
-                                          .map((String subject) {
-                                        return DropdownMenuItem<String>(
-                                          value: subject,
-                                          child: Text(
-                                            subject,
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        );
-                                      }).toList(),
-                                      // menuMaxHeight: 10,
-                                      value: controller.seleectrdvalue1.value,
-
-                                      underline: Container(color: Colors.black),
-                                      isExpanded: true,
-                                      icon: Container(
-                                        clipBehavior:
-                                            Clip.antiAliasWithSaveLayer,
-                                        alignment: Alignment.center,
-                                        height: 95,
-                                        width: 50,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            gradient: buttonColor),
-                                        child: const Icon(
-                                          Icons.arrow_drop_down,
-                                          color: Colors.white,
-                                          size: 38,
-                                        ),
-                                      ),
-                                      onChanged: (newValue) {
-                                        if (newValue != null) {
-                                          controller.selectedSubject.value =
-                                              newValue.toString();
-                                          // Update the selected ID in the controller
-                                          print(
-                                              'Selected Subjects: ${controller.selectedSubject.value}');
-                                          // Call API or perform actions with the selected value
-                                          //controller.getProfile();
-                                          controller.showpdfview();
-
-                                          //controller.getVideos();
-                                          //controller.fetchData();
-                                        }
-                                        controller.isVisible.value = true;
-                                        controller.seleectrdvalue1.value =
-                                            newValue.toString();
-                                      },
-                                    ),
-                                  )),
-                              //Text(controller.showpdf.length.toString()),
-                              20.heightBox,
-                            ]),
                         Obx(() {
                           final isVisible = controller.isVisible.value;
                           final showPdf = controller.showpdf.value;
@@ -287,7 +69,18 @@ class PracticeTestSeries extends GetView<TestsearisController> {
                                         controller.isVisible.value = false;
                                       })
                                   : isVisible
-                                      ? ListView.builder(
+                                      ? GridView.builder(
+                                          gridDelegate:
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount:
+                                                3, // Number of items per row
+                                            childAspectRatio:
+                                                3, // Adjust height and width ratio of items
+                                            crossAxisSpacing:
+                                                10, // Spacing between columns
+                                            mainAxisSpacing:
+                                                10, // Spacing between rows
+                                          ),
                                           itemCount: showPdf.length,
                                           itemBuilder: (context, index) {
                                             var data = showPdf[index];

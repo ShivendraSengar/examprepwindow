@@ -49,6 +49,8 @@ abstract class Routes {
   static const TESTACTIVE_SCREEN = _Paths.TESTACTIVE_SCREEN;
   static const TESTSERIES_ANSWER_DETAILPAGE =
       _Paths.TESTSERIES_ANSWER_DETAILPAGE;
+      static const TESTSERIES_VALUE_ANALYSIS  =
+      _Paths.TESTSERIES_VALUE_ANALYSIS ;
 }
 
 abstract class _Paths {
@@ -99,4 +101,6 @@ abstract class _Paths {
   static const TESTSERIES_MCQ = '/testseries-mcq';
   static const TESTACTIVE_SCREEN = '/testactive-screen';
   static const TESTSERIES_ANSWER_DETAILPAGE = '/testseries-answer-detailpage';
+   static const TESTSERIES_VALUE_ANALYSIS = '/testseries-value-analysis';
+
 }

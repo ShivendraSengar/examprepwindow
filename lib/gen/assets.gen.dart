@@ -23,6 +23,10 @@ class $ImagesGen {
   AssetGenImage get logoForSplashScreen =>
       const AssetGenImage('images/Logo for splash screen.png');
 
+  /// File path: images/Speedometer.png
+  AssetGenImage get speedometer =>
+      const AssetGenImage('images/Speedometer.png');
+
   /// File path: images/account referal.png
   AssetGenImage get accountReferal =>
       const AssetGenImage('images/account referal.png');
@@ -310,6 +314,9 @@ class $ImagesGen {
   /// File path: images/question.png
   AssetGenImage get question => const AssetGenImage('images/question.png');
 
+  /// File path: images/rank.png
+  AssetGenImage get rank => const AssetGenImage('images/rank.png');
+
   /// File path: images/razorpay_checkout.html
   String get razorpayCheckout => 'images/razorpay_checkout.html';
 
@@ -371,6 +378,10 @@ class $ImagesGen {
   /// File path: images/test sr.png
   AssetGenImage get testSr => const AssetGenImage('images/test sr.png');
 
+  /// File path: images/testseries image.png
+  AssetGenImage get testseriesImage =>
+      const AssetGenImage('images/testseries image.png');
+
   /// File path: images/timer.png
   AssetGenImage get timer => const AssetGenImage('images/timer.png');
 
@@ -395,6 +406,7 @@ class $ImagesGen {
         coupanImage,
         group309,
         logoForSplashScreen,
+        speedometer,
         accountReferal,
         all,
         answer,
@@ -474,6 +486,7 @@ class $ImagesGen {
         profileScrrenSaveUpdateButton,
         psu,
         question,
+        rank,
         razorpayCheckout,
         rectangle,
         referalImage,
@@ -491,6 +504,7 @@ class $ImagesGen {
         telegram,
         termCondition,
         testSr,
+        testseriesImage,
         timer,
         totalMarks,
         totalQuestion,
