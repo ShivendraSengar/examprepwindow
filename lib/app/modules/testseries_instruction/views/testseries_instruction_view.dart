@@ -89,11 +89,13 @@ class TestseriesInstructionView
                       width: 15,
                     ),
                     5.widthBox,
-                    "You have not visited the question yet."
-                        .text
-                        .textStyle(AppStyle.txtPoppinsMedium12darkGray)
-                        .make()
-                        .paddingSymmetric(horizontal: 3),
+                    Flexible(
+                      child: "You have not visited the question yet."
+                          .text
+                          .textStyle(AppStyle.txtPoppinsMedium12darkGray)
+                          .make()
+                          .paddingSymmetric(horizontal: 3),
+                    ),
                   ],
                 ),
                 5.heightBox,
@@ -116,6 +118,7 @@ class TestseriesInstructionView
                     .text
                     .textStyle(AppStyle.txtPoppinsSemiBold14Black)
                     .make(),
+
                 5.heightBox,
                 "3. To answer a question, do the following:"
                     .text
@@ -228,13 +231,8 @@ class TestseriesInstructionView
                     .make()
                     .paddingSymmetric(horizontal: 3),
                 5.heightBox,
-                Row(
-                  children: [
-                    Text('10.'),
-                    buildRechestText("After clicking the", "Save & Next",
-                        "button for the last question in a Section, you will automatically be taken to the first question of the next Section in sequence."),
-                  ],
-                ),
+                buildRechestText(" 10 .After clicking the", "Save & Next",
+                    "button for the last question in a Section, you will automatically be taken to the first question of the next Section in sequence."),
                 5.heightBox,
                 "11. You can move the mouse cursor over the name of a Section to view the answering status for that Section."
                     .text
@@ -297,25 +295,26 @@ class TestseriesInstructionView
     );
   }
 
-  buildInstructions(String image, text) {
+  Widget buildInstructions(String image, String text) {
     return Row(
       children: [
-        10.widthBox,
+        SizedBox(width: 10),
         Image.asset(
           image,
           width: 20,
-          //÷color: Colors.pink,
         ),
-        5.widthBox,
-        Text(
-          text,
-          style: AppStyle.txtPoppinsMedium12darkGray,
-        ).paddingSymmetric(horizontal: 3),
+        SizedBox(width: 5),
+        Flexible(
+          child: Text(
+            text,
+            style: AppStyle.txtPoppinsMedium12darkGray,
+          ).paddingSymmetric(horizontal: 3),
+        ),
       ],
     );
   }
 
-  buildRechestText(first, second, third) {
+  Widget buildRechestText(String first, String second, String third) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: RichText(
@@ -326,17 +325,18 @@ class TestseriesInstructionView
               style: const TextStyle(fontSize: 14, color: Colors.black),
             ),
             const WidgetSpan(
-              child: SizedBox(width: 8), // Adjust width as needed
+              child: SizedBox(width: 8),
             ),
             TextSpan(
               text: second,
               style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600),
+                fontSize: 14,
+                color: Colors.black,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             const WidgetSpan(
-              child: SizedBox(width: 8), // Adjust width as needed
+              child: SizedBox(width: 8),
             ),
             TextSpan(
               text: third,
@@ -348,45 +348,55 @@ class TestseriesInstructionView
     );
   }
 
-  buildFourRechestText(first, second, third, four, five) {
-    return RichText(
-      text: TextSpan(
-        children: [
-          TextSpan(
-            text: first,
-            style: const TextStyle(fontSize: 14, color: Colors.black),
-          ),
-          const WidgetSpan(
-            child: SizedBox(width: 8), // Adjust width as needed
-          ),
-          TextSpan(
-            text: second,
-            style: const TextStyle(
-                fontSize: 14, color: Colors.black, fontWeight: FontWeight.w600),
-          ),
-          const WidgetSpan(
-            child: SizedBox(width: 8), // Adjust width as needed
-          ),
-          TextSpan(
-            text: third,
-            style: const TextStyle(fontSize: 14, color: Colors.black),
-          ),
-          const WidgetSpan(
-            child: SizedBox(width: 8), // Adjust width as needed
-          ),
-          TextSpan(
-            text: four,
-            style: const TextStyle(
-                fontSize: 14, color: Colors.black, fontWeight: FontWeight.w600),
-          ),
-          const WidgetSpan(
-            child: SizedBox(width: 8), // Adjust width as needed
-          ),
-          TextSpan(
-            text: five,
-            style: const TextStyle(fontSize: 14, color: Colors.black),
-          ),
-        ],
+  Widget buildFourRechestText(
+      String first, String second, String third, String four, String five) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: first,
+              style: const TextStyle(fontSize: 14, color: Colors.black),
+            ),
+            const WidgetSpan(
+              child: SizedBox(width: 8),
+            ),
+            TextSpan(
+              text: second,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const WidgetSpan(
+              child: SizedBox(width: 8),
+            ),
+            TextSpan(
+              text: third,
+              style: const TextStyle(fontSize: 14, color: Colors.black),
+            ),
+            const WidgetSpan(
+              child: SizedBox(width: 8),
+            ),
+            TextSpan(
+              text: four,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const WidgetSpan(
+              child: SizedBox(width: 8),
+            ),
+            TextSpan(
+              text: five,
+              style: const TextStyle(fontSize: 14, color: Colors.black),
+            ),
+          ],
+        ),
       ),
     );
   }

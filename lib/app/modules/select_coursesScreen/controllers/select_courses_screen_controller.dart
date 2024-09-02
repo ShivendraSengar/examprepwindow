@@ -1,9 +1,15 @@
 import 'dart:developer';
 
 import 'package:exam_prep_tool/app/data/irepositry/icourses_repo.dart';
+import 'package:exam_prep_tool/app/data/irepositry/ilogin_repo.dart';
+import 'package:exam_prep_tool/app/data/irepositry/iprofile_repo.dart';
 import 'package:exam_prep_tool/app/data/modal/course.dart';
 //es/courses_details.dart';
 import 'package:exam_prep_tool/app/data/repositry/courses_repo.dart';
+import 'package:exam_prep_tool/app/data/repositry/login_repo.dart';
+import 'package:exam_prep_tool/app/data/repositry/profile.dart';
+import 'package:exam_prep_tool/app/modules/login_screen/controllers/login_screen_controller.dart';
+import 'package:exam_prep_tool/app/modules/proile_page/controllers/proile_page_controller.dart';
 import 'package:exam_prep_tool/app/utils/pref_utis.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,7 +20,17 @@ class SelectCoursesScreenController extends GetxController {
   final CourseRepo repositry = CoursesRepoIml();
   final PrefUtils prefutils = Get.find();
   RxBool isLoading = false.obs;
-  var dropdownvalue;
+// new chnges 
+  final LoginScreenController logout = Get.find();
+  final ProilePageController profile = Get.find();
+  final EditProfileRepo profilrrepositry = EditProfileImpl();
+  final LoginRepo repositry1 = LoginRepoImpl();
+
+  // final MoreCoursesController subscribe = Get.find();
+  RxBool status = false.obs;
+  RxBool twentyprevious = false.obs;
+  RxBool isVisible = false.obs;
+  
 
   // Fetch branch data (you can replace this with your actual API call or data source)
 

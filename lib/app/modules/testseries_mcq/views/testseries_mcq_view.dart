@@ -1,10 +1,13 @@
 import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries_modal.dart';
+import 'package:exam_prep_tool/app/modules/testseries_mcq/views/randow_question_card_page.dart';
 import 'package:exam_prep_tool/app/routes/app_pages.dart';
 import 'package:exam_prep_tool/app/themes/app_style.dart';
+import 'package:exam_prep_tool/app/utils/const.dart';
 import 'package:exam_prep_tool/app/widgets/custom_colors.dart';
 import 'package:exam_prep_tool/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -17,79 +20,75 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
   @override
   Widget build(BuildContext context) {
     final Testseries testSeries = Get.arguments as Testseries;
-   
+
     controller.testSeries.value = testSeries;
-      void submitTest() {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            //title: Text('Time is up!${testSeries.questions!.length}'),
-            content: Container(
-              height: Get.height/4,
-              width: 400,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    
-                  "Your Tsst has been submmited".text.size(20).fontWeight(FontWeight.bold).bold.make(),
-                     
-                             10.heightBox,
-                            //  10.heightBox,
-"You got ${(controller.totalMarks.value - controller.incorrectMarks.toDouble()).toStringAsFixed(2)} marks"
-    .text
-    .purple500
-    .size(16)
-    .bold
-    .make()
-    .p16(),
+    // void submitTest() {
+    //   showDialog(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return AlertDialog(
+    //         //title: Text('Time is up!${testSeries.questions!.length}'),
+    //         content: Container(
+    //           height: Get.height / 4,
+    //           width: 400,
+    //           child: Center(
+    //             child: Column(
+    //                 mainAxisAlignment: MainAxisAlignment.center,
+    //                 children: [
+    //                   "Your Tsst has been submmited"
+    //                       .text
+    //                       .size(20)
+    //                       .fontWeight(FontWeight.bold)
+    //                       .bold
+    //                       .make(),
 
-                  ]
-                ),
-              ),
-            ),
-            actions: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Get.back(); // Dismiss the dialog first
- 
-                    },
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                    child: Text('Cancel'),
-                  ).p16(),
-                 
-                    Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                 
-                  ElevatedButton(
-                    onPressed: () {
-                      onSomeEvent();
-                      
-                   
-                    },
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                    child: Text('View Analysis'),
-                  ).p16(),
-                ],
-              ),
-                  
-                ],
-              ),
-            ],
-          );
-        },
-      );
-    }
+    //                   10.heightBox,
+    //                   //  10.heightBox,
+    //                   "You got ${(controller.totalMarks.value - controller.incorrectMarks.toDouble()).toStringAsFixed(2)} marks"
+    //                       .text
+    //                       .purple500
+    //                       .size(16)
+    //                       .bold
+    //                       .make()
+    //                       .p16(),
+    //                 ]),
+    //           ),
+    //         ),
+    //         actions: <Widget>[
+    //           Row(
+    //             crossAxisAlignment: CrossAxisAlignment.center,
+    //             mainAxisAlignment: MainAxisAlignment.center,
+    //             children: [
+    //               ElevatedButton(
+    //                 onPressed: () {
+    //                   Get.back(); // Dismiss the dialog first
+    //                 },
+    //                 style:
+    //                     ElevatedButton.styleFrom(backgroundColor: Colors.red),
+    //                 child: Text('Cancel'),
+    //               ).p16(),
+    //               Row(
+    //                 mainAxisAlignment: MainAxisAlignment.center,
+    //                 children: [
+    //                   ElevatedButton(
+    //                     onPressed: () {
+    //                       onSomeEvent();
+    //                     },
+    //                     style: ElevatedButton.styleFrom(
+    //                         backgroundColor: Colors.green),
+    //                     child: Text('View Analysis'),
+    //                   ).p16(),
+    //                 ],
+    //               ),
+    //             ],
+    //           ),
+    //         ],
+    //       );
+    //     },
+    //   );
+    // }
 
-    // Define the onTimeUp function
+    // // Define the onTimeUp function
     void onTimeUp() {
       showDialog(
         context: context,
@@ -97,7 +96,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
           return AlertDialog(
             //title: Text('Time is up!${testSeries.questions!.length}'),
             content: Container(
-              height: Get.height/2.5,
+              height: Get.height / 2.5,
               width: 400,
               child: Center(
                 child: Column(
@@ -143,14 +142,14 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                               ]),
                             ],
                           ).p16(),
-    //                          10.heightBox,
-    //                    "You got ${(controller.totalMarks.value - controller.incorrectMarks.toDouble()).toStringAsFixed(2)} marks"
-    // .text
-    // .purple500
-    // .size(16)
-    // .bold
-    // .make()
-    // .p16(),
+                          //                          10.heightBox,
+                          //                    "You got ${(controller.totalMarks.value - controller.incorrectMarks.toDouble()).toStringAsFixed(2)} marks"
+                          // .text
+                          // .purple500
+                          // .size(16)
+                          // .bold
+                          // .make()
+                          // .p16(),
                           10.heightBox,
                           "Are You Sure To Submit The Test !"
                               .text
@@ -173,8 +172,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      submitTest();
-                      
+                      // submitTest();
                     },
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.green),
@@ -182,7 +180,6 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                   ).p16(),
                   ElevatedButton(
                     onPressed: () {
-                   
                       Navigator.of(context).pop();
                     },
                     style:
@@ -198,7 +195,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
     }
 
     // Start the timer with 1 hour for example
-    controller.startTimer(testSeries.timeData!.duration!.toInt(), onTimeUp);
+    // // controller.startTimer(testSeries.timeData!.duration!.toInt(), onTimeUp);
 // double usedTime = controller.calculateUsedTime(controller. startTimeFormatted.v, DateTime.now());
 
     return Scaffold(
@@ -211,11 +208,8 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                
-             Text("${controller.testcontroller.testSeries[0].id}.toString()"),
-               
-               
-               
+                Text(
+                    "${testSeries.questionType.toString()}"),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -245,6 +239,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                               fontWeight: FontWeight.bold),
                                         ));
                                   }),
+                                
                                   60.widthBox,
                                   Column(
                                     children: [
@@ -260,11 +255,13 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                     BorderRadius.circular(15),
                                                 color: Colors.red),
                                             child: Obx(() {
-  return Text(
-    ' ${controller.incorrectMarks.value}',
-    style: TextStyle(fontSize: 16, color: Colors.white),
-  );
-}),
+                                              return Text(
+                                                ' ${controller.incorrectMarks.value}',
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.white),
+                                              );
+                                            }),
                                           ),
                                           20.widthBox,
                                           Obx(() {
@@ -287,326 +284,1247 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                   )
                                 ],
                               ),
+
+                            //   Obx(() {
+                            //     var question =
+                            //         controller.testSeries.value.questions?[
+                            //             controller.currentQuestionIndex.value];
+
+                            //     return SingleChildScrollView(
+                            //       child: Column(
+                            //         crossAxisAlignment:
+                            //             CrossAxisAlignment.start,
+                            //         mainAxisAlignment: MainAxisAlignment.start,
+                            //         children: [
+                            //           if (question != null) ...[
+                            //             Row(
+                            //               children: [
+                            //                 Text(
+                            //               ' ${question.question}',
+                            //               style: TextStyle(
+                            //                   fontWeight: FontWeight.bold),
+                            //             ),
+                            //                 Text(
+                            //                   ' ${question.type}',
+                            //                   style: TextStyle(
+                            //                       fontWeight: FontWeight.bold),
+                            //                 ),
+                            //               ],
+                            //             ),
+                            //              if (question.questionImage != null && question.questionImage!.isNotEmpty)
+                            //   Image.network(
+                            //     "${imageUrl + question.questionImage.toString()}",
+                            //     errorBuilder: (context, error, stackTrace) {
+                            //       return Text('Image not available'); // Placeholder text
+                            //     },
+                            //   )
+                            // else
+                            //   Text(''), // Placeholder text when no image is available
+
+                            //             SizedBox(height: 2),
+                            //             ...List.generate(
+                            //                 question.options!.length, (index) {
+                            //               return RadioListTile(
+                            //                 title: Text(question
+                            //                     .options![index].option
+                            //                     .toString()),
+                            //                 value: index,
+                            //                 groupValue: controller
+                            //                     .selectedOptionIndex.value,
+                            //                 onChanged: (int? value) {
+                            //                   if (controller.selectedOptionIndex
+                            //                           .value ==
+                            //                       value) {
+                            //                     // Unselect the option if the same option is clicked again
+                            //                     controller.selectedOptionIndex
+                            //                         .value = -1;
+                            //                   } else {
+                            //                     // Select the new option
+                            //                     controller.selectedOptionIndex
+                            //                         .value = value!;
+                            //                   }
+                            //                 },
+                            //               );
+                            //             }),
+                            //             Row(
+                            //               mainAxisAlignment:
+                            //                   MainAxisAlignment.spaceBetween,
+                            //               children: [
+                            //                 InkWell(
+                            //                   onTap: () {
+                            //                     if (controller
+                            //                             .currentQuestionIndex
+                            //                             .value >
+                            //                         0) {
+                            //                       controller.previousQuestion();
+                            //                     }
+                            //                   },
+                            //                   child: buildButton("Previous"),
+                            //                 ),
+                            //                 InkWell(
+                            //                   onTap: () {
+                            //                     final selectedOptionIndex =
+                            //                         controller
+                            //                             .selectedOptionIndex
+                            //                             .value;
+
+                            //                     if (selectedOptionIndex != -1) {
+                            //                       final selectedOption = question!
+                            //                           .options![
+                            //                               selectedOptionIndex]
+                            //                           .option;
+
+                            //                       // Compare with the explanation text to check if the selected option is correct
+                            //                       bool isCorrect = question
+                            //                           .explanation!.text!
+                            //                           .contains(
+                            //                               selectedOption!);
+
+                            //                       // Create a map with the required data
+                            //                       final answerData = {
+                            //                         "answer": selectedOption,
+                            //                         "question": question.id,
+                            //                         "isRight": isCorrect,
+                            //                       };
+
+                            //                       // Add the answer data to the answersList
+                            //                       controller.answersList
+                            //                           .add(answerData);
+
+                            //                       if (isCorrect) {
+                            //                         // Add marks if the answer is correct
+                            //                         controller
+                            //                                 .totalMarks.value +=
+                            //                             question.marks!;
+                            //                       } else {
+                            //                         // Add negative marks if the answer is incorrect
+                            //                         controller.incorrectMarks
+                            //                                 .value +=
+                            //                             question.negativeMarks!
+                            //                                 .toDouble();
+                            //                       }
+
+                            //                       // Debugging print statements
+                            //                       print(
+                            //                           "Question ID: ${question.id}");
+                            //                       print(
+                            //                           "Selected Option: $selectedOption, Correct: $isCorrect");
+                            //                       print(
+                            //                           "Total Marks: ${controller.totalMarks.value}");
+                            //                       print(
+                            //                           "Incorrect Marks: ${controller.incorrectMarks.value}");
+                            //                       print(
+                            //                           "Negative Marks from Model: ${question.negativeMarks}");
+                            //                     }
+
+                            //                     controller.markForReview();
+                            //                   },
+                            //                   child: buildButton(
+                            //                       "Mark for Review"),
+                            //                 ),
+                            //                 InkWell(
+                            //                   onTap: () {
+                            //                     if (controller
+                            //                             .currentQuestionIndex
+                            //                             .value <
+                            //                         controller.testSeries.value
+                            //                             .questions!.length) {
+                            //                       final selectedOptionIndex =
+                            //                           controller
+                            //                               .selectedOptionIndex
+                            //                               .value;
+
+                            //                       if (selectedOptionIndex !=
+                            //                           -1) {
+                            //                         final selectedOption = question!
+                            //                             .options![
+                            //                                 selectedOptionIndex]
+                            //                             .option;
+
+                            //                         // Compare with the explanation text to check if the selected option is correct
+                            //                         bool isCorrect = question
+                            //                             .explanation!.text!
+                            //                             .contains(
+                            //                                 selectedOption!);
+
+                            //                         // Create a map with the required data
+                            //                         final answerData = {
+                            //                           "answer": selectedOption,
+                            //                           "question": question.id,
+                            //                           "isRight": isCorrect,
+                            //                         };
+
+                            //                         // Add the answer data to the answersList
+                            //                         controller.answersList
+                            //                             .add(answerData);
+
+                            //                         if (isCorrect) {
+                            //                           // Add marks if the answer is correct
+                            //                           controller.totalMarks
+                            //                                   .value +=
+                            //                               question.marks!;
+                            //                         } else {
+                            //                           // Add negative marks if the answer is incorrect
+                            //                           controller.incorrectMarks
+                            //                                   .value +=
+                            //                               question
+                            //                                   .negativeMarks!
+                            //                                   .toDouble();
+                            //                         }
+
+                            //                         // Debugging print statements
+                            //                         print(
+                            //                             "Question ID: ${question.id}");
+                            //                         print(
+                            //                             "Selected Option: $selectedOption, Correct: $isCorrect");
+                            //                         print(
+                            //                             "Total Marks: ${controller.totalMarks.value}");
+                            //                         print(
+                            //                             "Incorrect Marks: ${controller.incorrectMarks.value}");
+                            //                         print(
+                            //                             "Negative Marks from Model: ${question.negativeMarks}");
+                            //                       }
+
+                            //                       controller
+                            //                           .testAnswerquestion();
+
+                            //                       // Move to the next question after submitting the answer
+                            //                       controller
+                            //                           .submitAnswer(onTimeUp);
+                            //                     }
+                            //                   },
+                            //                   child:
+                            //                       buildButton("Save and Next"),
+                            //                 ),
+                            //               ],
+                            //             ).w(400),
+                            //           ],
+                            //         ],
+                            //       ).w(Get.width / 3),
+                            //     );
+                            //   }),
+                          
+
+                          // ///////////////old code
+// Obx(() {
+//   var question = controller.testSeries.value.questions?[controller.currentQuestionIndex.value];
+
+//   return SingleChildScrollView(
+//     child: Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       mainAxisAlignment: MainAxisAlignment.start,
+//       children: [
+//         if (question != null) ...[
+//           Row(
+//             children: [
+//               Text(
+//                 ' ${question.question}',
+//                 style: TextStyle(fontWeight: FontWeight.bold),
+//               ),
+//               Text(
+//                 ' ${question.type}',
+//                 style: TextStyle(fontWeight: FontWeight.bold),
+//               ),
+//             ],
+//           ),
+//           if (question.questionImage != null && question.questionImage!.isNotEmpty)
+//             Image.network(
+//               "${imageUrl + question.questionImage.toString()}",
+//               errorBuilder: (context, error, stackTrace) {
+//                 return Text('Image not available'); // Placeholder text
+//               },
+//             )
+//           else
+//             Text(''), // Placeholder text when no image is available
+
+//           SizedBox(height: 2),
+
+//           // Different UI based on question type
+//           if (question.type == 'mcq') ...[
+//             ...List.generate(question.options!.length, (index) {
+//               return RadioListTile(
+//                 title: Text(question.options![index].option.toString()),
+//                 value: index,
+//                 groupValue: controller.selectedOptionIndex.value,
+//                 onChanged: (int? value) {
+//                   if (controller.selectedOptionIndex.value == value) {
+//                     // Unselect the option if the same option is clicked again
+//                     controller.selectedOptionIndex.value = -1;
+//                   } else {
+//                     // Select the new option
+//                     controller.selectedOptionIndex.value = value!;
+//                   }
+//                 },
+//               );
+//             }),
+//           ] else if (question.type == 'msq') ...[
+//             ...List.generate(question.options!.length, (index) {
+//               return CheckboxListTile(
+//                 title: Text(question.options![index].option.toString()),
+//                 value: controller.selectedOptionIndexes.contains(index),
+//                 onChanged: (bool? value) {
+//                   if (value == true) {
+//                     controller.selectedOptionIndexes.add(index);
+//                   } else {
+//                     controller.selectedOptionIndexes.remove(index);
+//                   }
+//                 },
+//               );
+//             }),
+//           ] else if (question.type == 'integer') ...[
+//   TextField(
+//     controller: controller.inputAnswer.value, // Bind the controller
+//     decoration: InputDecoration(labelText: "Enter your answer"),
+//     keyboardType: TextInputType.number,
+//     onChanged: (value) {
+//       controller.integerAnswer.value = int.tryParse(value);
+//     },
+//   ),
+
+
+//           ],
+
+//           SizedBox(height: 10),
+
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: [
+//               InkWell(
+//                 onTap: () {
+//                  bool isAnswered = false;
+// String? selectedOption;
+// bool isCorrect = false;
+
+// if (question.type == 'mcq' || question.type == 'msq') {
+//   final selectedOptionIndex = controller.selectedOptionIndex.value;
+
+//   if (selectedOptionIndex != -1) {
+//     selectedOption = question!.options![selectedOptionIndex].option;
+//     isAnswered = true;
+//   }
+
+// } else 
+//  if (question.type == 'integer') {
+//   if (controller.integerAnswer.value != null) {
+//     selectedOption = controller.integerAnswer.value.toString();
+//     isAnswered = true;
+//   } else {
+//     // Show an alert if no value is entered
+//     Get.snackbar("Unanswered Question", "Please enter a value before proceeding.");
+//   }
+
+
+// }
+
+// if (isAnswered) {
+//   isCorrect = question!.explanation!.text!.contains(selectedOption!);
+
+//   final answerData = {
+//     "answer": selectedOption,
+//     "question": question.id,
+//     "isRight": isCorrect,
+//   };
+
+//   controller.answersList.add(answerData);
+
+//   if (isCorrect) {
+//     controller.totalMarks.value += question.marks!;
+//   } else {
+//     controller.incorrectMarks.value += question.negativeMarks!.toDouble();
+//   }
+
+//   // Submit the answer and move to the next question
+//   controller.testAnswerquestion();
+//   controller.submitAnswer(onTimeUp);
+// } else {
+//   // Show a prompt if the question is unanswered
+//   Get.snackbar("Unanswered Question", "Please select or enter an answer before proceeding.");
+// }
+
+//                 },
+//                 child: buildButton("Save and Next"),
+//               ),
+
+//               InkWell(
+//                 onTap: () {
+//                   bool isAnswered = false;
+//                   String? selectedOption;
+//                   bool isCorrect = false;
+
+//                   if (question.type == 'mcq' || question.type == 'msq') {
+//                     final selectedOptionIndex = controller.selectedOptionIndex.value;
+
+//                     if (selectedOptionIndex != -1) {
+//                       selectedOption = question!.options![selectedOptionIndex].option;
+//                       isAnswered = true;
+//                     }
+
+//                   } else if (question.type == 'integer') {
+//                     if (controller.integerAnswer.value != null) {
+//                       selectedOption = controller.integerAnswer.value.toString();
+//                       isAnswered = true;
+//                     }
+//                   }
+
+//                   if (isAnswered) {
+//                     isCorrect = question!.explanation!.text!.contains(selectedOption!);
+
+//                     final answerData = {
+//                       "answer": selectedOption,
+//                       "question": question.id,
+//                       "isRight": isCorrect,
+//                     };
+
+//                     controller.answersList.add(answerData);
+
+//                     if (isCorrect) {
+//                       controller.totalMarks.value += question.marks!;
+//                     } else {
+//                       controller.incorrectMarks.value += question.negativeMarks!.toDouble();
+//                     }
+
+//                     controller.markForReview();
+//                   } else {
+//                     // Show a prompt or handle as incorrect answer
+//                     Get.snackbar("Unanswered Question", "Please select or enter an answer before marking for review.");
+//                   }
+//                 },
+//                 child: buildButton("Mark for Review"),
+//               ),
+//             ],
+//           ).w(400),
+//         ],
+//       ],
+//     ).w(Get.width / 3),
+//   );
+// }),
+ 
+
+//                    //////////////////////////////////////       //  
+// Inside your Obx widget:
+// Obx(() {
+//   var question = controller.testSeries.value.questions?[controller.currentQuestionIndex.value];
+
+//   // Load the previously selected answer if available
+//   if (question != null) {
+//     controller.selectedOptionIndex.value = controller.savedAnswers[question.id] ?? -1;
+//     controller.selectedOptionIndexes.value = controller.savedMsqAnswers[question.id] ?? [];
+//     controller.inputAnswer.value.text = controller.savedIntegerAnswers[question.id]?.toString() ?? '';
+//   }
+
+//   return SingleChildScrollView(
+//     child: Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       mainAxisAlignment: MainAxisAlignment.start,
+//       children: [
+//         // Your existing question display code
+//         if (question != null) ...[
+//           Row(
+//             children: [
+//               Text(
+//                 ' ${question.question}',
+//                 style: TextStyle(fontWeight: FontWeight.bold),
+//               ),
+//               Text(
+//                 ' ${question.type}',
+//                 style: TextStyle(fontWeight: FontWeight.bold),
+//               ),
+//             ],
+//           ),
+//           if (question.questionImage != null && question.questionImage!.isNotEmpty)
+//             Image.network(
+//               "${imageUrl + question.questionImage.toString()}",
+//               errorBuilder: (context, error, stackTrace) {
+//                 return Text('Image not available'); // Placeholder text
+//               },
+//             )
+//           else
+//             Text(''), // Placeholder text when no image is available
+
+//           SizedBox(height: 2),
+
+//           // Your existing options display code
+//           if (question.type == 'mcq') ...[
+//             ...List.generate(question.options!.length, (index) {
+//               return RadioListTile(
+//                 title: Text(question.options![index].option.toString()),
+//                 value: index,
+//                 groupValue: controller.selectedOptionIndex.value,
+//                 onChanged: (int? value) {
+//                   if (controller.selectedOptionIndex.value == value) {
+//                     controller.selectedOptionIndex.value = -1;
+//                   } else {
+//                     controller.selectedOptionIndex.value = value!;
+//                   }
+//                 },
+//               );
+//             }),
+//           ] else if (question.type == 'msq') ...[
+//             ...List.generate(question.options!.length, (index) {
+//               return CheckboxListTile(
+//                 title: Text(question.options![index].option.toString()),
+//                 value: controller.selectedOptionIndexes.contains(index),
+//                 onChanged: (bool? value) {
+//                   if (value == true) {
+//                     controller.selectedOptionIndexes.add(index);
+//                   } else {
+//                     controller.selectedOptionIndexes.remove(index);
+//                   }
+//                 },
+//               );
+//             }),
+//           ] else if (question.type == 'integer') ...[
+//             TextField(
+//               controller: controller.inputAnswer.value,
+//               decoration: InputDecoration(labelText: "Enter your answer"),
+//               keyboardType: TextInputType.number,
+//               onChanged: (value) {
+//                 controller.integerAnswer.value = int.tryParse(value);
+//               },
+//             ),
+//           ],
+
+//           SizedBox(height: 10),
+
+//           // Your "Save and Next" and "Mark for Review" button code
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: [
+//               InkWell(
+//                 onTap: () {
+//                   bool isAnswered = false;
+//                   String? selectedOption;
+//                   bool isCorrect = false;
+
+//                   if (question.type == 'mcq') {
+//                     final selectedOptionIndex = controller.selectedOptionIndex.value;
+//                     if (selectedOptionIndex != -1) {
+//                       selectedOption = question!.options![selectedOptionIndex].option;
+//                       isAnswered = true;
+//                       controller.savedAnswers[question.id.toString()] = selectedOptionIndex;  // Save selected option
+//                     }
+//                   } else if (question.type == 'msq') {
+//                     if (controller.selectedOptionIndexes.isNotEmpty) {
+//                       selectedOption = controller.selectedOptionIndexes.map((index) => question!.options![index].option).join(', ');
+//                       isAnswered = true;
+//                       controller.savedMsqAnswers[question.id.toString()] = controller.selectedOptionIndexes.toList();  // Save selected MSQ options
+//                     }
+//                   } else if (question.type == 'integer') {
+//                     if (controller.integerAnswer.value != null) {
+//                       selectedOption = controller.integerAnswer.value.toString();
+//                       isAnswered = true;
+//                       controller.savedIntegerAnswers[question.id.toString()] = controller.integerAnswer.value!;  // Save integer answer
+//                     }
+//                   }
+
+//                   if (isAnswered) {
+//                     isCorrect = question!.explanation!.text!.contains(selectedOption!);
+
+//                     final answerData = {
+//                       "answer": selectedOption,
+//                       "question": question.id,
+//                       "isRight": isCorrect,
+//                     };
+
+//                     controller.answersList.add(answerData);
+
+//                     if (isCorrect) {
+//                       controller.totalMarks.value += question.marks!;
+//                     } else {
+//                       controller.incorrectMarks.value += question.negativeMarks!.toDouble();
+//                     }
+
+//                     controller.testAnswerquestion();
+//                     controller.submitAnswer(onTimeUp);
+//                   } else {
+//                     Get.snackbar("Unanswered Question", "Please select or enter an answer before proceeding.");
+//                   }
+//                 },
+//                 child: buildButton("Save and Next"),
+//               ),
+
+//               InkWell(
+//                 onTap: () {
+//                   // Similar logic for "Mark for Review" button
+//                 },
+//                 child: buildButton("Mark for Review"),
+//               ),
+//             ],
+//           ).w(400),
+//         ],
+//       ],
+//     ).w(Get.width / 3),
+//   );
+// }),
+
 Obx(() {
-  var question = controller.testSeries.value.questions?[
-      controller.currentQuestionIndex.value];
+  var question = controller.testSeries.value.questions?[controller.currentQuestionIndex.value];
+
+  // Load the previously selected answer if available
+  if (question != null) {
+    controller.selectedOptionIndex.value = controller.savedAnswers[question.id] ?? -1;
+    controller.selectedOptionIndexes.value = controller.savedMsqAnswers[question.id] ?? [];
+    controller.inputAnswer.value.text = controller.savedIntegerAnswers[question.id]?.toString() ?? '';
+  }
 
   return SingleChildScrollView(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        if (question != null) ...[
-          Text(
-            ' ${question.question}',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+        
+       if (question != null) ...[
+        
+  Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    mainAxisSize: MainAxisSize.min,
+    children: [
+   Html(
+  data: """
+  <pre><code>
+  ${correctHtmlContent(question.question.toString())}
+
+  </code></pre>
+  """,
+  style: {
+    "body": Style(
+      fontWeight: FontWeight.bold,
+      whiteSpace:  WhiteSpace.normal, 
+      fontSize: FontSize(16.0),
+    ),
+    "pre": Style(
+      whiteSpace:  WhiteSpace.normal, 
+      fontFamily: 'monospace',
+  
+   
+    ),
+    "code": Style(
+      fontFamily: 'monospace',
+      whiteSpace:  WhiteSpace.normal, 
+      backgroundColor: Colors.grey.shade100,
+    ),
+  },
+).p(4).w(350),
+
+
+      // Text(
+      //   ' ${_stripHtmlTags(question.question.toString())}',
+      //   maxLines: 8,
+        
+      //   style: TextStyle(fontWeight: FontWeight.bold),
+      // ).p(8).w(350),
+      Text(
+        ' ${question.type}',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+    ],
+  ),8.heightBox,
+  if (question.questionImage != null && question.questionImage!.isNotEmpty)
+    Image.network(
+      "${imageUrl + question.questionImage.toString()}",
+      errorBuilder: (context, error, stackTrace) {
+        return Text('Image not available'); // Placeholder text
+      },)
+    
+
+
+          else
+            Text(''), // Placeholder text when no image is available
+
           SizedBox(height: 2),
-          ...List.generate(question.options!.length, (index) {
-            return RadioListTile(
-              title: Text(question.options![index].option.toString()),
-              value: index,
-              groupValue: controller.selectedOptionIndex.value,
-              onChanged: (int? value) {
-                if (controller.selectedOptionIndex.value == value) {
-                  // Unselect the option if the same option is clicked again
-                  controller.selectedOptionIndex.value = -1;
-                } else {
-                  // Select the new option
-                  controller.selectedOptionIndex.value = value!;
-                }
+
+          // Different UI based on question type
+          if (question.type == 'mcq') ...[
+            ...List.generate(question.options!.length, (index) {
+              return RadioListTile(
+                title: Text(question.options![index].option.toString()),
+                value: index,
+                groupValue: controller.selectedOptionIndex.value,
+                onChanged: (int? value) {
+                // If the same option is clicked again, unselect it
+        if (controller.selectedOptionIndex.value == value) {
+          controller.selectedOptionIndex.value = -1; // Unselect the option
+          controller.savedAnswers.remove(question.id); // Remove the saved answer
+        } else {
+          // Select the new option
+          controller.selectedOptionIndex.value = value!;
+          controller.savedAnswers[question.id.toString()] = value; // Save selected option
+        }
+      
+                  // if (controller.selectedOptionIndex.value == value) {
+                  //   // Unselect the option if the same option is clicked again
+                  //   controller.selectedOptionIndex.value = -1;
+                  // } else {
+                  //   // Select the new option
+                  //   controller.selectedOptionIndex.value = value!;
+                  //   controller.savedAnswers[question.id.toString()] = value; // Save selected option
+                  // }
+                },
+              );
+            }),
+          ] else if (question.type == 'msq') ...[
+            ...List.generate(question.options!.length, (index) {
+              return CheckboxListTile(
+                title: Text(question.options![index].option.toString()),
+                value: controller.selectedOptionIndexes.contains(index),
+                onChanged: (bool? value) {
+                  if (value == true) {
+                    controller.selectedOptionIndexes.add(index);
+                    controller.savedMsqAnswers[question.id.toString()] = controller.selectedOptionIndexes.toList(); // Save selected MSQ options
+                  } else {
+                    controller.selectedOptionIndexes.remove(index);
+                    controller.savedMsqAnswers[question.id.toString()] = controller.selectedOptionIndexes.toList(); // Save selected MSQ options
+                  }
+                },
+              );
+            }),
+          ] else if (question.type == 'integer') ...[
+            TextField(
+              controller: controller.inputAnswer.value,
+              decoration: InputDecoration(labelText: "Enter your answer"),
+              keyboardType: TextInputType.number,
+              onChanged: (value) {
+                controller.integerAnswer.value = int.tryParse(value);
+                controller.savedIntegerAnswers[question.id.toString()] = controller.integerAnswer.value ?? 0; // Save integer answer
               },
-            );
-          }),
+            ),
+          ],
+
+          SizedBox(height: 10),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-             InkWell(
-  onTap: () {
-    if (controller.currentQuestionIndex.value > 0) {
-      controller.previousQuestion();
-    }
-  },
-  child: buildButton("Previous"),
-),
-InkWell(
-  onTap: () {
-    final selectedOptionIndex = controller.selectedOptionIndex.value;
+              InkWell(
+                                              onTap: () {
+                                                if (controller
+                                                        .currentQuestionIndex
+                                                        .value >
+                                                    0) {
+                                                  controller.previousQuestion();
+                                                }
+                                              },
+                                              child: buildButton("Previous"),
+                                            ),
+              InkWell(
+                onTap: () {
+                  bool isAnswered = false;
+                  String? selectedOption;
+                  bool isCorrect = false;
 
-    if (selectedOptionIndex != -1) {
-      final selectedOption = question!.options![selectedOptionIndex].option;
+                  if (question.type == 'mcq') {
+                    final selectedOptionIndex = controller.selectedOptionIndex.value;
 
-      // Compare with the explanation text to check if the selected option is correct
-      bool isCorrect = question.explanation!.text!.contains(selectedOption!);
+                    if (selectedOptionIndex != -1) {
+                      selectedOption = question.options![selectedOptionIndex].option;
+                      isAnswered = true;
+                      controller.savedAnswers[question.id.toString()] = selectedOptionIndex;  // Save selected option
+                    }
+                  } else if (question.type == 'msq') {
+                    if (controller.selectedOptionIndexes.isNotEmpty) {
+                      selectedOption = controller.selectedOptionIndexes.map((index) => question.options![index].option).join(', ');
+                      isAnswered = true;
+                      controller.savedMsqAnswers[question.id.toString()] = controller.selectedOptionIndexes.toList();  // Save selected MSQ options
+                    }
+                  } else if (question.type == 'integer') {
+                    if (controller.integerAnswer.value != null) {
+                      selectedOption = controller.integerAnswer.value.toString();
+                      isAnswered = true;
+                      controller.savedIntegerAnswers[question.id.toString()] = controller.integerAnswer.value!;  // Save integer answer
+                    }
+                  }
 
-      // Create a map with the required data
-      final answerData = {
-        "answer": selectedOption,
-        "question": question.id,
-        "isRight": isCorrect,
-      };
+                  if (isAnswered) {
+                    isCorrect = question.explanation!.text!.contains(selectedOption!);
 
-      // Add the answer data to the answersList
-      controller.answersList.add(answerData);
+                    final answerData = {
+                      "answer": selectedOption,
+                      "question": question.id,
+                      "isRight": isCorrect,
+                    };
 
-      if (isCorrect) {
-        // Add marks if the answer is correct
-        controller.totalMarks.value += question.marks!;
-      } else {
-        // Add negative marks if the answer is incorrect
-        controller.incorrectMarks.value += question.negativeMarks!.toDouble();
-      }
+                    controller.answersList.add(answerData);
 
-      // Debugging print statements
-      print("Question ID: ${question.id}");
-      print("Selected Option: $selectedOption, Correct: $isCorrect");
-      print("Total Marks: ${controller.totalMarks.value}");
-      print("Incorrect Marks: ${controller.incorrectMarks.value}");
-      print("Negative Marks from Model: ${question.negativeMarks}");
-    }
+                    if (isCorrect) {
+                      controller.totalMarks.value += question.marks!;
+                    } else {
+                      controller.incorrectMarks.value += question.negativeMarks!.toDouble();
+                    }
 
-    controller.markForReview();
-  },
-  child: buildButton("Mark for Review"),
-),
-InkWell(
-  onTap: () {
-    if (controller.currentQuestionIndex.value <
-        controller.testSeries.value.questions!.length) {
+                    controller.testAnswerquestion();
+                    controller.submitAnswer(onTimeUp);
+                  } else {
+                    Get.snackbar("Unanswered Question", "Please select or enter an answer before proceeding.");
+                  }
+                },
+                child: buildButton("Save and Next"),
+              ),
 
-      final selectedOptionIndex = controller.selectedOptionIndex.value;
+              InkWell(
+                onTap: () {
+                  bool isAnswered = false;
+                  String? selectedOption;
+                  bool isCorrect = false;
 
-      if (selectedOptionIndex != -1) {
-        final selectedOption = question!.options![selectedOptionIndex].option;
+                  if (question.type == 'mcq') {
+                    final selectedOptionIndex = controller.selectedOptionIndex.value;
 
-        // Compare with the explanation text to check if the selected option is correct
-        bool isCorrect = question.explanation!.text!.contains(selectedOption!);
+                    if (selectedOptionIndex != -1) {
+                      selectedOption = question.options![selectedOptionIndex].option;
+                      isAnswered = true;
+                    }
+                  } else if (question.type == 'msq') {
+                    if (controller.selectedOptionIndexes.isNotEmpty) {
+                      selectedOption = controller.selectedOptionIndexes.map((index) => question.options![index].option).join(', ');
+                      isAnswered = true;
+                    }
+                  } else if (question.type == 'integer') {
+                    if (controller.integerAnswer.value != null) {
+                      selectedOption = controller.integerAnswer.value.toString();
+                      isAnswered = true;
+                    }
+                  }
 
-        // Create a map with the required data
-        final answerData = {
-          "answer": selectedOption,
-          "question": question.id,
-          "isRight": isCorrect,
-        };
+                  if (isAnswered) {
+                    isCorrect = question.explanation!.text!.contains(selectedOption!);
 
-        // Add the answer data to the answersList
-        controller.answersList.add(answerData);
+                    final answerData = {
+                      "answer": selectedOption,
+                      "question": question.id,
+                      "isRight": isCorrect,
+                    };
 
-        if (isCorrect) {
-          // Add marks if the answer is correct
-          controller.totalMarks.value += question.marks!;
-        } else {
-          // Add negative marks if the answer is incorrect
-          controller.incorrectMarks.value += question.negativeMarks!.toDouble();
-        }
+                    controller.answersList.add(answerData);
 
-        // Debugging print statements
-        print("Question ID: ${question.id}");
-        print("Selected Option: $selectedOption, Correct: $isCorrect");
-        print("Total Marks: ${controller.totalMarks.value}");
-        print("Incorrect Marks: ${controller.incorrectMarks.value}");
-        print("Negative Marks from Model: ${question.negativeMarks}");
-      }
+                    if (isCorrect) {
+                      controller.totalMarks.value += question.marks!;
+                    } else {
+                      controller.incorrectMarks.value += question.negativeMarks!.toDouble();
+                    }
 
-      controller.testAnswerquestion();
-
-      // Move to the next question after submitting the answer
-      controller.submitAnswer(onTimeUp);
-    }
-  },
-  child: buildButton("Save and Next"),
-),
-
+                    controller.markForReview();
+                  } else {
+                    Get.snackbar("Unanswered Question", "Please select or enter an answer before marking for review.");
+                  }
+                },
+                child: buildButton("Mark for Review"),
+              ),
             ],
           ).w(400),
         ],
       ],
-    ).w(Get.width/3),
+    ).w(Get.width / 3),
   );
 }),
 
+                  
+                  
+//                    Obx(() {
+//   var question = controller.testSeries.value.questions?[controller.currentQuestionIndex.value];
+
+//   return SingleChildScrollView(
+//     child: Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       mainAxisAlignment: MainAxisAlignment.start,
+//       children: [
+//         if (question != null) ...[
+//           Row(
+//             children: [
+//               Text(
+//                 ' ${question.question}',
+//                 style: TextStyle(fontWeight: FontWeight.bold),
+//               ),
+//               Text(
+//                 ' ${question.type}',
+//                 style: TextStyle(fontWeight: FontWeight.bold),
+//               ),
+//             ],
+//           ),
+//           if (question.questionImage != null && question.questionImage!.isNotEmpty)
+//             Image.network(
+//               "${imageUrl + question.questionImage.toString()}",
+//               errorBuilder: (context, error, stackTrace) {
+//                 return Text('Image not available'); // Placeholder text
+//               },
+//             )
+//           else
+//             Text(''), // Placeholder text when no image is available
+
+//           SizedBox(height: 2),
+
+//           // Different UI based on question type
+//           if (question.type == 'mcq') ...[
+//             ...List.generate(question.options!.length, (index) {
+//               return RadioListTile(
+//                 title: Text(question.options![index].option.toString()),
+//                 value: index,
+//                 groupValue: controller.selectedOptionIndex.value,
+//                 onChanged: (int? value) {
+//                   if (controller.selectedOptionIndex.value == value) {
+//                     // Unselect the option if the same option is clicked again
+//                     controller.selectedOptionIndex.value = -1;
+//                   } else {
+//                     // Select the new option
+//                     controller.selectedOptionIndex.value = value!;
+//                   }
+//                 },
+//               );
+//             }),
+//           ] else if (question.type == 'msq') ...[
+//             ...List.generate(question.options!.length, (index) {
+//               return CheckboxListTile(
+//                 title: Text(question.options![index].option.toString()),
+//                 value: controller.selectedOptionIndexes.contains(index),
+//                 onChanged: (bool? value) {
+//                   if (value == true) {
+//                     controller.selectedOptionIndexes.add(index);
+//                   } else {
+//                     controller.selectedOptionIndexes.remove(index);
+//                   }
+//                 },
+//               );
+//             }),
+//           ] else if (question.type == 'integer') ...[
+//             TextField(
+//               controller: controller.inputAnswer.value, // Bind the controller
+//               decoration: InputDecoration(labelText: "Enter your answer"),
+//               keyboardType: TextInputType.number,
+//               onChanged: (value) {
+//                 controller.integerAnswer.value = int.tryParse(value);
+//               },
+//             ),
+//           ],
+
+//           SizedBox(height: 10),
+
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: [
+//               InkWell(
+//                 onTap: () {
+//                   bool isAnswered = false;
+//                   String? selectedOption;
+//                   bool isCorrect = false;
+
+//                   if (question.type == 'mcq') {
+//                     final selectedOptionIndex = controller.selectedOptionIndex.value;
+
+//                     if (selectedOptionIndex != -1) {
+//                       selectedOption = question!.options![selectedOptionIndex].option;
+//                       isAnswered = true;
+//                     }
+
+//                   } else if (question.type == 'msq') {
+//                     if (controller.selectedOptionIndexes.isNotEmpty) {
+//                       selectedOption = controller.selectedOptionIndexes.map((index) => question!.options![index].option).join(', ');
+//                       isAnswered = true;
+//                     }
+
+//                   } else if (question.type == 'integer') {
+//                     if (controller.integerAnswer.value != null) {
+//                       selectedOption = controller.integerAnswer.value.toString();
+//                       isAnswered = true;
+//                     } else {
+//                       // Show an alert if no value is entered
+//                       Get.snackbar("Unanswered Question", "Please enter a value before proceeding.");
+//                     }
+//                   }
+
+//                   if (isAnswered) {
+//                     isCorrect = question!.explanation!.text!.contains(selectedOption!);
+
+//                     final answerData = {
+//                       "answer": selectedOption,
+//                       "question": question.id,
+//                       "isRight": isCorrect,
+//                     };
+
+//                     controller.answersList.add(answerData);
+
+//                     if (isCorrect) {
+//                       controller.totalMarks.value += question.marks!;
+//                     } else {
+//                       controller.incorrectMarks.value += question.negativeMarks!.toDouble();
+//                     }
+
+//                     // Submit the answer and move to the next question
+//                     controller.testAnswerquestion();
+//                     controller.submitAnswer(onTimeUp);
+//                   } else {
+//                     // Show a prompt if the question is unanswered
+//                     Get.snackbar("Unanswered Question", "Please select or enter an answer before proceeding.");
+//                   }
+//                 },
+//                 child: buildButton("Save and Next"),
+//               ),
+
+//               InkWell(
+//                 onTap: () {
+//                   bool isAnswered = false;
+//                   String? selectedOption;
+//                   bool isCorrect = false;
+
+//                   if (question.type == 'mcq') {
+//                     final selectedOptionIndex = controller.selectedOptionIndex.value;
+
+//                     if (selectedOptionIndex != -1) {
+//                       selectedOption = question!.options![selectedOptionIndex].option;
+//                       isAnswered = true;
+//                     }
+
+//                   } else if (question.type == 'msq') {
+//                     if (controller.selectedOptionIndexes.isNotEmpty) {
+//                       selectedOption = controller.selectedOptionIndexes.map((index) => question!.options![index].option).join(', ');
+//                       isAnswered = true;
+//                     }
+
+//                   } else if (question.type == 'integer') {
+//                     if (controller.integerAnswer.value != null) {
+//                       selectedOption = controller.integerAnswer.value.toString();
+//                       isAnswered = true;
+//                     }
+//                   }
+
+//                   if (isAnswered) {
+//                     isCorrect = question!.explanation!.text!.contains(selectedOption!);
+
+//                     final answerData = {
+//                       "answer": selectedOption,
+//                       "question": question.id,
+//                       "isRight": isCorrect,
+//                     };
+
+//                     controller.answersList.add(answerData);
+
+//                     if (isCorrect) {
+//                       controller.totalMarks.value += question.marks!;
+//                     } else {
+//                       controller.incorrectMarks.value += question.negativeMarks!.toDouble();
+//                     }
+
+//                     controller.markForReview();
+//                   } else {
+//                     // Show a prompt or handle as incorrect answer
+//                     Get.snackbar("Unanswered Question", "Please select or enter an answer before marking for review.");
+//                   }
+//                 },
+//                 child: buildButton("Mark for Review"),
+//               ),
+//             ],
+//           ).w(400),
+//         ],
+//       ],
+//     ).w(Get.width / 3),
+//   );
+// }),
+
+//                       ///////////////////////////////
+                      //////////////////////////
+//                    Obx(() {
+//   var question = controller.testSeries.value.questions?[controller.currentQuestionIndex.value];
+
+//   // Load the previously selected answer if available
+//   if (question != null) {
+//     controller.selectedOptionIndex.value = controller.savedAnswers[question.id] ?? -1;
+//     controller.selectedOptionIndexes.value = controller.savedMsqAnswers[question.id] ?? [];
+//     controller.inputAnswer.value.text = controller.savedIntegerAnswers[question.id]?.toString() ?? '';
+//   }
+
+//   return SingleChildScrollView(
+//     child: Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       mainAxisAlignment: MainAxisAlignment.start,
+//       children: [
+//         if (question != null) ...[
+//           Row(
+//             children: [
+//               Text(
+//                 ' ${question.question}',
+//                 style: TextStyle(fontWeight: FontWeight.bold),
+//               ),
+//               Text(
+//                 ' ${question.type}',
+//                 style: TextStyle(fontWeight: FontWeight.bold),
+//               ),
+//             ],
+//           ),
+//           if (question.questionImage != null && question.questionImage!.isNotEmpty)
+//             Image.network(
+//               "${imageUrl + question.questionImage.toString()}",
+//               errorBuilder: (context, error, stackTrace) {
+//                 return Text('Image not available'); // Placeholder text
+//               },
+//             )
+//           else
+//             Text(''), // Placeholder text when no image is available
+
+//           SizedBox(height: 2),
+
+//           // Different UI based on question type
+//           if (question.type == 'mcq') ...[
+//             ...List.generate(question.options!.length, (index) {
+//               return RadioListTile(
+//                 title: Text(question.options![index].option.toString()),
+//                 value: index,
+//                 groupValue: controller.selectedOptionIndex.value,
+//                 onChanged: (int? value) {
+//                   if (controller.selectedOptionIndex.value == value) {
+//                     // Unselect the option if the same option is clicked again
+//                     controller.selectedOptionIndex.value = -1;
+//                   } else {
+//                     // Select the new option
+//                     controller.selectedOptionIndex.value = value!;
+//                   }
+//                 },
+//               );
+//             }),
+//           ] else if (question.type == 'msq') ...[
+//             ...List.generate(question.options!.length, (index) {
+//               return CheckboxListTile(
+//                 title: Text(question.options![index].option.toString()),
+//                 value: controller.selectedOptionIndexes.contains(index),
+//                 onChanged: (bool? value) {
+//                   if (value == true) {
+//                     controller.selectedOptionIndexes.add(index);
+//                   } else {
+//                     controller.selectedOptionIndexes.remove(index);
+//                   }
+//                 },
+//               );
+//             }),
+//           ] else if (question.type == 'integer') ...[
+//             TextField(
+//               controller: controller.inputAnswer.value,
+//               decoration: InputDecoration(labelText: "Enter your answer"),
+//               keyboardType: TextInputType.number,
+//               onChanged: (value) {
+//                 controller.integerAnswer.value = int.tryParse(value);
+//               },
+//             ),
+//           ],
+
+//           SizedBox(height: 10),
+
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: [
+//               InkWell(
+//                 onTap: () {
+//                   bool isAnswered = false;
+//                   String? selectedOption;
+//                   bool isCorrect = false;
+
+//                   if (question.type == 'mcq') {
+//                     final selectedOptionIndex = controller.selectedOptionIndex.value;
+
+//                     if (selectedOptionIndex != -1) {
+//                       selectedOption = question.options![selectedOptionIndex].option;
+//                       isAnswered = true;
+//                       controller.savedAnswers[question.id.toString()] = selectedOptionIndex;  // Save selected option
+//                     }
+//                   } else if (question.type == 'msq') {
+//                     if (controller.selectedOptionIndexes.isNotEmpty) {
+//                       selectedOption = controller.selectedOptionIndexes.map((index) => question.options![index].option).join(', ');
+//                       isAnswered = true;
+//                       controller.savedMsqAnswers[question.id.toString()] = controller.selectedOptionIndexes.toList();  // Save selected MSQ options
+//                     }
+//                   } else if (question.type == 'integer') {
+//                     if (controller.integerAnswer.value != null) {
+//                       selectedOption = controller.integerAnswer.value.toString();
+//                       isAnswered = true;
+//                       controller.savedIntegerAnswers[question.id.toString()] = controller.integerAnswer.value!;  // Save integer answer
+//                     }
+//                   }
+
+//                   if (isAnswered) {
+//                     isCorrect = question.explanation!.text!.contains(selectedOption!);
+
+//                     final answerData = {
+//                       "answer": selectedOption,
+//                       "question": question.id,
+//                       "isRight": isCorrect,
+//                     };
+
+//                     controller.answersList.add(answerData);
+
+//                     if (isCorrect) {
+//                       controller.totalMarks.value += question.marks!;
+//                     } else {
+//                       controller.incorrectMarks.value += question.negativeMarks!.toDouble();
+//                     }
+
+//                     controller.testAnswerquestion();
+//                     controller.submitAnswer(onTimeUp);
+//                   } else {
+//                     Get.snackbar("Unanswered Question", "Please select or enter an answer before proceeding.");
+//                   }
+//                 },
+//                 child: buildButton("Save and Next"),
+//               ),
+
+//               InkWell(
+//                 onTap: () {
+//                   bool isAnswered = false;
+//                   String? selectedOption;
+//                   bool isCorrect = false;
+
+//                   if (question.type == 'mcq') {
+//                     final selectedOptionIndex = controller.selectedOptionIndex.value;
+
+//                     if (selectedOptionIndex != -1) {
+//                       selectedOption = question.options![selectedOptionIndex].option;
+//                       isAnswered = true;
+//                     }
+//                   } else if (question.type == 'msq') {
+//                     if (controller.selectedOptionIndexes.isNotEmpty) {
+//                       selectedOption = controller.selectedOptionIndexes.map((index) => question.options![index].option).join(', ');
+//                       isAnswered = true;
+//                     }
+//                   } else if (question.type == 'integer') {
+//                     if (controller.integerAnswer.value != null) {
+//                       selectedOption = controller.integerAnswer.value.toString();
+//                       isAnswered = true;
+//                     }
+//                   }
+
+//                   if (isAnswered) {
+//                     isCorrect = question.explanation!.text!.contains(selectedOption!);
+
+//                     final answerData = {
+//                       "answer": selectedOption,
+//                       "question": question.id,
+//                       "isRight": isCorrect,
+//                     };
+
+//                     controller.answersList.add(answerData);
+
+//                     if (isCorrect) {
+//                       controller.totalMarks.value += question.marks!;
+//                     } else {
+//                       controller.incorrectMarks.value += question.negativeMarks!.toDouble();
+//                     }
+
+//                     controller.markForReview();
+//                   } else {
+//                     Get.snackbar("Unanswered Question", "Please select or enter an answer before marking for review.");
+//                   }
+//                 },
+//                 child: buildButton("Mark for Review"),
+//               ),
+//             ],
+//           ).w(400),
+//         ],
+//       ],
+//     ).w(Get.width / 3),
+//   );
+// }),
+
+                           
                             ])),
                       ),
                     ),
                     20.widthBox,
-                    Card(
-                      elevation: 1,
-                      child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Container(
-                              width: 360,
-                              height: Get.height,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  'Time Remaining'
-                                      .text
-                                      .size(18)
-                                      .fontWeight(FontWeight.bold)
-                                      .make(),
-                                  8.heightBox,
-                                  Obx(() {
-                                    final duration = controller.duration.value;
-                                    final hours = duration.inHours
-                                        .toString()
-                                        .padLeft(2, '0');
-                                    final minutes = (duration.inMinutes % 60)
-                                        .toString()
-                                        .padLeft(2, '0');
-                                    final seconds = (duration.inSeconds % 60)
-                                        .toString()
-                                        .padLeft(2, '0');
-                                    return "$hours:$minutes:$seconds"
-                                        .text
-                                        .make();
-                                  }),
-                                  //Text(controller.arguments[0]),
-                                  "Time Remeaning"
-                                      .text
-                                      .size(18)
-                                      .fontWeight(FontWeight.bold)
-                                      .make(),
-                                  8.heightBox,
-
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Obx(() {
-                                        return buildAnswerContainer(
-                                            "${controller.answeredQuestions.value.length.toString()}  answered",
-                                            Colors.green);
-                                      }),
-                                      Obx(() {
-                                        return buildAnswerContainer(
-                                            "${controller.notAttemptedCount.toString()} unanswered",
-                                            Colors.red);
-                                      }),
-                                      Obx(() {
-                                        return buildAnswerContainer(
-                                            "${controller.markedForReviewQuestions.value.length.toString()} marked",
-                                            Colors.purple);
-                                      })
-                                    ],
-                                  ),
-                                  //Text(questionsCount.toString()),
-                                  20.heightBox,
-                                  Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Obx(() {
-                return buildAnswerContainer(
-                    "${controller.answeredQuestions.length.toString()} answered",
-                    Colors.green);
-              }),
-              // Obx(() {
-              //   return buildAnswerContainer(
-              //       "${(testSeries.questions?.length - controller.answeredQuestions.length).toString()} unanswered",
-              //       Colors.red);
-              // }),
-              Obx(() {
-                return buildAnswerContainer(
-                    "${controller.markedForReviewQuestions.length.toString()} marked",
-                    Colors.purple);
-              }),
-            ],
-          ),
-          Expanded(
-            child: Container(
-              width: 350,
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5,
-                  crossAxisSpacing: 8.0,
-                  mainAxisSpacing: 8.0,
-                ),
-                itemCount: testSeries.questions?.length,
-                itemBuilder: (context, index) {
-                  Color cardColor;
-
-                  if (controller.answeredQuestions.contains(index)) {
-                    cardColor = Colors.green[100]!;
-                  } else if (controller.markedForReviewQuestions.contains(index)) {
-                    cardColor = Colors.purple[100]!;
-                  } else {
-                    cardColor = Colors.red[100]!;
-                  }
-
-                  return 
-                  Card(
-                    color: cardColor,
-                    child: Center(
-                      child: Text(
-                        '${index + 1}',
-                        style: const TextStyle(fontSize: 24),
-                      ),
-                    ),
-                  ).onTap(() {
-                    controller.updateCurrentQuestionIndex(index);
-                  });
-                },
-              ),
-            ),
-          ),
-        
-                                     Expanded(
-  child: Container(
-    width: 350,
-    child: GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 5,
-        crossAxisSpacing: 8.0,
-        mainAxisSpacing: 8.0,
-      ),
-      itemCount: testSeries.questions?.length,
-      itemBuilder: (context, index) {
-        var question = testSeries.questions?[index];
-        Color cardColor;
-
-        // If the question is answered, set the card color to green.
-        if (controller.answeredQuestions.contains(index)) {
-          cardColor = const Color.fromARGB(255, 50, 209, 55);
-        }
-        // If the question is marked for review, set the card color to blue.
-        else if (controller.markedForReviewQuestions.contains(index)) {
-          cardColor = const Color.fromARGB(255, 55, 139, 207);
-        }
-        // For other questions, set the card color to grey.
-        else {
-          cardColor = const Color.fromARGB(255, 191, 26, 26)!;
-        }
-
-        return Card(
-          color: cardColor,
-          child: Center(
-            child: Text(
-              '${index + 1}',
-              style: const TextStyle(fontSize: 24),
-            ),
-          ),
-        ).onInkTap(() {
-          controller.updateCurrentQuestionIndex(index);
-        });
-      },
-    ),
-  ),
-),
-
-                                  buildEndButton().onTap(() {
-                            
-            controller.testcontroller.startTest(); (); // End test and show solution
-          
-            // Solution view logic
-          
-                                    onTimeUp();
-                                controller.submitAnswerquestion();
-                                   
-                                  })
-                                ],
-                              ))),
-                    )
-                  ],
+                 const RandomQuestionPage() ],
                 ),
               ],
             ),
@@ -616,34 +1534,7 @@ InkWell(
     );
   }
 
-  buildAnswerContainer(text, color) {
-    return Container(
-      alignment: Alignment.center,
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-      height: 45,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(width: 1, color: color)),
-      child: Text(text),
-    );
-  }
-
-  Widget buildEndButton() {
-    return Container(
-      height: 45,
-      alignment: Alignment.center,
-      width: 370,
-      decoration: BoxDecoration(
-          color: HexColor("#D20000"), borderRadius: BorderRadius.circular(5)),
-      child: "End Test"
-          .text
-          .size(20)
-          .fontWeight(FontWeight.bold)
-          .color(Vx.white)
-          .uppercase
-          .make(),
-    );
-  }
+ 
 
   buildButton(text) {
     return Container(
@@ -689,76 +1580,34 @@ InkWell(
     );
   }
 
-  Widget buildRow() {
-    return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-            height: 45,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(19)),
-            child: Column(
-              children: [
-                Table(
-                  border: TableBorder.all(),
-                  children: [
-                    //TableRow(children: [
-                    //  "Time Remain".text.make().p8(),
-                    //  "$hours:$minutes:$seconds".text.make().p8(),
-                    //]),
-                    TableRow(children: [
-                      "Total Questions".text.make().p8(),
-                      "65".text.make().p8(),
-                    ]),
-                    TableRow(children: [
-                      "Mark For Review".text.make().p8(),
-                      "5".text.make().p8(),
-                    ]),
-                    TableRow(children: [
-                      "Attempted".text.make().p8(),
-                      "45".text.make().p8(),
-                    ]),
-                    TableRow(children: [
-                      "Not Attempted".text.make().p8(),
-                      "15".text.make().p8(),
-                    ]),
-                  ],
-                ).p16(),
-                16.heightBox,
-                "Are You Sure To Submit The Test !"
-                    .text
-                    .purple500
-                    .size(18)
-                    .bold
-                    .make()
-                    .p16(),
-                16.heightBox,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        // Handle Yes action
-                      },
-                      //style: ElevatedButton.styleFrom(primary: Colors.green),
-                      child: Text('YES'),
-                    ).p16(),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Handle No action
-                      },
-                      //style: ElevatedButton.,
-                      child: Text('NO'),
-                    ).p16(),
-                  ],
-                ),
-              ],
-            )));
-  }
- void onSomeEvent() {
+  void onSomeEvent() {
+  // Test ID ko retrieve karein (for example purposes)
+  String testId = controller.testcontroller.testSeries[0].id.toString();
 
-  // Calculation function ko call karna
-  controller.calculateFinalMarks();
+  // Calculate and save final marks
+  controller.calculateFinalMarks(testId);
 
   // Navigate to the next page
-  Get.toNamed(Routes.TESTSERIES_VALUE_ANALYSIS, arguments: [controller.finalMarks.value,controller.testcontroller.testSeries[0].id]);
+  Get.toNamed(Routes.TESTSERIES_VALUE_ANALYSIS, arguments: {
+    "finalMarks": controller.marksMap[testId],
+    "testId": testId,
+  });
 }
+String _stripHtmlTags(String html) {
+  RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: false);
+  return html.replaceAll(exp, '');
+}
+String correctHtmlContent(String html) {
+  return html
+      .replaceAll('&lt;', '<')
+      .replaceAll('&gt;', '>')
+      .replaceAll('<pre>', '')
+      .replaceAll('</pre>', '')
+      .replaceAll('<stdio.h>', '&lt;stdio.h&gt;')
+      .replaceAll('</stdio.h>', '');
+}
+
+
+
+
 }

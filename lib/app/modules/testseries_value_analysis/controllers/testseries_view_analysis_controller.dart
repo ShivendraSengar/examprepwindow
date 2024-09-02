@@ -4,11 +4,13 @@ import 'package:exam_prep_tool/app/data/irepositry/itestseries_repo.dart';
 import 'package:exam_prep_tool/app/data/modal/test_series/view_answerdetail_page_modal.dart';
 
 import 'package:exam_prep_tool/app/data/repositry/testseries_repo.dart';
+import 'package:exam_prep_tool/app/modules/testseries_mcq/controllers/testseries_mcq_controller.dart';
 import 'package:exam_prep_tool/app/utils/pref_utis.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class TestseriesViewAnlysisController extends GetxController {
+   final TestseriesMcqController controller1 = Get.find();
  final  receivedMarks = Get.arguments;
   var finalMarks = Get.arguments[0]; // first argument jo pass kiya tha
   var testSeriesId = Get.arguments[1];

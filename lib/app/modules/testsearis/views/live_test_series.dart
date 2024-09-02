@@ -1,6 +1,7 @@
 import 'package:exam_prep_tool/app/modules/testsearis/controllers/testsearis_controller.dart';
 import 'package:exam_prep_tool/app/routes/app_pages.dart';
 import 'package:exam_prep_tool/app/themes/app_style.dart';
+import 'package:exam_prep_tool/app/widgets/custom_alert_dialog.dart';
 import 'package:exam_prep_tool/app/widgets/custom_shimmer.dart';
 import 'package:exam_prep_tool/app/widgets/custom_widgets.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class LiveTestSeries extends GetView<TestsearisController> {
-  LiveTestSeries({super.key});
+  const LiveTestSeries({super.key});
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -36,7 +37,16 @@ class LiveTestSeries extends GetView<TestsearisController> {
       height: 110,
       alignment: Alignment.topCenter,
       //color: const Color.fromARGB(255, 64, 214, 255),
-      child: GridView.builder(
+      child: 
+      controller.livetestSeries.isEmpty
+                                  ? CustomAlertBox(
+                                      title: "No data found",
+                                      message: "",
+                                      onOkPressed: () {
+                                        controller.isVisible.value = false;
+                                      })
+                                  : 
+                                       GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             crossAxisSpacing: 4.0,
@@ -94,7 +104,7 @@ class LiveTestSeries extends GetView<TestsearisController> {
                                   data.testName
                                       .toString(), // Adjust 'maxLength' to your desired character limit
                                   maxLines: 1,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.black,
                                       overflow: TextOverflow.ellipsis),
                                   textAlign: TextAlign.center,
@@ -120,7 +130,7 @@ class LiveTestSeries extends GetView<TestsearisController> {
                                         2.widthBox,
                                         Text(
                                           data.questions!.length.toString(),
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Vx.black,
                                           ),
                                         ),
@@ -144,7 +154,7 @@ class LiveTestSeries extends GetView<TestsearisController> {
                                     5.widthBox,
                                     Text(
                                       data.totalMarks.toString(),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Vx.black,
                                       ),
                                     ),
@@ -161,7 +171,7 @@ class LiveTestSeries extends GetView<TestsearisController> {
                                     ),
                                     Text(
                                       data.timeData!.duration.toString(),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Vx.black,
                                       ),
                                     ),
@@ -182,40 +192,50 @@ class LiveTestSeries extends GetView<TestsearisController> {
                               13.heightBox,
                               //////////////////////////////////////////////////////////////////////////////////////////////////////////
                               ////////////////////////
+InkWell(
+  onTap: () {
+    if (data.status == "live") {
+      bool isStarted = controller.testStates[index] ?? false;
+      controller.updateTestState(index, !isStarted);
+      
+      // Navigate to the appropriate route
+      Get.toNamed(
+        isStarted
+            ? Routes.TESTSERIES_VALUE_ANALYSIS
+            : Routes.TESTSERIES_INSTRUCTION,
+        arguments: data,
+      );
+    } else {
+      // Show a message or keep the user on the same page
+      // Get.snackbar(
+      //   "Test Series",
+      //   "The test series is not live.",
+      //   snackPosition: SnackPosition.BOTTOM,
+      // );
+    }
+  },
+  child: Container(
+    
+    alignment: Alignment.center,
+    height: 45,
+    decoration: const BoxDecoration(
+      borderRadius: BorderRadius.all(
+        Radius.circular(15),
+      ),
+      color: Colors.green,
+    ),
+    child: Text(
+      // अगर status 'live' है तो 'Start' दिखाएं, अन्यथा status दिखाएं
+      data.status == "live" ? "Start" : "${data.status}",
+      style: const TextStyle(
+        color: Colors.black,
+      ),
+      textAlign: TextAlign.center,
+    ),
+  ),
+).p(8),
 
-                              InkWell(
-                                onTap: () {
-                                  bool isStarted =
-                                      controller.testStates[index] ?? false;
-                                  controller.updateTestState(index, !isStarted);
-                                  Get.toNamed(
-                                    isStarted
-                                        ? Routes.TESTSERIES_VALUE_ANALYSIS
-                                        : Routes.TESTSERIES_INSTRUCTION,
-                                    arguments: data,
-                                  );
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 45,
-                                  decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(15),
-                                      ),
-                                      color: Colors.green),
-                                  child: Text(
-                                    controller.testStates[index] ?? false
-                                        ? "View"
-                                        : "Start",
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                          ]),
                         ).paddingSymmetric(horizontal: 8),
                       );
               },

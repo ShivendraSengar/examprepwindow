@@ -9,75 +9,427 @@ import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../controllers/select_courses_screen_controller.dart';
 
+// class SelectCoursesScreenView extends GetView<SelectCoursesScreenController> {
+//   const SelectCoursesScreenView({Key? key}) : super(key: key);
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//   body: Row(
+//     children: [
+//       Container(
+//         width: 250, // Adjust the width as needed
+//          decoration: BoxDecoration(gradient: lineargrdient),// Background color or gradient
+//         child: ListView(
+//           children: [
+//             Container(
+//               height: 100,
+//                decoration: BoxDecoration(gradient: lineargrdient),
+//               child: DrawerHeader(
+//                 child: Row(
+//                   children: [
+//                     Container(
+//                       width: 50,
+//                       height: 80,
+//                       clipBehavior: Clip.antiAliasWithSaveLayer,
+//                       decoration: BoxDecoration(shape: BoxShape.circle),
+//                       alignment: Alignment.centerLeft,
+//                       child: Image.asset(
+//                         Assets.images.profileImageBg.path,
+//                       ),
+//                     ),
+//                     const SizedBox(width: 20),
+//                     Text(
+//                       controller.profile.profile?.studentId?.name!
+//                               .toUpperCase() ??
+//                           "",
+//                       style: AppStyle.txtPoppinsSemiBold14White90002,
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//             ListTile(
+//               leading: const Icon(Icons.home, color: Colors.white),
+//               title: const Text('HOME', style: TextStyle(color: Colors.white)),
+//               onTap: () {
+//                 Get.back();
+//               },
+//             ),
+//             // Add other ListTiles here as needed
+//              ListTile(
+//                 leading: Image.asset(
+//                   Assets.images.menuMyStoryIcon.path,
+//                   height: 30,
+//                   width: 30,
+//                 ),
+//                 title: const Text('MY STORY',
+//                     style: TextStyle(color: Colors.white)),
+//                 onTap: () {
+//                   Get.toNamed(
+//                     Routes.MYSTORY_PAGE,
+//                   );
+//                   // Get.back();
+//                 },
+//               ),
+//               ListTile(
+//                 leading: Image.asset(
+//                   Assets.images.menuResolveDoubtNowIcon.path,
+//                   height: 25,
+//                   width: 25,
+//                 ),
+//                 title: const Text('RESOLVE DOUBT NOW',
+//                     style: TextStyle(color: Colors.white)),
+//                 onTap: () {
+//                   Get.toNamed(Routes.RESOLVE_DOUBTPAGE);
+//                 },
+//               ),
+//               ListTile(
+//                 leading: Image.asset(
+//                   Assets.images.menuMoreCoursesIcon.path,
+//                   height: 25,
+//                   width: 25,
+//                 ),
+//                 title: const Text('MORE COURSES',
+//                     style: TextStyle(color: Colors.white)),
+//                 onTap: () {
+//                   //Get.toNamed(Routes.CATEGORIES);
+//                   Get.toNamed(Routes.MORE_COURSES);
+//                 },
+//               ),
+//               ListTile(
+//                 leading: Image.asset(
+//                   Assets.images.settingsMenu.path,
+//                   height: 25,
+//                   width: 25,
+//                 ),
+//                 title: const Text('SETTINGS',
+//                     style: TextStyle(color: Colors.white)),
+//                 onTap: () {
+//                   Get.toNamed(Routes.SETTINGS_PAGE);
+//                 },
+//               ),
+//               ListTile(
+//                 leading: Image.asset(
+//                   Assets.images.menuContactUsIcon.path,
+//                   height: 25,
+//                   width: 25,
+//                 ),
+//                 title: const Text('CONTACT US',
+//                     style: TextStyle(color: Colors.white)),
+//                 onTap: () {
+//                   Get.toNamed(Routes.CONTACT_USPAGE);
+//                 },
+//               ),
+//               ListTile(
+//                 leading: Image.asset(
+//                   Assets.images.menuContactUsIcon.path,
+//                   height: 25,
+//                   width: 25,
+//                 ),
+//                 //trailing: Icon(Icons.mobile_screen_share_outlined),
+//                 title: const Text('Refer/invite',
+//                     style: TextStyle(color: Colors.white)),
+//                 onTap: () {
+//                   Get.toNamed(Routes.REFERAL);
+//                 },
+//               ),
+//               ListTile(
+//                 leading: Image.asset(
+//                   Assets.images.menuLogoutIcon.path,
+//                   height: 25,
+//                   width: 25,
+//                 ),
+//                 title:
+//                     const Text('LOGOUT', style: TextStyle(color: Colors.white)),
+//                 onTap: () {
+//                   print("logout");
+//                   print("logout${controller.logout.email}");
+//                   print("logout${controller.logout.password}");
+//                   controller.prefutils.clearPreferencesData();
+//                   controller.logout.email.clear();
+//                   controller.logout.password.clear();
+//                   Get.offAndToNamed(Routes.LOGIN_SCREEN);
+//                 },
+//               ),
+//           ],
+//         ),
+//       ),
+//       Expanded(
+//         child: // Your main content goes here
+  
+
+    
+    
+//      Container(
+//         height: double.infinity,
+//         width: double.infinity,
+//         decoration: BoxDecoration(gradient: lineargrdient),
+//         child: SafeArea(
+//             child: Scaffold(
+//                 appBar: buildAppbar(),
+//                 body: Obx(() {
+//                   return controller.isLoading.isTrue
+//                       ? BuildShimmer(
+//                           child: Column(
+//                             children: [
+//                               buildSkeltion(),
+//                               buildSkeltion(),
+//                               buildSkeltion(),
+//                               buildSkeltion(),
+//                             ],
+//                           ),
+//                         )
+//                       : Container(
+//                           alignment: Alignment.center,
+//                           height: double.infinity,
+//                           width: double.infinity,
+//                           decoration: BoxDecoration(gradient: lineargrdient),
+//                           child: Container(
+//                             width: 800,
+//                             child: SingleChildScrollView(
+//                               child: Column(
+//                                   mainAxisAlignment: MainAxisAlignment.center,
+//                                   crossAxisAlignment: CrossAxisAlignment.center,
+//                                   children: [
+//                                     buildselectcourses("Air- 1 Notes")
+//                                         .onTap(() {
+//                                       Get.toNamed(Routes.AIR_NOTES);
+//                                     }),
+//                                      buildselectcourses("Test Series").onTap(() {
+//                                       Get.toNamed(Routes.TESTSEARIS);
+//                                     }),
+//                                     // buildselectcourses("Air-1 Test series")
+//                                     //     .onTap(() {
+//                                     //   Get.toNamed(Routes.AIR_TESTSERIES);
+//                                     // }),
+//                                     buildselectcourses("video lectures")
+//                                         .onTap(() {
+//                                       Get.toNamed(Routes.SELECTED_VIDIOLECTURE);
+//                                     }),
+//                                     buildselectcourses("top practice questions")
+//                                         .onTap(() {
+//                                       _showDialogUnderProcess(context);
+//                                     }),
+//                                     buildselectcourses(
+//                                             "20 years pyq's with answer")
+//                                         .onTap(() {
+//                                       Get.toNamed(Routes.TWENYPYS_QUESTION);
+//                                     }),
+//                                     // buildselectcourses("Live Lectures")
+//                                     //     .onTap(() {
+//                                     //   Get.toNamed(Routes.LIVE_LETCTURE);
+//                                     // }),
+                                   
+//                                   ]),
+//                             ),
+//                           ));
+//                 }))))
+//                 )
+//   ]));
+//   }
+
+
 class SelectCoursesScreenView extends GetView<SelectCoursesScreenController> {
   const SelectCoursesScreenView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(gradient: lineargrdient),
-        child: SafeArea(
-            child: Scaffold(
-                appBar: buildAppbar(),
-                body: Obx(() {
-                  return controller.isLoading.isTrue
-                      ? BuildShimmer(
-                          child: Column(
-                            children: [
-                              buildSkeltion(),
-                              buildSkeltion(),
-                              buildSkeltion(),
-                              buildSkeltion(),
-                            ],
-                          ),
-                        )
-                      : Container(
-                          alignment: Alignment.center,
-                          height: double.infinity,
-                          width: double.infinity,
-                          decoration: BoxDecoration(gradient: lineargrdient),
-                          child: Container(
-                            width: 800,
-                            child: SingleChildScrollView(
+    return Scaffold(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < 600) {
+            // Agar width 600 se kam hai, to yeh UI dikhaye
+            return Column(
+              children: [
+                buildAppbar(),
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(gradient: lineargrdient),
+                    child: Obx(() {
+                      return controller.isLoading.isTrue
+                          ? BuildShimmer(
                               child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    buildselectcourses("Air- 1 Notes")
-                                        .onTap(() {
-                                      Get.toNamed(Routes.AIR_NOTES);
-                                    }),
-                                    buildselectcourses("Air-1 Test series")
-                                        .onTap(() {
-                                      Get.toNamed(Routes.AIR_TESTSERIES);
-                                    }),
-                                    buildselectcourses("video lectures")
-                                        .onTap(() {
-                                      Get.toNamed(Routes.SELECTED_VIDIOLECTURE);
-                                    }),
-                                    buildselectcourses("top practice questions")
-                                        .onTap(() {
-                                      _showDialogUnderProcess(context);
-                                    }),
-                                    buildselectcourses(
-                                            "20 years pyq's with answer")
-                                        .onTap(() {
-                                      Get.toNamed(Routes.TWENYPYS_QUESTION);
-                                    }),
-                                    // buildselectcourses("Live Lectures")
-                                    //     .onTap(() {
-                                    //   Get.toNamed(Routes.LIVE_LETCTURE);
-                                    // }),
-                                    buildselectcourses("TestSeries").onTap(() {
-                                      Get.toNamed(Routes.TESTSEARIS);
-                                    }),
-                                  ]),
-                            ),
-                          ));
-                }))));
+                                children: [
+                                  buildSkeltion(),
+                                  buildSkeltion(),
+                                  buildSkeltion(),
+                                  buildSkeltion(),
+                                ],
+                              ),
+                            )
+                          : Container(
+                              alignment: Alignment.center,
+                              height: double.infinity,
+                              width: double.infinity,
+                              decoration: BoxDecoration(gradient: lineargrdient),
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.all(16),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        buildselectcourses("Air- 1 Notes").onTap(() {
+                                          Get.toNamed(Routes.AIR_NOTES);
+                                        }),
+                                        buildselectcourses("Test Series").onTap(() {
+                                          Get.toNamed(Routes.TESTSEARIS);
+                                        }),
+                                        buildselectcourses("Video Lectures").onTap(() {
+                                          Get.toNamed(Routes.SELECTED_VIDIOLECTURE);
+                                        }),
+                                        buildselectcourses("Top Practice Questions").onTap(() {
+                                          _showDialogUnderProcess(context);
+                                        }),
+                                        buildselectcourses("20 years PYQs with Answer").onTap(() {
+                                          Get.toNamed(Routes.TWENYPYS_QUESTION);
+                                        }),
+                                      ]),
+                                ),
+                              ));
+                    }),
+                  ),
+                ),
+              ],
+            );
+          } else {
+            // Default UI for width >= 600
+            return Row(
+              children: [
+                Container(
+                  width: 250,
+                  decoration: BoxDecoration(gradient: lineargrdient),
+                  child: ListView(
+                    children: [
+                      buildDrawerHeader(),
+                      buildListTile(Icons.home, 'HOME', () => Get.back()),
+                      buildListTileWithImage(Assets.images.menuMyStoryIcon.path, 'MY STORY', () => Get.toNamed(Routes.MYSTORY_PAGE)),
+                      buildListTileWithImage(Assets.images.menuResolveDoubtNowIcon.path, 'RESOLVE DOUBT NOW', () => Get.toNamed(Routes.RESOLVE_DOUBTPAGE)),
+                      buildListTileWithImage(Assets.images.menuMoreCoursesIcon.path, 'MORE COURSES', () => Get.toNamed(Routes.MORE_COURSES)),
+                      buildListTileWithImage(Assets.images.settingsMenu.path, 'SETTINGS', () => Get.toNamed(Routes.SETTINGS_PAGE)),
+                      buildListTileWithImage(Assets.images.menuContactUsIcon.path, 'CONTACT US', () => Get.toNamed(Routes.CONTACT_USPAGE)),
+                      buildListTileWithImage(Assets.images.menuContactUsIcon.path, 'Refer/invite', () => Get.toNamed(Routes.REFERAL)),
+                      buildListTileWithImage(Assets.images.menuLogoutIcon.path, 'LOGOUT', () {
+                        controller.prefutils.clearPreferencesData();
+                        controller.logout.email.clear();
+                        controller.logout.password.clear();
+                        Get.offAndToNamed(Routes.LOGIN_SCREEN);
+                      }),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                    decoration: BoxDecoration(gradient: lineargrdient),
+                    child: SafeArea(
+                      child: Scaffold(
+                        appBar: buildAppbar(),
+                        body: Obx(() {
+                          return controller.isLoading.isTrue
+                              ? BuildShimmer(
+                                  child: Column(
+                                    children: [
+                                      buildSkeltion(),
+                                      buildSkeltion(),
+                                      buildSkeltion(),
+                                      buildSkeltion(),
+                                    ],
+                                  ),
+                                )
+                              : Container(
+                                  alignment: Alignment.center,
+                                  height: double.infinity,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(gradient: lineargrdient),
+                                  child: Container(
+                                    width: 800,
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            buildselectcourses("Air- 1 Notes").onTap(() {
+                                              Get.toNamed(Routes.AIR_NOTES);
+                                            }),
+                                            buildselectcourses("Test Series").onTap(() {
+                                              Get.toNamed(Routes.TESTSEARIS);
+                                            }),
+                                            buildselectcourses("video lectures").onTap(() {
+                                              Get.toNamed(Routes.SELECTED_VIDIOLECTURE);
+                                            }),
+                                            buildselectcourses("top practice questions").onTap(() {
+                                              _showDialogUnderProcess(context);
+                                            }),
+                                            buildselectcourses("20 years pyq's with answer").onTap(() {
+                                              Get.toNamed(Routes.TWENYPYS_QUESTION);
+                                            }),
+                                          ]),
+                                    ),
+                                  ));
+                        }),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+        },
+      ),
+    );
+  }
+  
+  Widget buildDrawerHeader() {
+    return Container(
+      height: 100,
+      decoration: BoxDecoration(gradient: lineargrdient),
+      child: DrawerHeader(
+        child: Row(
+          children: [
+            Container(
+              width: 50,
+              height: 80,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              decoration: BoxDecoration(shape: BoxShape.circle),
+              alignment: Alignment.centerLeft,
+              child: Image.asset(
+                Assets.images.profileImageBg.path,
+              ),
+            ),
+            const SizedBox(width: 20),
+            Text(
+              controller.profile.profile?.studentId?.name!.toUpperCase() ?? "",
+              style: AppStyle.txtPoppinsSemiBold14White90002,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
+  Widget buildListTile(IconData icon, String title, VoidCallback onTap) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.white),
+      title: Text(title, style: TextStyle(color: Colors.white)),
+      onTap: onTap,
+    );
+  }
+
+  Widget buildListTileWithImage(String imagePath, String title, VoidCallback onTap) {
+    return ListTile(
+      leading: Image.asset(
+        imagePath,
+        height: 25,
+        width: 25,
+      ),
+      title: Text(title, style: TextStyle(color: Colors.white)),
+      onTap: onTap,
+    );
+  }
   void _showDialogUnderProcess(context) {
     showDialog(
       context: context,

@@ -15,14 +15,18 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class WeeklyTest extends GetView<TestsearisController> {
-   WeeklyTest({super.key});
+  WeeklyTest({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        bool isSmallScreen = constraints.maxWidth < 600;
+
+        return
+     SingleChildScrollView(
       child: Column(
         children: [
-       
           // Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
           //   20.heightBox,
           //   Container(
@@ -152,7 +156,7 @@ class WeeklyTest extends GetView<TestsearisController> {
           //               print(
           //                   'Selected Subjects: ${controller.selectedSubject.value}');
           //               // Call API or perform actions with the selected value
-                    
+
           //               controller.weeklytest();
 
           //             }
@@ -164,207 +168,233 @@ class WeeklyTest extends GetView<TestsearisController> {
           //   //Text(controller.showpdf.length.toString()),
           // ]),
           // 20.heightBox,
-          
-          Row(children: [
-ElevatedButton(onPressed: (){  controller.selectedFilter.value = 'yes';
-    controller.filterTestSeries();}, child: Text("Attempted")),
-ElevatedButton(onPressed: (){    controller.selectedFilter.value = 'Not Attempted';
-    controller.filterTestSeries();}, child: Text("NotAttempted"))
-          ],),
-          
+
+          Row(mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  controller.selectedFilter.value = 'yes';
+                  controller.filterTestSeries();
+                },
+                child: Text("Attempted"),
+              ),
+              18.widthBox,
+              ElevatedButton(
+                onPressed: () {
+                  controller.selectedFilter.value = 'Not Attempted';
+                  controller.filterTestSeries();
+                },
+                child: Text("Not Attempted"),
+              ),
+            ],
+          ).paddingSymmetric(horizontal: 16, vertical: 10),
+
           Obx(() {
             return Container(
               //width: 300,
               height: Get.height,
-              child: allCourses(),
+              child: controller.selectedFilter.value == "yes"
+                  ? selectTests(isSmallScreen)
+                  : allTest(isSmallScreen),
             );
           }),
           //300.heightBox
-        ],
-      ),
+      ],
+      ) );
+      },
     );
   }
 
-bool showAttempted = true; // Toggle between true and false based on user action.
+// bool showAttempted = true; // Toggle between true and false based on user action.
 
-Widget allCourses() {
-  return Container(
-    width: Get.width,
-    height: 110,
-    alignment: Alignment.topCenter,
-    child: 
-       GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 4.0,
-          mainAxisSpacing: 20.0,
-          childAspectRatio: 3 / 1.4,
-        ),
-        itemCount: controller.filteredTestSeries.length,
-        itemBuilder: (context, index) {
-          var data = controller.filteredTestSeries[index];
-          return GestureDetector(
-            onTap: () {
-              bool isStarted = controller.testStates[index] ?? false;
-              controller.updateTestState(index, !isStarted);
-              Get.toNamed(
-                isStarted ? Routes.TESTSERIES_VALUE_ANALYSIS : Routes.TESTSERIES_INSTRUCTION,
-                arguments: data,
-              );
-            },
-            child: Container(
-              width: 350,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.white,
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black,
-                    blurRadius: 5.0,
-                    spreadRadius: 0.0,
-                    offset: Offset(0, 2),
-                  ),
-                ],
+  Widget selectTests(bool isSmallScreen) {
+    return Container(
+      width: Get.width,
+      height: 110,
+      alignment: Alignment.topCenter,
+      child: controller.filteredTestSeries.isEmpty
+          ? CustomAlertBox(
+              title: "No data found",
+              message: "",
+              onOkPressed: () {
+                controller.isVisible.value = false;
+              })
+          : GridView.builder(
+              gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: isSmallScreen ? 1 : 3,
+                crossAxisSpacing: 4.0,
+                mainAxisSpacing: 20.0,
+                childAspectRatio: 3 / 1.5,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 15.0),
-                  Center(
-                    child: Text(
-                      data.testName.toString(),
-                      maxLines: 1,
-                      style: TextStyle(
-                        color: Colors.black,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      textAlign: TextAlign.center,
-                    ).centered(),
-                  ).paddingSymmetric(horizontal: 10).w(300).centered(),
-                  10.heightBox,
-                  Container(
-                    height: 40,
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.note_alt,
-                              color: Vx.gray200,
-                            ),
-                            2.widthBox,
-                            Text(
-                              data.questions!.length.toString(),
-                              style: TextStyle(
-                                color: Vx.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 8.0),
-                          child: VerticalDivider(
-                            width: .1,
-                            thickness: 1,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        const Text(
-                          "marks",
-                          style: TextStyle(
-                            color: Vx.black,
-                          ),
-                        ),
-                        5.widthBox,
-                        Text(
-                          data.totalMarks.toString(),
-                          style: TextStyle(
-                            color: Vx.black,
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 15,
-                            horizontal: 8.0,
-                          ),
-                          child: VerticalDivider(
-                            width: .1,
-                            thickness: 1,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Text(
-                          data.timeData!.duration.toString(),
-                          style: TextStyle(
-                            color: Vx.black,
-                          ),
-                        ),
-                        5.widthBox,
-                        const Text(
-                          "mins",
-                          style: TextStyle(
-                            color: Vx.black,
-                          ),
+              itemCount: controller.filteredTestSeries.length,
+              itemBuilder: (context, index) {
+                var data = controller.filteredTestSeries[index];
+                return GestureDetector(
+                  onTap: () {
+                    bool isStarted = controller.testStates[index] ?? false;
+                    controller.updateTestState(index, !isStarted);
+                    Get.toNamed(
+                      isStarted
+                          ? Routes.TESTSERIES_VALUE_ANALYSIS
+                          : Routes.TESTSERIES_INSTRUCTION,
+                      arguments: data,
+                    );
+                  },
+                  child: Container(
+                    width: 350,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 5.0,
+                          spreadRadius: 0.0,
+                          offset: Offset(0, 2),
                         ),
                       ],
-                    ).w(700),
-                  ),
-                  buildCard(data.createdAt.toString().toUpperCase(), "Lang - English")
-                      .w(700)
-                      .p(8),
-                  13.heightBox,
-                  InkWell(
-                    onTap: () {
-                      bool isStarted = controller.testStates[index] ?? false;
-                      controller.updateTestState(index, !isStarted);
-                      Get.toNamed(
-                        isStarted ? Routes.TESTSERIES_VALUE_ANALYSIS : Routes.TESTSERIES_INSTRUCTION,
-                        arguments: data,
-                      );
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 45,
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(15),
-                        ),
-                        color: Colors.green,
-                      ),
-                      child: Text(
-                        controller.testStates[index] ?? false ? "View" : "Start",
-                        style: const TextStyle(
-                          color: Colors.black,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
                     ),
-                  ),
-                ],
-              ),
-            ).paddingSymmetric(horizontal: 8),
-          );
-        },
-      
-    ),
-  ).marginOnly(bottom: 0);
-}
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 10.0),
+                        Center(
+                          child: Text(
+                            data.testName.toString(),
+                            maxLines: 1,
+                            style: TextStyle(
+                              color: Colors.black,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            textAlign: TextAlign.center,
+                          ).centered(),
+                        ).paddingSymmetric(horizontal: 10).w(300).centered(),
+                        8.heightBox,
+                        Container(
+                          height: 40,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.question_answer_sharp,
+                                    color: Vx.gray200,
+                                  ),
+                                  2.widthBox,
+                                  Text(
+                                    "${data.questions!.length.toString()} ques",
+                                    style: TextStyle(
+                                      color: Vx.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 8.0),
+                                child: VerticalDivider(
+                                  width: .1,
+                                  thickness: 1,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Text(
+                                "${data.totalMarks.toString()} marks",
+                                style: TextStyle(
+                                  color: Vx.black,
+                                ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 15,
+                                  horizontal: 8.0,
+                                ),
+                                child: VerticalDivider(
+                                  width: .1,
+                                  thickness: 1,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Text(
+                                "${data.timeData!.duration.toString()} mins ",
+                                style: TextStyle(
+                                  color: Vx.black,
+                                ),
+                              ),
+                            ],
+                          ).w(700),
+                        ),
+                        buildCard(data.createdAt.toString().toUpperCase(),
+                                "Lang - English")
+                            .w(700)
+                            .p(8),
+                        6.heightBox,
+                        InkWell(
+                          onTap: () {
+                            controller.selectedFilter.value == "yes"
+                                ? Get.toNamed(Routes.TESTSERIES_VALUE_ANALYSIS,
+                                    arguments: [
+                                        0,
+                                        data.id,
+                                      ])
+                                : Get.toNamed(
+                                    Routes.TESTSERIES_INSTRUCTION,
+                                    arguments: data,
+                                  );
 
-  Widget alltCourses() {
+                            // bool isStarted = controller.selectedFilter.value == "yes";
+                            // controller.updateTestState(index, !isStarted);
+                            // Get.toNamed(
+                            //   isStarted ? Routes.TESTSERIES_VALUE_ANALYSIS : Routes.TESTSERIES_INSTRUCTION,
+                            //   arguments: data,
+                            // );
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 45,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(15),
+                              ),
+                              color: Colors.green,
+                            ),
+                            child: Text(
+                              controller.selectedFilter.value == "yes"
+                                  ? "View Anylysis"
+                                  : "Start",
+                              style: const TextStyle(
+                                color: Colors.black,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ).paddingSymmetric(horizontal: 8),
+                      ],
+                    ),
+                  ).paddingSymmetric(horizontal: 8),
+                );
+              },
+            ),
+    ).marginOnly(bottom: 0);
+  }
+
+///////////////////////////////////////////// all tests
+  Widget allTest(bool isSmallScreen) {
     return Container(
       width: Get.width,
       height: 110,
       alignment: Alignment.topCenter,
       //color: const Color.fromARGB(255, 64, 214, 255),
       child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
+          gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: isSmallScreen ? 1 : 3,
             crossAxisSpacing: 4.0,
             mainAxisSpacing: 20.0,
-            childAspectRatio: 3 / 1.4,
+            childAspectRatio: 3 / 1.5,
           ),
           itemCount: controller.testSeries.length,
 
@@ -411,7 +441,7 @@ Widget allCourses() {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              const SizedBox(height: 15.0),
+                              const SizedBox(height: 8.0),
                               Center(
                                 child: Text(
                                   data.testName
@@ -426,7 +456,7 @@ Widget allCourses() {
                                   .paddingSymmetric(horizontal: 10)
                                   .w(300)
                                   .centered(),
-                              10.heightBox,
+                              8.heightBox,
                               Container(
                                 height: 40,
                                 padding:
@@ -437,12 +467,12 @@ Widget allCourses() {
                                     Row(
                                       children: [
                                         const Icon(
-                                          Icons.note_alt,
+                                          Icons.question_answer_sharp,
                                           color: Vx.gray200,
                                         ),
                                         2.widthBox,
                                         Text(
-                                          data.questions!.length.toString(),
+                                          "${data.questions!.length.toString()} ques",
                                           style: TextStyle(
                                             color: Vx.black,
                                           ),
@@ -458,15 +488,8 @@ Widget allCourses() {
                                         color: Colors.grey,
                                       ),
                                     ),
-                                    const Text(
-                                      "marks",
-                                      style: TextStyle(
-                                        color: Vx.black,
-                                      ),
-                                    ),
-                                    5.widthBox,
                                     Text(
-                                      data.totalMarks.toString(),
+                                      "${data.totalMarks.toString()} marks",
                                       style: TextStyle(
                                         color: Vx.black,
                                       ),
@@ -483,14 +506,7 @@ Widget allCourses() {
                                       ),
                                     ),
                                     Text(
-                                      data.timeData!.duration.toString(),
-                                      style: TextStyle(
-                                        color: Vx.black,
-                                      ),
-                                    ),
-                                    5.widthBox,
-                                    const Text(
-                                      "mins",
+                                      "${data.timeData!.duration.toString()} mins ",
                                       style: TextStyle(
                                         color: Vx.black,
                                       ),
@@ -502,38 +518,39 @@ Widget allCourses() {
                                       "Lang - English")
                                   .w(700)
                                   .p(8),
-                              13.heightBox,
+                              10.heightBox,
                               //////////////////////////////////////////////////////////////////////////////////////////////////////////
                               ////////////////////////
-        
-      
-                                 InkWell(
-                            onTap: () {
-                                 bool isStarted = controller.testStates[index] ?? false;
-                          controller.updateTestState(index, !isStarted);
-                      Get.toNamed(
-  isStarted ? Routes.TESTSERIES_VALUE_ANALYSIS : Routes.TESTSERIES_INSTRUCTION,
-  arguments: data,
-);
 
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 45,
-                              decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15),
+                              InkWell(
+                                onTap: () {
+                                  bool isStarted =
+                                      controller.testStates[index] ?? false;
+                                  controller.updateTestState(index, !isStarted);
+                                  Get.toNamed(
+                                    isStarted
+                                        ? Routes.TESTSERIES_VALUE_ANALYSIS
+                                        : Routes.TESTSERIES_INSTRUCTION,
+                                    arguments: data,
+                                  );
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  height: 45,
+                                  decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(15),
+                                      ),
+                                      color: Colors.green),
+                                  child: Text(
+                                    "Start",
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  color: Colors.green),
-                              child: Text(
-                                    controller.testStates[index] ?? false ? "View" : "Start",
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
-                                textAlign: TextAlign.center,
+                                ).paddingSymmetric(horizontal: 8),
                               ),
-                            ),
-                          ),
                             ],
                           ),
                         ).paddingSymmetric(horizontal: 8),

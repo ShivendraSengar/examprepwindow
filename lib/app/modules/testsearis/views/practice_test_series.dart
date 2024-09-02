@@ -21,189 +21,191 @@ class PracticeTestSeries extends GetView<TestsearisController> {
   const PracticeTestSeries({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final List<CourseSub>? activeCourses;
-    return Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(
-            // gradient: lineargrdient
-            color: Vx.white),
-        child: SafeArea(child: Scaffold(
-            //appBar: buildAppbar(),
-            body: Obx(() {
-          return controller.isLoading.isTrue
-              ? BuildShimmer(
+   final List<CourseSub>? activeCourses;
+
+return Obx(() {
+  return controller.isLoading.isTrue
+      ? BuildShimmer(
+          child: Column(
+            children: [
+              buildSkeltion(),
+              buildSkeltion(),
+              buildSkeltion(),
+              buildSkeltion(),
+            ],
+          ),
+        )
+      : LayoutBuilder(
+          builder: (context, constraints) {
+            final isNarrowScreen = constraints.maxWidth < 600;
+            return Container(
+              height: double.infinity,
+              width: double.infinity,
+              decoration: BoxDecoration(color: Vx.white),
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: isNarrowScreen ? constraints.maxWidth : 800,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      buildSkeltion(),
-                      buildSkeltion(),
-                      buildSkeltion(),
-                      buildSkeltion(),
+                      controller.changesvlaue.value
+                          ? showlistselectedsubject(isNarrowScreen)
+                          : SizedBox(),
+                      // Display the allshowpdf list
+                      Obx(() {
+                        final allShowPdf = controller.allshowpdf.value;
+                        return SizedBox(
+                          width: isNarrowScreen ? constraints.maxWidth : 800,
+                          height: 220,
+                          child: Container(
+                            child: allShowPdf.isEmpty
+                                ? CustomAlertBox(
+                                    title: "No data found for All Show PDF",
+                                    message: "",
+                                    onOkPressed: () {
+                                      // Handle the case where no data is found
+                                    })
+                                : GridView.builder(
+                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: isNarrowScreen ? 2 : 3,
+                                      childAspectRatio: 3,
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10,
+                                    ),
+                                    itemCount: allShowPdf.length,
+                                    itemBuilder: (context, index) {
+                                      var data = allShowPdf[index];
+                                      return Card(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          width: isNarrowScreen ? constraints.maxWidth : 800,
+                                          height: 45,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                height: 45,
+                                                width: 45,
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  image: DecorationImage(
+                                                    image: AssetImage(Assets.images.vector.path),
+                                                  ),
+                                                ),
+                                                child: Text("${index + 1}. "),
+                                              ),
+                                              5.widthBox,
+                                              Expanded(
+                                                child: Text(
+                                                  data.title ?? "",
+                                                  style: TextStyle(color: Colors.black),
+                                                ),
+                                              ),
+                                              Image.asset(
+                                                Assets.images.showicons.path,
+                                                height: 25,
+                                                width: 25,
+                                                color: Colors.grey,
+                                              ),
+                                            ],
+                                          ).onTap(() {
+                                            final url = data.uploadId!.first.file!.url;
+                                            Get.toNamed(Routes.SHOW_PDF_VIEW, arguments: url);
+                                          }),
+                                        ).paddingOnly(right: 10, left: 2),
+                                      );
+                                    },
+                                  ),
+                          ).paddingSymmetric(horizontal: 10),
+                        );
+                      }),
                     ],
                   ),
-                )
-              : Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  decoration: BoxDecoration(color: Vx.white),
-                  child: SingleChildScrollView(
-                    child: SizedBox(
-                      width: 800,
-                      child: Column(children: [
-                        Text(controller.testSeries.length.toString()),
-                        Obx(() {
-                          final isVisible = controller.isVisible.value;
-                          final showPdf = controller.showpdf.value;
-
-                          return SizedBox(
-                            width: 800,
-                            height: isVisible ? 220 : 200,
-                            child: Container(
-                              width: 200,
-
-                              child: isVisible && showPdf.isEmpty
-                                  ? CustomAlertBox(
-                                      title: "No data found",
-                                      message: "",
-                                      onOkPressed: () {
-                                        controller.isVisible.value = false;
-                                      })
-                                  : isVisible
-                                      ? GridView.builder(
-                                          gridDelegate:
-                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount:
-                                                3, // Number of items per row
-                                            childAspectRatio:
-                                                3, // Adjust height and width ratio of items
-                                            crossAxisSpacing:
-                                                10, // Spacing between columns
-                                            mainAxisSpacing:
-                                                10, // Spacing between rows
-                                          ),
-                                          itemCount: showPdf.length,
-                                          itemBuilder: (context, index) {
-                                            var data = showPdf[index];
-                                            print(
-                                                "showPdf[index]${showPdf[index]}");
-                                            return Card(
-                                                child: Container(
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
-                                              width: 800,
-                                              height: 45,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    height: 45,
-                                                    width: 45,
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        image: DecorationImage(
-                                                          image: AssetImage(
-                                                              Assets.images
-                                                                  .vector.path),
-                                                        )),
-                                                    child:
-                                                        Text("${index + 1}. "),
-                                                  ),
-                                                  5.widthBox,
-                                                  Expanded(
-                                                    child: Text(
-                                                      data.title ?? "",
-                                                      style: TextStyle(
-                                                          color: Colors.black),
-                                                    ),
-                                                  ),
-                                                  Image.asset(
-                                                    Assets
-                                                        .images.showicons.path,
-                                                    height: 25,
-                                                    width: 25,
-                                                    color: Colors.grey,
-                                                  ),
-                                                ],
-                                              ).onTap(() {
-                                                final url = data
-                                                    .uploadId!.first.file!.url;
-                                                print("pdf ${url}");
-                                                Get.toNamed(
-                                                    Routes.SHOW_PDF_VIEW,
-                                                    arguments: url);
-                                                // Here assuming each `data.uploadId` is a list and you want the URL for the current index
-                                                //if (data.uploadId !=
-                                                //        null &&
-                                                //    index <
-                                                //        data.uploadId!
-                                                //            .length) {
-                                                //  final fileUrl = data
-                                                //      .uploadId![index]
-                                                //      .file!
-                                                //      .url
-                                                //      .toString();
-                                                //  print(
-                                                //      "pdf name $url");
-                                                //  Get.toNamed(
-                                                //    Routes
-                                                //        .SHOW_PDF_VIEW,
-                                                //    arguments: fileUrl,
-                                                //  );
-                                                //} else {
-                                                //  print(
-                                                //      "No file URL available for this item.");
-                                                //}
-                                              }),
-                                            ).paddingOnly(right: 10, left: 2));
-                                          },
-                                        )
-                                      : Container(), // Empty container when isVisible is false
-                            ).paddingSymmetric(
-                              horizontal: 10,
-                            ),
-                          );
-                        }),
-                      ]),
-                    ),
-                  ));
-        }))));
-  }
-
-  buildAppbar() {
-    return AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Get.toNamed(Routes.HOME);
-            // // Get.back();
-            // Get.back();
+                ),
+              ),
+            );
           },
-        ),
-        iconTheme: const IconThemeData(color: Colors.white),
-        elevation: 0,
-        title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Image.asset(
-            Assets.images.headerLogo.path,
-            height: 40,
-            // color: Colors.white,
-            width: 110,
-            fit: BoxFit.contain,
-          ),
-          "Exam Prep Tool"
-              .text
-              .size(20)
-              .textStyle(AppStyle.txtPoppinsSemiBold16White90002)
-              .color(Vx.white)
-              .make(),
-        ]),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: lineargrdient),
-        ));
+        );
+});
   }
+Widget showlistselectedsubject(bool isNarrowScreen) {
+  return Obx(() {
+    final isVisible = controller.isVisible.value;
+    final showPdf = controller.showpdf.value;
+
+    return SizedBox(
+      width: isNarrowScreen ? double.infinity : 800,
+      height: isVisible ? 220 : 200,
+      child: Container(
+        child: isVisible && showPdf.isEmpty
+            ? CustomAlertBox(
+                title: "No data found for Show PDF",
+                message: "",
+                onOkPressed: () {
+                  controller.isVisible.value = false;
+                },
+              )
+            : isVisible
+                ? GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: isNarrowScreen ? 2 : 3,
+                      childAspectRatio: 3,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemCount: showPdf.length,
+                    itemBuilder: (context, index) {
+                      var data = showPdf[index];
+                      return Card(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          width: isNarrowScreen ? double.infinity : 800,
+                          height: 45,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 45,
+                                width: 45,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: DecorationImage(
+                                    image: AssetImage(Assets.images.vector.path),
+                                  ),
+                                ),
+                                child: Text("${index + 1}. "),
+                              ),
+                              5.widthBox,
+                              Expanded(
+                                child: Text(
+                                  data.title ?? "",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ),
+                              Image.asset(
+                                Assets.images.showicons.path,
+                                height: 25,
+                                width: 25,
+                                color: Colors.grey,
+                              ),
+                            ],
+                          ).onTap(() {
+                            final url = data.uploadId!.first.file!.url;
+                            Get.toNamed(Routes.SHOW_PDF_VIEW, arguments: url);
+                          }),
+                        ).paddingOnly(right: 10, left: 2),
+                      );
+                    },
+                  )
+                : Container(),
+      ).paddingSymmetric(horizontal: 10),
+    );
+  });
+}
 }

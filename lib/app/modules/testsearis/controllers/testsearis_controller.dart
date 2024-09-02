@@ -36,6 +36,7 @@ class TestsearisController extends GetxController
   void updateTestState(int index, bool isStarted) {
     testStates[index] = isStarted;
   }
+
   List<Testseries> allTestSeries = [];
 
   List<Testseries> get attemptedTests =>
@@ -47,25 +48,20 @@ class TestsearisController extends GetxController
   var filteredTestSeries = <Testseries>[].obs; // Filtered list based on selection
 
   void filterTestSeries() {
-    if (selectedFilter.value == 'All') {
-      filteredTestSeries.value = testSeries;
-    } else if (selectedFilter.value == 'Attempted') {
-      filteredTestSeries.value = testSeries.where((test) => test.attempted == 'YES').toList();
+    if (selectedFilter.value == 'yes') {
+      filteredTestSeries.value =
+          testSeries.where((test) => test.attempted == 'yes').toList();
+    } else if (selectedFilter.value == 'Not Attempted') {
+      filteredTestSeries.value =
+          testSeries.where((test) => test.attempted != 'yes').toList();
     } else {
-      filteredTestSeries.value = testSeries.where((test) => test.attempted != 'YES').toList();
+      filteredTestSeries.value = testSeries.toList();
     }
   }
 
-
   var tabIndex = 0.obs;
   //TODO: Implement TestsearisController
-  final List<String> imgList = [
-    'images/course suscription.png',
-    'images/course suscription.png',
-    'images/course suscription.png',
-    'images/course suscription.png',
-    'images/course suscription.png',
-  ];
+
   final PrefUtils prefutils = Get.find();
   Rxn<CourseSub> seleectrdvalue = Rxn<CourseSub>();
   Rxn<String> seleectrdvalue1 = Rxn<String>();
@@ -73,6 +69,7 @@ class TestsearisController extends GetxController
   List<String> subjectList = <String>[].obs;
   RxBool isVisible = false.obs;
   List<String> pdfview = <String>[].obs;
+   final allshowpdf = <Vidio>[].obs;
   final showpdf = <Vidio>[].obs;
   RxBool isLoading = false.obs;
   final GlobalKey dropdownKey = GlobalKey();
@@ -82,7 +79,7 @@ class TestsearisController extends GetxController
   //final data = <Exam>[].obs;
   var selectedUrl = "".obs;
   RxInt selectedIndex = RxInt(1);
-  // final courdata = <Datum>[].obs;
+ RxBool changesvlaue = false.obs;
 
   final String token = prefUtils.getToken().toString();
   // purchased coursed
@@ -90,8 +87,7 @@ class TestsearisController extends GetxController
   final PaymentsRepo purchasesCourse = VerfypaymentRepoImpl();
 
   final userdetais = <CourseSub>[].obs;
-  // final testSeries = <Testseries>[].obs;
-  final count = 0.obs;
+  
   // /////////////////////////////////////////////////////Live test
   void livetest() async {
     try {
@@ -99,8 +95,8 @@ class TestsearisController extends GetxController
       print("id ${selectedid.value}");
       print("subject ${selectedSubject.value}");
 
-      var response = await repositry1.weeklytestseries(selectedSubject.value,
-          selectedid.value, prefutils.getID().toString(),"live");
+      var response = await repositry1.weeklytestseries(
+          "", selectedid.value, prefutils.getID().toString(), "live");
       if (response.data != null) {
         livetestSeries.value = response.data!.data ?? [];
         print("TestSeries ${response.data!.toJson()}");
@@ -123,10 +119,10 @@ class TestsearisController extends GetxController
       print("subject ${selectedSubject.value}");
 
       var response = await repositry1.weeklytestseries(selectedSubject.value,
-          selectedid.value, prefutils.getID().toString(),"");
+          selectedid.value, prefutils.getID().toString(), "");
       if (response.data != null) {
         testSeries.value = response.data!.data ?? [];
-        print("TestSeries ${response.data!.toJson()}");
+        // print("TestSeries ${response.data!.toJson()}");
         // If 'response.data.toString()' is a List, you might want to log each item separately
         for (var item in testSeries.value) {
           print(item);
@@ -138,54 +134,104 @@ class TestsearisController extends GetxController
     }
   }
 
-  checkcourses() async {
-    print("id ${prefutils.getID().toString()}");
+  void checkcourses() async {
+    print("ID in checkcourses: ${prefutils.getID().toString()}");
     try {
       isLoading.value = true;
+
       var response =
           await purchasesCourse.checkCourseBuy(prefutils.getID().toString());
+
       if (response.data != null) {
         userdetais.value = response.data!.data ?? [];
-        print("Response${response.data.toString()}");
-        // If 'response.data.toString()' is a List, you might want to log each item separately
-        for (var item in userdetais.value) {
-          print(item);
+        print("User Details Response: ${response.data.toString()}");
+
+        if (userdetais.isNotEmpty) {
+          var course = userdetais.first;
+          print("First Course ID: ${course.courseId?.exam?.id}");
+
+          // Set selectedid based on the first available course ID
+          if (course.courseId?.exam?.id != null) {
+            selectedid.value = course.courseId!.exam!.id.toString();
+          }
+        } else {
+          print("No courses available.");
         }
+      } else {
+        print("No data received from check courses API.");
       }
-      isLoading.value = false;
     } catch (e) {
       log(e.toString());
+    } finally {
+      isLoading.value = false;
     }
   }
 
   void updateSelectedIndex(int index) {
     selectedIndex.value = index;
+    print("Selectesindex:${selectedIndex.value}");
+  }
+void ALLshowpdfview() async {
+  if (selectedid.value == null || selectedid.value!.isEmpty) {
+    print("No selected ID. Cannot fetch video list.");
+    return;
+  }
+  print("Exam ID: ${selectedid.value}");
+  try {
+    isLoading.value = true;
+    var response = await repositry.getvidioList(selectedid.value, "", 'testSeries', "");
+    if (response.data != null) {
+      allshowpdf.value = response.data!.data ?? [];
+    } else {
+      print("No data received from video list API.");
+    }
+  } catch (e) {
+    log(e.toString());
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+void showpdfview() async {
+  if (selectedid.value == null || selectedid.value!.isEmpty) {
+    print("No selected ID. Cannot fetch video list.");
+    return;
   }
 
-  showpdfview() async {
-    try {
-      //isLoading.value = true;
-      //String objectId = selectedid.value.toString();
-      ////isVisible.value = true;
-      //Completer<void> completer = Completer<void>();
-      //isLoading.value = true;
-      var response = await repositry.getvidioList(
-          selectedid.value, selectedSubject.value, 'testSeries', "");
-      if (response.data != null) {
-        showpdf.value = response.data!.data ?? [];
-      }
-    } catch (e) {
-      return log(e.toString());
+  print("Exam ID: ${selectedid.value}");
+  try {
+    isLoading.value = true;
+    var response = await repositry.getvidioList(
+        selectedid.value, selectedSubject.value, 'testSeries', "");
+
+    if (response.data != null) {
+      showpdf.value = response.data!.data ?? [];
+      print("Video List: ${showpdf.value}");
+    } else {
+      print("No data received from video list API.");
+    }
+  } catch (e) {
+    log(e.toString());
+  } finally {
+    isLoading.value = false;
+  }
+}// Refresh data based on tab index
+  void refreshTabData(int index) {
+    if (index == 0) {
+      fetchPracticeTestSeries(); // Refresh Practice Test Data
+    } else if (index == 1) {
+      fetchWeeklyTestSeries(); // Refresh Weekly Test Data
+    } else if (index == 2) {
+      fetchLiveTestSeries(); // Refresh Live Test Data
     }
   }
-// /////////// Razor pay code
 
   @override
   void onInit() {
-    //weeklytest();
-    //getList();
+    filteredTestSeries.value = allTestSeries;
     tabController = TabController(length: 3, vsync: this);
-
+    print("id ${selectedid.value}");
+    print("subject ${selectedSubject.value}");
     // Add listener to TabController
     tabController!.addListener(() {
       if (tabController!.indexIsChanging) {
@@ -206,23 +252,11 @@ class TestsearisController extends GetxController
     } else {
       print('Invalid arguments format');
     }
-
-    Future.delayed(Duration(seconds: 2), () {
-      //paymentGetId();
-    });
-
+ALLshowpdfview();
     super.onInit();
-  }
-
-  // Refresh data based on tab index
-  void refreshTabData(int index) {
-    if (index == 0) {
-      fetchPracticeTestSeries(); // Refresh Practice Test Data
-    } else if (index == 1) {
-      fetchWeeklyTestSeries(); // Refresh Weekly Test Data
-    } else if (index == 2) {
-      fetchLiveTestSeries(); // Refresh Live Test Data
-    }
+    Future.delayed(Duration(seconds: 2), () {
+      ALLshowpdfview();
+    });
   }
 
   void fetchPracticeTestSeries() {
@@ -240,6 +274,7 @@ class TestsearisController extends GetxController
   void fetchLiveTestSeries() {
     // Add your API call or data fetching logic here for Live Test
     print("Fetching Live Test Data");
+    livetest();
   }
 
   @override

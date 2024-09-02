@@ -3,6 +3,7 @@ import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries_mod
 import 'package:exam_prep_tool/app/modules/testseries_value_analysis/controllers/testseries_view_analysis_controller.dart';
 import 'package:exam_prep_tool/app/utils/const.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -12,16 +13,16 @@ import 'package:velocity_x/velocity_x.dart';
 class TestSeriesSolution extends GetView<TestseriesViewAnlysisController> {
   const TestSeriesSolution({Key? key}) : super(key: key);
   @override
- 
   Widget build(BuildContext context) {
-    
-        return Container(
+    return Container(
   color: Vx.white,
-  
   child: Obx(() {
     if (controller.isLoading.value) {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
+
+    var screenWidth = MediaQuery.of(context).size.width;
+    bool isSmallScreen = screenWidth < 600;
 
     return ListView.builder(
       itemCount: controller.viewAnslist.length,
@@ -31,7 +32,8 @@ class TestSeriesSolution extends GetView<TestseriesViewAnlysisController> {
         // Ensure testId and questions are not null
         if (answerItem.testId != null && answerItem.testId!.questions != null) {
           return Column(
-            children: answerItem.testId!.questions!.map<Widget>((question) {
+            children: List.generate(answerItem.testId!.questions!.length, (questionIndex) {
+              var question = answerItem.testId!.questions![questionIndex];
               var answer = answerItem.answers?.firstWhere(
                 (a) => a.question == question.id,
                 orElse: () => Answer(answer: 'N/A'), // Default value if no answer is found
@@ -40,7 +42,75 @@ class TestSeriesSolution extends GetView<TestseriesViewAnlysisController> {
               return Stack(
                 children: [
                   ExpansionTile(
-                    title: Text('Question: ${question.question}'),
+                    expandedAlignment: Alignment.topCenter,
+                    title: isSmallScreen
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              "Question ${questionIndex + 1}".text.semiBold.size(18).make(),
+                              2.heightBox,
+                              Html(
+                                data: """
+                                  <pre><code>
+                                  ${correctHtmlContent(question.question.toString())}
+                                  </code></pre>
+                                """,
+                                style: {
+                                  "body": Style(
+                                    alignment: Alignment.topCenter,
+                                    fontWeight: FontWeight.bold,
+                                    whiteSpace: WhiteSpace.normal,
+                                    fontSize: FontSize(16.0),
+                                  ),
+                                  "pre": Style(
+                                    alignment: Alignment.topCenter,
+                                    whiteSpace: WhiteSpace.normal,
+                                    fontFamily: 'monospace',
+                                    maxLines: 10,
+                                  ),
+                                  "code": Style(
+                                    fontFamily: 'monospace',
+                                    whiteSpace: WhiteSpace.normal,
+                                    backgroundColor: Colors.grey.shade100,
+                                  ),
+                                },
+                              ).w(350),
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              "Question ${questionIndex + 1}".text.semiBold.size(18).make(),
+                              2.widthBox,
+                              Html(
+                                data: """
+                                  <pre><code>
+                                  ${correctHtmlContent(question.question.toString())}
+                                  </code></pre>
+                                """,
+                                style: {
+                                  "body": Style(
+                                    alignment: Alignment.topCenter,
+                                    fontWeight: FontWeight.bold,
+                                    whiteSpace: WhiteSpace.normal,
+                                    fontSize: FontSize(16.0),
+                                  ),
+                                  "pre": Style(
+                                    alignment: Alignment.topCenter,
+                                    whiteSpace: WhiteSpace.normal,
+                                    fontFamily: 'monospace',
+                                    maxLines: 10,
+                                  ),
+                                  "code": Style(
+                                    fontFamily: 'monospace',
+                                    whiteSpace: WhiteSpace.normal,
+                                    backgroundColor: Colors.grey.shade100,
+                                  ),
+                                },
+                              ).w(350),
+                            ],
+                          ),
                     children: [
                       ListTile(
                         subtitle: Column(
@@ -48,20 +118,40 @@ class TestSeriesSolution extends GetView<TestseriesViewAnlysisController> {
                           children: [
                             if (question.questionImage != null && question.questionImage!.isNotEmpty)
                               Image.network(
-                                "${imageUrl + question.questionImage.toString()}",
+                                imageUrl + question.questionImage.toString(),
                                 errorBuilder: (context, error, stackTrace) {
-                                  return Text('Image not available'); // Placeholder text
+                                  return const Text(''); // Placeholder text Pmahe is not available
                                 },
                               )
                             else
-                              Text(''), // Placeholder text when no image is available
-
-                            SizedBox(height: 8.0),
-                            Text('Options:'),
-                            ...question.options?.map((option) {
-                              return Text('. ${option.option}');
-                            }).toList() ?? [],
-                            Text('Answer: ${question.explanation?.text ?? 'N/A'}'),
+                              const Text(''), // Placeholder text when no image is available
+                            const SizedBox(height: 8.0),
+                            Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    "Ans:".text.color(Vx.white).make().p(8).box.roundedSM.color(const Color.fromARGB(255, 3, 151, 55)).make().p(8),
+                                    3.widthBox,
+                                    Expanded(
+                                      child: Text(
+                                        ' ${_stripHtmlTags(question.explanation?.text ?? 'N/A'.toString())}',
+                                        maxLines: 20,
+                                        style: const TextStyle(fontWeight: FontWeight.bold),
+                                      ).w(isSmallScreen ? 300 : 600),
+                                    ),
+                                  ],
+                                ),
+                                if (question.explanation!.image != null && question.explanation!.image!.isNotEmpty)
+                                  Image.network(
+                                    imageUrl + question.explanation!.image.toString(),
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const Text(''); // Placeholder text
+                                    },
+                                  )
+                                else
+                                  const Text(''),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -91,7 +181,7 @@ class TestSeriesSolution extends GetView<TestseriesViewAnlysisController> {
             }).toList(),
           );
         } else {
-          return ListTile(
+          return const ListTile(
             title: Text('No questions available'),
           );
         }
@@ -99,4 +189,19 @@ class TestSeriesSolution extends GetView<TestseriesViewAnlysisController> {
     );
   }),
 );
-  }}
+  }
+String _stripHtmlTags(String html) {
+  RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: false);
+  return html.replaceAll(exp, '');
+}
+
+String correctHtmlContent(String html) {
+  return html
+      .replaceAll('&lt;', '<')
+      .replaceAll('&gt;', '>')
+      .replaceAll('<pre>', '')
+      .replaceAll('</pre>', '')
+      .replaceAll('<stdio.h>', '&lt;stdio.h&gt;')
+      .replaceAll('</stdio.h>', '');
+}
+}

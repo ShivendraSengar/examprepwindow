@@ -64,7 +64,7 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
 
               20.widthBox,
               RichText(
-                text: TextSpan(
+                text: const TextSpan(
                   children: [
                     TextSpan(
                       text: 'Test(',
@@ -111,13 +111,15 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
                           onChanged: controller.toggleCheckbox,
                         )),
                     10.widthBox,
-                    Text(
-                      "I have read all the instructions carefully and have understood them. I agree not to cheat or use unfair means in this examination. I understand that using unfair means of any sort for my own or someone else's advantage will lead to my immediate disqualification. The decision of Exampreptool will be final in these matters and cannot be appealed.",
-                      maxLines: 6,
-                      style: TextStyle(fontSize: 16),
-                      overflow: TextOverflow
-                          .ellipsis, // Adds ellipsis if text overflows
-                    ).w(900)
+                    Flexible(
+                      child: const Text(
+                        "I have read all the instructions carefully and have understood them. I agree not to cheat or use unfair means in this examination. I understand that using unfair means of any sort for my own or someone else's advantage will lead to my immediate disqualification. The decision of Exampreptool will be final in these matters and cannot be appealed.",
+                        maxLines:9,
+                        style: TextStyle(fontSize: 16),
+                        overflow: TextOverflow
+                            .ellipsis, // Adds ellipsis if text overflows
+                      ).w(900),
+                    )
                   ],
                 ),
               ),
@@ -140,7 +142,7 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
                         height: 45,
                         width: 250,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
+                            borderRadius: const BorderRadius.all(
                               Radius.circular(15),
                             ),
                             color: controller.isChecked.value

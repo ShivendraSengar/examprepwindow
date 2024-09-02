@@ -1,3 +1,4 @@
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:exam_prep_tool/app/data/modal/buycourses_modal.dart';
@@ -26,276 +27,297 @@ class TestsearisView extends GetView<TestsearisController> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
-      child: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(gradient: lineargrdient),
-        child: SafeArea(
-          child: Scaffold(
-            backgroundColor: Vx.white,
-            appBar: buildAppbar(),
-            body: Center(
-              child: Container(
-                height: Get.height,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      5.heightBox,
-                      Image.asset(
-                        Assets.images.testseriesImage.path,
-                        height: 250,
-                        width: double.infinity,
-                        fit: BoxFit.fill,
-                      ),
-                      16.heightBox,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          20.heightBox,
-                          // Dropdown for Courses
-                          _buildCourseDropdown(),
-                          20.heightBox,
-                          // Dropdown for Subjects
-                          _buildSubjectDropdown(),
-                          20.heightBox,
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: DottedBorder(
-                          color: Colors.deepOrange.shade500,
-                          padding: const EdgeInsets.all(16),
-                          strokeWidth: 1,
-                          child: const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+    length: 3,
+    child: LayoutBuilder(
+      builder: (context, constraints) {
+        // Check if the screen width is less than 600
+        bool isSmallScreen = constraints.maxWidth < 600;
+
+        return Container(
+          height: double.infinity,
+          width: double.infinity,
+          decoration: BoxDecoration(gradient: lineargrdient),
+          child: SafeArea(
+            child: Scaffold(
+              backgroundColor: Vx.white,
+              appBar: buildAppbar(),
+              body: Center(
+                child: Container(
+                  height: Get.height,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        5.heightBox,
+                        Image.asset(
+                          Assets.images.testseriesImage.path,
+                          height: 250,
+                          width: double.infinity,
+                          fit: BoxFit.fill,
+                        ),
+                        16.heightBox,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: isSmallScreen
+                              ? Column(
+                                  children: [
+                                    _buildCourseDropdown(),
+                                    20.heightBox,
+                                    _buildSubjectDropdown(),
+                                  ],
+                                )
+                              : Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    _buildCourseDropdown(),
+                                    20.heightBox,
+                                    _buildSubjectDropdown(),
+                                  ],
+                                ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: DottedBorder(
+                            color: Colors.deepOrange.shade500,
+                            padding: const EdgeInsets.all(16),
+                            strokeWidth: 1,
+                            child: const Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Warning:',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                  ),
+                                ),
+                                SizedBox(height: 8.0),
+                                Text(
+                                  'Kindly refrain from engaging in any form of unauthorized actions like screen recording or screenshots unauthorized downloading as it may lead to legal complications.\n'
+                                  'Don\'t share your account credentials to anyone because on every lecture screen your credentials will be there using those details. Legal action will be taken if any unauthorized action happened.',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        20.heightBox,
+                        _buildTabBarWithOnTap(),
+                        10.heightBox,
+                        Container(
+                          height: 600,
+                          child: TabBarView(
+                            controller: controller.tabController,
                             children: [
-                              Text(
-                                'Warning:',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18.0,
-                                ),
-                              ),
-                              SizedBox(height: 8.0),
-                              Text(
-                                'Kindly refrain from engaging in any form of unauthorized actions like screen recording or screenshots unauthorized downloading as it may lead to legal complications.\n'
-                                'Don\'t share your account credentials to anyone because on every lecture screen your credentials will be there using those details. Legal action will be taken if any unauthorized action happened.',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14.0,
-                                ),
-                              ),
+                              const PracticeTestSeries(),
+                              WeeklyTest(),
+                              LiveTestSeries()
                             ],
                           ),
                         ),
-                      ),
-                      20.heightBox,
-                      // TabBar with onTap event
-                      _buildTabBarWithOnTap(),
-                      10.heightBox,
-                      Container(
-                        height: 600,
-                        child: TabBarView(
-                          controller: controller.tabController,
-                          children: [
-                            const PracticeTestSeries(),
-                             WeeklyTest(),
-                            LiveTestSeries()
-                          ],
-                        ),
-                      ),
-                      200.heightBox,
-                    ],
+                        200.heightBox,
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCourseDropdown() {
-    return Container(
-      height: 52,
-      width: 350,
-      decoration: BoxDecoration(
-        color: HexColor("#F3FFFF"),
-        borderRadius: const BorderRadius.all(Radius.circular(25)),
-        border: Border.all(width: 1, color: Colors.grey),
-      ),
-      padding: const EdgeInsets.only(left: 18, right: 0),
-      child: Obx(() {
-        final filteredData = controller.userdetais
-            .where((coursedetails) => coursedetails.active == "yes")
-            .toList();
-        SchedulerBinding.instance.addPostFrameCallback((_) {
-          if (filteredData.length == 1 &&
-              controller.seleectrdvalue.value == null) {
-            controller.seleectrdvalue.value = filteredData[0];
-            controller.selectedid.value =
-                filteredData[0].courseId!.exam!.id.toString();
-            controller.subjectList.clear();
-            controller.subjectList
-                .addAll(filteredData[0].courseId!.exam!.subjects!.toList());
-          }
-        });
-
-        return DropdownButton<CourseSub>(
-          hint: "Choose Course".text.make(),
-          dropdownColor: Colors.grey.shade300,
-          items: filteredData.map((CourseSub value) {
-            return DropdownMenuItem<CourseSub>(
-              value: value,
-              child: Text(
-                value.name.toString(),
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            );
-          }).toList(),
-          value: controller.seleectrdvalue.value,
-          underline: Container(color: Colors.black),
-          isExpanded: true,
-          icon: Container(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            alignment: Alignment.center,
-            height: 95,
-            width: 50,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: buttonColor,
-            ),
-            child: const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.white,
-              size: 38,
-            ),
-          ),
-          onChanged: (CourseSub? newVal) {
-            if (newVal != null) {
-              controller.subjectList.clear();
-              controller.subjectList
-                  .addAll(newVal.courseId!.exam!.subjects!.toList());
-              controller.selectedid.value =
-                  newVal.courseId!.exam!.id.toString();
-              controller.seleectrdvalue.value = newVal;
-            }
-          },
         );
-      }),
-    );
-  }
+      },
+    ),
+  );
+}
+Widget _buildCourseDropdown() {
+  return Container(
+    height: 52,
+    width: 350,
+    decoration: BoxDecoration(
+      color: HexColor("#F3FFFF"),
+      borderRadius: const BorderRadius.all(Radius.circular(25)),
+      border: Border.all(width: 1, color: Colors.grey),
+    ),
+    padding: const EdgeInsets.only(left: 18, right: 0),
+    child: Obx(() {
+      final filteredData = controller.userdetais
+          .where((coursedetails) => coursedetails.active == "yes")
+          .toList();
 
-  Widget _buildSubjectDropdown() {
-    return Container(
-      height: 52,
-      width: 350,
-      decoration: BoxDecoration(
-        color: HexColor("#F3FFFF"),
-        borderRadius: const BorderRadius.all(Radius.circular(25)),
-        border: Border.all(width: 1, color: Colors.grey),
-      ),
-      padding: const EdgeInsets.only(left: 18, right: 0),
-      child: Obx(() {
-        List<String> subjectListWithAll = ["All", ...controller.subjectList];
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        if (filteredData.length == 1 &&
+            controller.seleectrdvalue.value == null) {
+          final selectedCourse = filteredData[0];
+          controller.seleectrdvalue.value = selectedCourse;
+          controller.selectedid.value = selectedCourse.courseId!.exam!.id.toString();
+          controller.subjectList.clear();
+          controller.subjectList.addAll(selectedCourse.courseId!.exam!.subjects!.toList());
 
-        if (controller.seleectrdvalue1.value == null ||
-            controller.seleectrdvalue1.value!.isEmpty) {
-          controller.seleectrdvalue1.value = "All";
+          print("Selected course ID: ${controller.selectedid.value}");
+
+          // Automatically call relevant methods after selection
+          controller.ALLshowpdfview();
+          controller.showpdfview();
         }
+      });
 
-        return DropdownButton<String>(
-          hint: "Choose Subject".text.make(),
-          dropdownColor: Colors.grey.shade300,
-          items: subjectListWithAll.map((String subject) {
-            return DropdownMenuItem<String>(
-              value: subject,
-              child: Text(
-                subject,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                ),
+      return DropdownButton<CourseSub>(
+        hint: "Choose Course".text.make(),
+        dropdownColor: Colors.grey.shade300,
+        items: filteredData.map((CourseSub value) {
+          return DropdownMenuItem<CourseSub>(
+            value: value,
+            child: Text(
+              value.name.toString(),
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
               ),
-            );
-          }).toList(),
-          value: controller.seleectrdvalue1.value,
-          underline: Container(color: Colors.black),
-          isExpanded: true,
-          icon: Container(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            alignment: Alignment.center,
-            height: 95,
-            width: 50,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: buttonColor,
             ),
-            child: const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.white,
-              size: 38,
-            ),
+          );
+        }).toList(),
+        value: controller.seleectrdvalue.value,
+        underline: Container(color: Colors.black),
+        isExpanded: true,
+        icon: Container(
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          alignment: Alignment.center,
+          height: 95,
+          width: 50,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: buttonColor,
           ),
-          onChanged: (newValue) {
-            if (newValue != null) {
-              controller.selectedSubject.value = newValue.toString();
-              controller.showpdfview();
-              controller.isVisible.value = true;
-              controller.seleectrdvalue1.value = newValue.toString();
-              controller.weeklytest();
-            }
-          },
-        );
-      }),
-    );
-  }
-
-  Widget _buildTabBarWithOnTap() {
-    return Container(
-      width: 600,
-      height: 45,
-      decoration: BoxDecoration(
-        border: Border.all(width: 1, color: Colors.grey),
-        borderRadius: BorderRadius.circular(25.0),
-        color: Vx.white,
-      ),
-      child: TabBar(
-        controller: controller.tabController,
-        indicatorPadding: const EdgeInsets.all(0),
-        labelPadding: const EdgeInsets.symmetric(horizontal: 0),
-        padding: const EdgeInsets.symmetric(horizontal: 0),
-        indicatorWeight: 2.0,
-        dividerHeight: 0,
-        indicator: BoxDecoration(
-          gradient: lineargrdient,
-          borderRadius: BorderRadius.circular(20.0),
+          child: const Icon(
+            Icons.arrow_drop_down,
+            color: Colors.white,
+            size: 38,
+          ),
         ),
-        labelColor: Colors.white,
-        unselectedLabelColor: Colors.black,
-        tabs: [
-          _buildTab("Practice text", 0).w(200),
-          _buildTab("Weekly text", 1).w(200),
-          _buildTab("Live Test", 2).w(200),
-        ],
-        onTap: (index) {
-          if (index == 1) {
-            // When "Weekly text" tab is clicked, call API or perform action
-            controller.weeklytest();
+        onChanged: (CourseSub? newVal) {
+          if (newVal != null) {
+            controller.subjectList.clear();
+            controller.subjectList.addAll(newVal.courseId!.exam!.subjects!.toList());
+            controller.selectedid.value = newVal.courseId!.exam!.id.toString();
+            controller.seleectrdvalue.value = newVal;
+
+            print("Selected course ID: ${controller.selectedid.value}");
+            controller.showpdfview();
           }
         },
-      ),
-    );
-  }
+      );
+    }),
+  );
+}
 
+Widget _buildSubjectDropdown() {
+  return Container(
+    height: 52,
+    width: 350,
+    decoration: BoxDecoration(
+      color: HexColor("#F3FFFF"),
+      borderRadius: const BorderRadius.all(Radius.circular(25)),
+      border: Border.all(width: 1, color: Colors.grey),
+    ),
+    padding: const EdgeInsets.only(left: 18, right: 0),
+    child: Obx(() {
+      List<String> subjectListWithAll = ["All", ...controller.subjectList];
+
+      if (controller.seleectrdvalue1.value == null ||
+          controller.seleectrdvalue1.value!.isEmpty) {
+        controller.seleectrdvalue1.value = "All";
+      }
+
+      return DropdownButton<String>(
+        hint: "Choose Subject".text.make(),
+        dropdownColor: Colors.grey.shade300,
+        items: subjectListWithAll.map((String subject) {
+          return DropdownMenuItem<String>(
+            value: subject,
+            child: Text(
+              subject,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          );
+        }).toList(),
+        value: controller.seleectrdvalue1.value,
+        underline: Container(color: Colors.black),
+        isExpanded: true,
+        icon: Container(
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          alignment: Alignment.center,
+          height: 95,
+          width: 50,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: buttonColor,
+          ),
+          child: const Icon(
+            Icons.arrow_drop_down,
+            color: Colors.white,
+            size: 38,
+          ),
+        ),
+        onChanged: (newValue) {
+          if (newValue != null) {
+           controller. changesvlaue.value = true;
+            controller.selectedSubject.value = newValue == "All" ? "" : newValue.toString();
+            controller.showpdfview();
+            controller.isVisible.value = true;
+            controller.seleectrdvalue1.value = newValue.toString();
+            controller.weeklytest();
+            controller.livetest();
+            controller.filteredTestSeries();
+          }
+        },
+      );
+    }),
+  );
+}
+
+Widget _buildTabBarWithOnTap() {
+  return Container(
+    width: 600,
+    height: 45,
+    decoration: BoxDecoration(
+      border: Border.all(width: 1, color: Colors.grey),
+      borderRadius: BorderRadius.circular(25.0),
+      color: Vx.white,
+    ),
+    child: TabBar(
+      controller: controller.tabController,
+      indicatorPadding: const EdgeInsets.all(0),
+      labelPadding: const EdgeInsets.symmetric(horizontal: 0),
+      padding: const EdgeInsets.symmetric(horizontal: 0),
+      indicatorWeight: 2.0,
+      dividerHeight: 0,
+      indicator: BoxDecoration(
+        gradient: lineargrdient,
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      labelColor: Colors.white,
+      unselectedLabelColor: Colors.black,
+      tabs: [
+        _buildTab("Practice text", 0).w(200),
+        _buildTab("Weekly text", 1).w(200),
+        _buildTab("Live Test", 2).w(200),
+      ],
+      onTap: (index) {
+        if (index == 1) {
+          controller.weeklytest();
+        }
+      },
+    ),
+  );
+}
   Widget _buildTab(String text, int index) {
     return Obx(() {
       final selected = controller.tabIndex.value == index;
