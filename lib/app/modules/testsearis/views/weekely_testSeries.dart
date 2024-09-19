@@ -19,11 +19,25 @@ class WeeklyTest extends GetView<TestsearisController> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
+    return  Obx(() {
+  return controller.isLoading.isTrue
+      ? BuildShimmer(
+          child: Column(
+            children: [
+              buildSkeltion(),
+              buildSkeltion(),
+              buildSkeltion(),
+              buildSkeltion(),
+            ],
+          ),
+        )
+      :
+    LayoutBuilder(
       builder: (context, constraints) {
         bool isSmallScreen = constraints.maxWidth < 600;
 
         return
+
      SingleChildScrollView(
       child: Column(
         children: [
@@ -203,7 +217,7 @@ class WeeklyTest extends GetView<TestsearisController> {
       ],
       ) );
       },
-    );
+    );});
   }
 
 // bool showAttempted = true; // Toggle between true and false based on user action.
@@ -319,6 +333,7 @@ class WeeklyTest extends GetView<TestsearisController> {
                                   color: Colors.grey,
                                 ),
                               ),
+                              
                               Text(
                                 "${data.timeData!.duration.toString()} mins ",
                                 style: TextStyle(
@@ -328,7 +343,7 @@ class WeeklyTest extends GetView<TestsearisController> {
                             ],
                           ).w(700),
                         ),
-                        buildCard(data.createdAt.toString().toUpperCase(),
+                        buildCard("${controller.formatDateTime(data.timeData!.rawStartDate.toString())}",
                                 "Lang - English")
                             .w(700)
                             .p(8),
@@ -514,8 +529,9 @@ class WeeklyTest extends GetView<TestsearisController> {
                                   ],
                                 ).w(700),
                               ),
-                              buildCard(data.createdAt.toString().toUpperCase(),
-                                      "Lang - English")
+        
+                               buildCard("${controller.formatDateTime(data.timeData!.rawStartDate.toString())}",
+                                "Lang - English")
                                   .w(700)
                                   .p(8),
                               10.heightBox,

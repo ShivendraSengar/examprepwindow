@@ -29,6 +29,12 @@ import 'dart:async';
 import 'dart:io';
 
 class CupanDiscountController extends GetxController {
+ 
+
+  
+
+
+
     final isInitialized = false.obs;
   
   StreamSubscription? _sub;
@@ -51,7 +57,7 @@ class CupanDiscountController extends GetxController {
   final PaymentsRepo repositry = VerfypaymentRepoImpl();
   final TextEditingController correctCouponCode = TextEditingController();
   final CourseRepo repository1 = CoursesRepoIml();
-  final TextEditingController correctReferralCode = TextEditingController();
+
   final checkreferal = <CheckReferaldata>[].obs;
   // Define reactive variables
   RxInt coursePrice = 0.obs;
@@ -80,14 +86,24 @@ class CupanDiscountController extends GetxController {
     // razorpayFunction(finalCost.value);
   }
 
+  
+  // var showReferralSection = false.obs;
+  var isReferralApplied = false.obs;
+  var isOwnReferral = false.obs;
+  var referralErrorMessage = ''.obs;
   var referalCode = ''.obs;
+  // var referralDiscountAmount = 0.obs;
+  TextEditingController correctReferralCode = TextEditingController();
+
+  // var referalCode = ''.obs;
+  //   var referralErrorMessage = ''.obs;
   RxDouble ReferaldiscountPercentage = 0.0.obs;
   RxDouble referralDiscountAmount = 0.0.obs;
-  var isReferralApplied = false.obs;
+  // var isReferralApplied = false.obs;
   // cupon Applied
   var couponCode = ''.obs;
   var isCouponApplied = false.obs;
-
+//  RxBool  isOwnReferral = false.obs;
   // Reactive variables to control visibility
   var showCouponSection = true.obs;
   var showReferralSection = true.obs;
@@ -100,45 +116,91 @@ class CupanDiscountController extends GetxController {
     showReferralSection.value = !showReferralSection.value;
   }
   // Methods to toggle visibility
-   Future<void> checkReferralData(String id) async {
-    print("Referral code: $referalCode");
+  Future<void> checkReferralData(String id) async {
+  print("Referral code: $referalCode");
 
-      isLoading.value = true;
-      final response = await repository1.checkreferrallist(
-        id,
-        prefUtils.getID().toString(),
-        'Bearer ${prefutils.getToken().toString()}',
-      );
+  isLoading.value = true;
+  final response = await repository1.checkreferrallist(
+    id,
+    prefUtils.getID().toString(),
+    'Bearer ${prefutils.getToken().toString()}',
+  );
 
-      if (response.data != null) {
-        if (response.data!.success!) {
-          // Retrieve referral discount from the response
-          checkreferal.value = response.data!.data ?? [];
+  if (response.data != null) {
+    if (response.data!.success!) {
+      checkreferal.value = response.data!.data ?? [];
+      ReferaldiscountPercentage.value = calculateFinalAmount(
+          checkreferal.first.referralDiscount!.toDouble());
 
-          // Calculate the final amount after subtracting the referral discount
-          ReferaldiscountPercentage.value = calculateFinalAmount(
-              checkreferal.first.referralDiscount!.toDouble());
+      // Mark referral as applied
+      // isReferralApplied.value = true;
+       isOwnReferral.value = false;
+    isReferralApplied.value = true;
+       // Clear any error message
+      updateFinalAmount(ReferaldiscountPercentage.value);
 
-          // Show toast message for successful application of referral code
-          showToastMessage('${response.data!.message.toString()}', "");
+    } else {
+      // Own referral error case
+      showToastMessage('${response.data!.message.toString()}', "");
+      referralErrorMessage.value = response.data!.message ?? 'Invalid referral code';
+      isOwnReferral.value = true;
+    
+    isReferralApplied.value = false;
+      updateFinalAmount(coursePrice.value.toDouble());
+    }
+  } else {
+    // General API error message
+    showToastMessage('${response.data!.message.toString()}', "");
+    referralErrorMessage.value = response.data!.message ?? "This referralId doesn't exist!";
+    updateFinalAmount(coursePrice.value.toDouble());
+  }
 
-          // Update the UI with the final amount
-          updateFinalAmount(ReferaldiscountPercentage.value);
+  isLoading.value = false;
+}
 
-        } else {
-          // Show toast message for invalid referral code or other error
-       showToastMessage('Own referal cannot be used"', "");
-          updateFinalAmount(coursePrice.value.toDouble());
-        }
-      } else {
-        // Show toast message for invalid referral code
-        showToastMessage("This referralId doesn't exist!", "");
-        updateFinalAmount(coursePrice.value.toDouble());
-      }
-    } 
-  
+// Future<void> checkReferralData(String id) async {
+//   print("Referral code: $referalCode");
 
-  // Function to calculate the final amount after subtracting referral discount
+//   isLoading.value = true;
+//   final response = await repository1.checkreferrallist(
+//     id,
+//     prefUtils.getID().toString(),
+//     'Bearer ${prefutils.getToken().toString()}',
+//   );
+
+//   if (response.data != null) {
+//     if (response.data!.success!) {
+//       // Retrieve referral discount from the response
+//       checkreferal.value = response.data!.data ?? [];
+
+//       // Calculate the final amount after subtracting the referral discount
+//       ReferaldiscountPercentage.value = calculateFinalAmount(
+//           checkreferal.first.referralDiscount!.toDouble());
+
+//       // Show toast message for successful application of referral code
+//       showToastMessage('${response.data!.message.toString()}', "");
+
+//       // Update the UI with the final amount
+//       updateFinalAmount(ReferaldiscountPercentage.value);
+
+//     } else {
+//       // Show specific error message returned by API
+//       showToastMessage('${response.data!.message.toString()}', "");
+//       isOwnReferral.value = true;
+//       updateFinalAmount(coursePrice.value.toDouble());
+//     }
+//   } else {
+//     // Show toast message for invalid referral code or other errors
+//     if (response.data!.message != null) {
+//       showToastMessage(response.data!.message.toString(), ""); // Show API error message
+//     } else {
+//       showToastMessage(response.data!.message.toString(), ""); // Fallback message
+//     }
+//     updateFinalAmount(coursePrice.value.toDouble());
+//   }
+// }
+
+//   // Function to calculate the final amount after subtracting referral discount
   double calculateFinalAmount(double referralDiscount) {
     // Get the initial amount (replace this with your actual calculation)
     int parsedCoursePrice = int.tryParse(arguments[3]) ?? 0;

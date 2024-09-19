@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:exam_prep_tool/app/data/irepositry/ipayments_repo.dart';
 import 'package:exam_prep_tool/app/data/modal/buycourses_modal.dart';
 import 'package:exam_prep_tool/app/data/modal/course.dart';
+import 'package:exam_prep_tool/app/data/modal/subjectfilterlist/subjectfilter.dart';
 
 import 'package:exam_prep_tool/app/data/modal/vidio_lecturesresponse/get_exam_id.dart';
 import 'package:exam_prep_tool/app/data/modal/vidio_lecturesresponse/vidio_lecturesresponse.dart';
@@ -40,12 +41,41 @@ class TwenypysQuestionController extends GetxController {
   final woitutpurchase = <Vidio>[].obs;
 
   Rxn<String> seleectrdvalu4 = Rxn<String>();
+  Rxn<String> selectedValue = Rxn<String>(); // To hold selected subject's name
+  Rxn<SelectedSubjectlist> selectedSubject1 =
+      Rxn<SelectedSubjectlist>(); // To hold full selected subject
+  final courdata1 = <SelectedSubjectlist>[]
+      .obs; // To hold dropdown data // To hold selected value
 
+  var filterSubject = "".obs;
   // purchased coursed
 
   final PaymentsRepo purchasesCourse = VerfypaymentRepoImpl();
   final userdetais = <CourseSub>[].obs;
   final count = 0.obs;
+
+// subject filter list
+  getsubjectList() async {
+    isLoading.value = true;
+
+    try {
+      final response = await repositry.getsSubjectfilterlist('priority');
+      if (response.data != null) {
+        print("subject ${response.data!.toJson()}");
+
+        courdata1.value = response.data!.data ?? [];
+        // pages.value = response.data!.data ?? [];
+      } else {
+        print("Data is null");
+        courdata1.value = []; // or handle the null case in a different way
+      }
+      isLoading.value = false;
+    } catch (e) {
+      log("err $e");
+      isLoading.value = false;
+    }
+  }
+
   checkcourses() async {
     print("id ${prefutils.getID().toString()}");
     try {
@@ -154,7 +184,7 @@ class TwenypysQuestionController extends GetxController {
   showpdfview() async {
     try {
       var response = await repositry.getvidioList(
-          selectedid.value, selectedSubject.value, 'pyq20', '');
+          '', selectedValue.value.toString(), 'pyq20', '');
       if (response.data != null) {
         showpdf.value = response.data!.data ?? [];
       }
@@ -165,11 +195,11 @@ class TwenypysQuestionController extends GetxController {
 
   @override
   void onInit() {
-    getfreecourseList();
-    getList();
-    withoutpurchase();
-    checkcourses();
-
+    // getfreecourseList();
+    // getList();
+    // withoutpurchase();
+    // checkcourses();
+    getsubjectList();
     super.onInit();
   }
 

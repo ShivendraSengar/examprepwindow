@@ -242,40 +242,41 @@ class HomeView extends GetView<HomeController> {
                                 buildItemsList(
                                         "air -1 test series".toUpperCase())
                                     .onTap(() {
-                                  bool alertShown = false;
+                                      Get.toNamed(Routes.TESTSEARIS);
+                                  // bool alertShown = false;
 
-                                  for (int i = 0;
-                                      i < controller.ispurchased.length;
-                                      i++) {
-                                    var coursedetails =
-                                        controller.ispurchased[i];
+                                  // for (int i = 0;
+                                  //     i < controller.ispurchased.length;
+                                  //     i++) {
+                                  //   var coursedetails =
+                                  //       controller.ispurchased[i];
 
-                                    if (coursedetails.purchased == "yes" &&
-                                            coursedetails.courseType ==
-                                                "testseries" ||
-                                        coursedetails.courseType ==
-                                            "testSeries") {
-                                      print(
-                                          "abha ${controller.ispurchased.length}");
-                                      print(
-                                          "yes ${coursedetails.courseType.toString()}");
+                                  //   if (coursedetails.purchased == "yes" &&
+                                  //     //       coursedetails.courseType ==
+                                  //     //           "testseries" ||
+                                  //     //   coursedetails.courseType ==
+                                  //     //       "testSeries") {
+                                  //     // print(
+                                  //     //     "abha ${controller.ispurchased.length}");
+                                  //     // print(
+                                  //     //     "yes ${coursedetails.courseType.toString()}");
 
-                                      Get.toNamed(Routes.AIR_TESTSERIES);
-                                    } else {
-                                      print(
-                                          "not testSeries ${coursedetails.courseType.toString()}");
+                                  //     Get.toNamed(Routes.AIR_TESTSERIES);
+                                  //   } else {
+                                  //   //   print(
+                                  //   //       "not testSeries ${coursedetails.courseType.toString()}");
 
-                                      // Show the alert only if it hasn't been shown before
-                                      if (!alertShown) {
-                                        Get.back;
-                                        _showDialog(context);
-                                        alertShown =
-                                            true; // Set the flag to true to avoid showing the alert again
-                                      }
+                                  //   //   // Show the alert only if it hasn't been shown before
+                                  //   //   if (!alertShown) {
+                                  //   //     Get.back;
+                                  //   //     _showDialog(context);
+                                  //   //     alertShown =
+                                  //   //         true; // Set the flag to true to avoid showing the alert again
+                                  //   //   }
 
-                                      // controller.paymentGetId();
-                                    }
-                                  }
+                                  //   //   // controller.paymentGetId();
+                                  //   // }
+                                  
                                 }),
                                 10.heightBox,
                                 buildItemsList("20 years pyq’s with answer"
@@ -385,18 +386,18 @@ class HomeView extends GetView<HomeController> {
                   // Get.back();
                 },
               ),
-              ListTile(
-                leading: Image.asset(
-                  Assets.images.menuResolveDoubtNowIcon.path,
-                  height: 25,
-                  width: 25,
-                ),
-                title: const Text('RESOLVE DOUBT NOW',
-                    style: TextStyle(color: Colors.white)),
-                onTap: () {
-                  Get.toNamed(Routes.RESOLVE_DOUBTPAGE);
-                },
-              ),
+              // ListTile(
+              //   leading: Image.asset(
+              //     Assets.images.menuResolveDoubtNowIcon.path,
+              //     height: 25,
+              //     width: 25,
+              //   ),
+              //   title: const Text('RESOLVE DOUBT NOW',
+              //       style: TextStyle(color: Colors.white)),
+              //   onTap: () {
+              //     Get.toNamed(Routes.RESOLVE_DOUBTPAGE);
+              //   },
+              // ),
               ListTile(
                 leading: Image.asset(
                   Assets.images.menuMoreCoursesIcon.path,

@@ -54,160 +54,95 @@ class SelectedVidiolectureView extends GetView<SelectedVidiolectureController> {
                         .make(),
                     20.heightBox,
                     //first dropdown
-                    Padding(
-                      padding: const EdgeInsets.only(left: 25, right: 25),
-                      child: Container(
-                        height: 52,
-                        // width: 300,
-                        decoration: BoxDecoration(
+                    Container(
+                      height: 52,
+                      width: 300,
+                      decoration: BoxDecoration(
+                        color: HexColor("#F3FFFF"),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(25)),
+                        border: Border.all(width: 1, color: Colors.grey),
+                      ),
+                      padding: const EdgeInsets.only(left: 0, right: 0),
+                      child: Obx(() {
+                        final filteredData = controller.userdetais
+                            .where((coursedetails) =>
+                                coursedetails.active == "yes")
+                            .toList();
+
+                        // Use Future.microtask to defer state change until after the build phase
+                        Future.microtask(() {
+                          if (filteredData.isNotEmpty &&
+                              controller.seleectrdvalue.value == null) {
+                            // Automatically select the first item (index 0)
+                            controller.seleectrdvalue33.value =
+                                filteredData.first;
+                            controller.subjectList.clear();
+                            controller.subjectList.addAll(filteredData
+                                .first.courseId!.exam!.subjects!
+                                .toList());
+                            controller.selectedid.value = filteredData
+                                .first.courseId!.exam!.id
+                                .toString();
+                          }
+                        });
+
+                        return Container(
+                          height: 52,
+                          decoration: BoxDecoration(
                             color: HexColor("#F3FFFF"),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(25)),
-                            border: Border.all(width: 1, color: Colors.grey)),
-                        padding: const EdgeInsets.only(left: 0, right: 0),
-                        // alignment: Alignment.center,
-                        child: Obx(() {
-                          final filteredData = controller.userdetais
-                              .where((coursedetails) =>
-                                  coursedetails.active == "yes")
-                              .toList();
-                          return Container(
-                            height: 52,
-                            // width: 380,
-                            decoration: BoxDecoration(
-                              color: HexColor("#F3FFFF"),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(25)),
-                              border: Border.all(width: 1, color: Colors.grey),
-                            ),
-                            padding: const EdgeInsets.only(left: 8, right: 0),
-                            child: DropdownButton<CourseSub>(
-                              hint: "Choose Course".text.make(),
-                              dropdownColor: Colors.grey.shade300,
-                              items: filteredData.map((CourseSub value) {
-                                return DropdownMenuItem<CourseSub>(
-                                  value: value,
-                                  child: Text(
-                                    value.name.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                            border: Border.all(width: 1, color: Colors.grey),
+                          ),
+                          padding: const EdgeInsets.only(left: 25, right: 25),
+                          child: DropdownButton<CourseSub>(
+                            hint: "Choose Course".text.make(),
+                            dropdownColor: Colors.grey.shade300,
+                            items: filteredData.map((CourseSub value) {
+                              return DropdownMenuItem<CourseSub>(
+                                value: value,
+                                child: Text(
+                                  value.courseId!.title.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
                                   ),
-                                );
-                              }).toList(),
-                              value: controller.seleectrdvalue33.value,
-                              underline: Container(color: Colors.black),
-                              isExpanded: true,
-                              icon: Container(
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                alignment: Alignment.center,
-                                height: 95,
-                                width: 50,
-                                decoration: BoxDecoration(
+                                ),
+                              );
+                            }).toList(),
+                            value: controller.seleectrdvalue33.value,
+                            underline: Container(color: Colors.black),
+                            isExpanded: true,
+                            icon: Container(
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              alignment: Alignment.center,
+                              height: 95,
+                              width: 50,
+                              decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  gradient: buttonColor,
-                                ),
-                                child: const Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.white,
-                                  size: 38,
-                                ),
-                              ),
-                              onChanged: (CourseSub? newVal) {
-                                controller.subjectList.clear();
-
-                                controller.subjectList.addAll(
-                                    newVal!.courseId!.exam!.subjects!.toList());
-                                if (newVal != null) {
-                                  //controller.selectedid.value =
-                                  //    newVal.courseId!.id.toString();
-                                  controller.selectedid.value =
-                                      newVal.courseId!.exam!.id.toString();
-                                  // Update the selected ID in the controller
-                                  print(
-                                      'Selected ID: ${controller.selectedid.value}');
-                                  // Call API or perform actions with the selected value
-                                  //controller.getProfile();
-                                  controller.seleectrdvalue33.value = newVal;
-                                }
-                              },
+                                  gradient: buttonColor),
+                              child: const Icon(Icons.arrow_drop_down,
+                                  color: Colors.white, size: 38),
                             ),
-                          );
-                        }),
-                      ),
+                            onChanged: (CourseSub? newVal) {
+                              if (newVal != null) {
+                                controller.subjectList.clear();
+                                controller.subjectList.addAll(
+                                    newVal.courseId!.exam!.subjects!.toList());
+                                controller.selectedid.value =
+                                    newVal.courseId!.exam!.id.toString();
+                                controller.seleectrdvalue33.value = newVal;
+                                print(
+                                    'Selected ID: ${controller.selectedid.value}');
+                              }
+                            },
+                          ),
+                        );
+                      }),
                     ).w(800),
                     20.heightBox,
-                    //first dropdown
-                    //Padding(
-                    //  padding: const EdgeInsets.only(left: 25, right: 25),
-                    //  child: Container(
-                    //      height: 50,
-                    //      //width: 300,
-                    //      decoration: BoxDecoration(
-                    //          color: HexColor("#F3FFFF"),
-                    //          borderRadius:
-                    //              const BorderRadius.all(Radius.circular(28)),
-                    //          border: Border.all(width: 1, color: Colors.grey)),
-                    //      padding: const EdgeInsets.only(left: 20, right: 0),
-                    //      // alignment: Alignment.center,
-                    //      child: Obx(() {
-                    //        final filteredData = controller.courdata
-                    //            .where((coursedetails) =>
-                    //                coursedetails.purchased != "no" &&
-                    //                coursedetails.courseType != "testSeries")
-                    //            .toList();
-
-                    //        return DropdownButton<Datum>(
-                    //          hint: "Choose course".text.make(),
-                    //          disabledHint: "Choose course".text.make(),
-                    //          dropdownColor: Colors.grey.shade300,
-                    //          items: filteredData.map((Datum profile) {
-                    //            return DropdownMenuItem<Datum>(
-                    //              value: profile,
-                    //              child: Text(profile.title
-                    //                  .toString()), // Replace with the appropriate field of your Profile class
-                    //            );
-                    //          }).toList(),
-                    //          underline: Container(color: Colors.black),
-                    //          isExpanded: true,
-                    //          icon: Container(
-                    //            clipBehavior: Clip.antiAliasWithSaveLayer,
-                    //            alignment: Alignment.center,
-                    //            height: 95,
-                    //            width: 50,
-                    //            decoration: BoxDecoration(
-                    //                shape: BoxShape.circle,
-                    //                gradient: buttonColor),
-                    //            child: const Icon(
-                    //              Icons.arrow_drop_down,
-                    //              color: Colors.white,
-                    //              size: 38,
-                    //            ),
-                    //          ),
-                    //          value: controller.seleectrdvalue.value,
-                    //          onChanged: (Datum? newValue) {
-                    //            controller.subjectList.clear();
-
-                    //            controller.subjectList
-                    //                .addAll(newValue!.exam!.subjects!.toList());
-                    //            if (newValue != null) {
-                    //              controller.selectedid.value =
-                    //                  newValue.exam!.id.toString();
-                    //              // Update the selected ID in the controller
-                    //              print(
-                    //                  'Selected ID: ${controller.selectedid.value}');
-                    //              // Call API or perform actions with the selected value
-
-                    //            }
-                    //            // Update the selected value in the controller
-                    //            controller.seleectrdvalue.value = newValue;
-                    //          },
-                    //        );
-                    //      })),
-                    //).w(800),
-                    //20.heightBox,
                     //seond dropdown
                     Padding(
                       padding: const EdgeInsets.only(left: 25, right: 25),

@@ -1,4 +1,5 @@
 
+
 import 'package:exam_prep_tool/app/routes/app_pages.dart';
 import 'package:exam_prep_tool/app/themes/app_style.dart';
 import 'package:exam_prep_tool/app/utils/const.dart';
@@ -87,7 +88,10 @@ class LoginScreenView extends GetView<LoginScreenController> {
                                 ).paddingSymmetric(horizontal: 35),
                               ),
                               20.heightBox,
-                              buildTextField(controller.password),
+                               buildTextField(controller.password, controller.isPasswordVisible), // Use password controller
+           
+                              // buildTextField(controller,  isPasswordVisible.value),
+                              // buildTextField(controller, controller.isPasswordVisible),
                               25.heightBox,
                               Container(
                                       alignment: Alignment.centerRight,
@@ -136,58 +140,76 @@ class LoginScreenView extends GetView<LoginScreenController> {
         ));
   }
 
-  Widget buildTextField(controller) {
-    return Card(
-      color: textfield,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(30),
-        ),
+Widget buildTextField(TextEditingController controller, RxBool isPasswordVisible) {
+  return Card(
+    color: textfield,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(30),
       ),
-      elevation: 3.0,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: SizedBox(
-        height: 60,
-        child: Row(
-          children: [
-            5.widthBox,
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(Icons.lock, color: Colors.grey),
-            ),
-            Expanded(
-              child: TextField(
+    ),
+    elevation: 3.0,
+    clipBehavior: Clip.antiAliasWithSaveLayer,
+    child: SizedBox(
+      height: 60,
+      child: Row(
+        children: [
+          5.widthBox,
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Icon(Icons.lock, color: Colors.grey),
+          ),
+          Expanded(
+            child: Obx(
+              () => TextField(
+                obscureText: !isPasswordVisible.value,  // Password visibility toggle
                 controller: controller,
                 decoration: InputDecoration(
-                  //labelText: "Enter Your Password",
                   hintText: "Enter Your Password",
                   border: InputBorder.none,
                 ),
               ),
             ),
-            InkWell(
-              onTap: () {
-                Get.toNamed(Routes.TESTSERIES_VALUE_ANALYSIS);
-                // Get.toNamed(Routes.FORGETPASS_SCREEN);
+          ),
+          
+          // Password visibility toggle button
+          Obx(
+            () => IconButton(
+              icon: Icon(
+                isPasswordVisible.value
+                    ? Icons.visibility // Hide icon
+                    : Icons.visibility_off,    // Show icon
+                color: Colors.grey,
+              ),
+              onPressed: () {
+                // Toggle password visibility
+                isPasswordVisible.value = !isPasswordVisible.value;
               },
-              child: const Padding(
-                padding: EdgeInsets.only(right: 15),
-                child: Text(
-                  'Forget?',
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: Color.fromARGB(255, 2, 32, 85)),
+            ),
+          ),
+
+          InkWell(
+            onTap: () {
+              Get.toNamed(Routes.FORGETPASS_SCREEN);
+            },
+            child: const Padding(
+              padding: EdgeInsets.only(right: 15),
+              child: Text(
+                'Forget?',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: Color.fromARGB(255, 2, 32, 85),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    ).paddingSymmetric(horizontal: 35);
-  }
-
-  buildButton() {
+    ),
+  ).paddingSymmetric(horizontal: 35);
+}
+ buildButton() {
     return Container(
       alignment: Alignment.center,
       height: 45,

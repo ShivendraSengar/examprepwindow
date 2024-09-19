@@ -29,38 +29,7 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              //Text(controller
-              //        .testcontroller.selectedTestSeries.value?.testName ??
-              //    'Detail Page'),
-              //Text('Duration: ${testSeries.timeData?.duration ?? '0'} mins'),
-              //Text('Total Marks: ${testSeries.totalMarks ?? '0'}'),
-              //Text('Questions: ${testSeries.questions?.length ?? '0'}'),
-              //Text(
-              //    'Test Series Name: ${testSeries.questions?.first.question ?? '0'}'),
-              //ListView.builder(
-              //  shrinkWrap: true, // Use this to avoid taking full screen height
-              //  physics:
-              //      NeverScrollableScrollPhysics(), // Disable scrolling in ListView.builder
-              //  itemCount: testSeries.questions?.length ?? 0,
-              //  itemBuilder: (context, index) {
-              //    final question = testSeries.questions?[index];
-              //    return Column(
-              //      crossAxisAlignment: CrossAxisAlignment.start,
-              //      children: [
-              //        Text(
-              //          'Question ${index + 1}: ${question?.question ?? 'No question'}',
-              //          style: TextStyle(fontWeight: FontWeight.bold),
-              //        ),
-              //        SizedBox(height: 5),
-              //        // If you want to display options as well, you can add them here
-              //        ...?question?.options
-              //            ?.map((option) => Text('Option: ${option.toJson()}'))
-              //            .toList(),
-              //        SizedBox(height: 10),
-              //      ],
-              //    );
-              //  },
-              //),
+       
 
               20.widthBox,
               RichText(
@@ -134,6 +103,7 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
                             //'testName': testName,
                             );
                       }
+                      controller.isChecked.value = false;
                     },
                     child: Align(
                       alignment: Alignment.centerRight,

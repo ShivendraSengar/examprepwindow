@@ -11,16 +11,21 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class LoginScreenController extends GetxController {
-  final TextEditingController email = TextEditingController(
+   var isPasswordVisible = false.obs; // Observable to track password visibility
+  // TextEditingController email = TextEditingController(); // Email TextEditingController
+  // TextEditingController password = TextEditingController(); // Password TextEditingController
+   TextEditingController email = TextEditingController(
       text: kDebugMode ? "shivendra@testept.com" : "");
   //text: kDebugMode ? "raviranjan.km520@gmail.com" : "");
 
-  final TextEditingController password =
+   TextEditingController password =
       TextEditingController(text: kDebugMode ? "Hey@12345" : "");
   //TextEditingController(text: kDebugMode ? "Ept@1234" : "");
   final PrefUtils prefUtils = Get.find();
   final LoginRepo repositry = LoginRepoImpl();
   Data? logindata;
+  // RxBool isPasswordVisible = true.obs;  // Observable for password visibility
+
 
   static const String authTokenKey = 'authToken';
 

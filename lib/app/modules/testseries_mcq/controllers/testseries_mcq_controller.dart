@@ -17,18 +17,22 @@ import 'package:intl/intl.dart';
 
 class TestseriesMcqController extends GetxController {
   final TestSeriesRepo repositry1 = TestSeriesRepoIMPL();
-
+  RxBool isVisible = false.obs;
   // For Integer answers
 // For Integer input field
   var savedAnswers =
       <String, int>{}; // Question ID -> Selected Option Index (for MCQ)
   var savedMsqAnswers = <String,
       List<int>>{}; // Question ID -> List of Selected Option Indexes (for MSQ)
-  var savedIntegerAnswers = <String, int>{};
-  void loadSavedAnswersForQuestion(String questionId) {
-    selectedOptionIndex.value = savedAnswers[questionId] ?? -1;
-    selectedOptionIndexes.value = savedMsqAnswers[questionId] ?? [];
-    inputAnswer.value.text = savedIntegerAnswers[questionId]?.toString() ?? '';
+  var savedIntegerAnswers = <String, double>{};
+  // Initialize with saved value if exists
+  void loadSavedAnswer(String questionId) {
+    if (integerAnswer.value != null) {
+      inputAnswer.value.text = integerAnswer.value.toString();
+    } else if (savedIntegerAnswers.containsKey(questionId)) {
+      integerAnswer.value = savedIntegerAnswers[questionId];
+      inputAnswer.value.text = integerAnswer.value.toString();
+    }
   }
 
   RxBool isLoading = false.obs;
@@ -39,14 +43,16 @@ class TestseriesMcqController extends GetxController {
   RxString endTimeFormatted = ''.obs;
   RxDouble usedTime = 0.0.obs;
   var answerlist = [].obs;
+
   var answeredQuestions = <int>[].obs;
   var markedForReviewQuestions = <int>[].obs;
+ var notvisited = <int>[].obs;
   var currentQuestionIndex = 0.obs;
   final testSeries = Testseries().obs; // Rx<Testseries>
   final arguments = Get.arguments;
   var selectedOptionIndex = (-1).obs;
   var selectedOptionIndexes = RxList<int>(); //
-  var integerAnswer = Rx<int?>(null); // For storing integer type answers
+  var integerAnswer = Rx<double?>(null); // For storing integer type answers
 
   var reviewMarks = 0.obs;
   // RxDouble incorrectMarks = 0.0.obs;
@@ -63,8 +69,8 @@ class TestseriesMcqController extends GetxController {
   var incorrectMarks = 0.0.obs;
   var finalMarks = 0.0.obs;
 // Save Marks
- // Save marks for the specific test ID
-   
+  // Save marks for the specific test ID
+
   var marksMap = <String, double>{}.obs;
 
   // Function to calculate and save final marks
@@ -76,20 +82,16 @@ class TestseriesMcqController extends GetxController {
 
     print("Final Marks for Test ID $testId: ${finalMarks.value}");
   }
-  // void calculateFinalMarks() {
-  //   finalMarks.value = totalMarks.value - incorrectMarks.value;
-  //   print("finalMarks.toDouble()${finalMarks.toDouble()}");
-  // }
+
 // timer define duration
   void startTimer(int minutes, Function onTimeUp) {
     DateTime startTime = DateTime.now();
     DateTime endTime = startTime.add(Duration(minutes: minutes));
 
-  
-  // Calculate used time in minutes
-  double usedTime = calculateUsedTime(startTime, endTime);
+    // Calculate used time in minutes
+    double usedTime = calculateUsedTime(startTime, endTime);
 
-  print("Used Time: $usedTime minutes");
+    print("Used Time: $usedTime minutes");
 
     // Format the start and end times
     startTimeFormatted.value =
@@ -123,7 +125,6 @@ class TestseriesMcqController extends GetxController {
     return usedTime;
   }
 
-
   @override
   void onInit() {
     super.onInit();
@@ -133,7 +134,6 @@ class TestseriesMcqController extends GetxController {
   }
 
   final TestsearisController testcontroller = Get.find();
-
 
   testAnswerquestion() {
     try {
@@ -207,27 +207,63 @@ class TestseriesMcqController extends GetxController {
     selectedOptionIndex.value = index;
   }
 
-  void submitAnswer(Function onTimeUp) {
-    if (selectedOptionIndex.value != -1) {
-      answeredQuestions.add(currentQuestionIndex.value);
+  // void submitAnswer() {
+  //   if (selectedOptionIndex.value != -1 ||
+  //       selectedOptionIndexes.isNotEmpty ||
+  //       integerAnswer.value != null) {
+  //     // Mark question as answered
+  //     answeredQuestions.add(currentQuestionIndex.value);
 
-      // finalMarks.value;
-      // incorrectMarks.vlaue.toDouble();
-      totalMarks;
+  //     // Increment or decrement marks based on correctness
+  //     // Already handled in your button logic (Save and Next, Mark for Review)
+
+  //     // Reset selected options for next question
+  //     selectedOptionIndex.value = -1;
+  //     selectedOptionIndexes.clear();
+  //     integerAnswer.value = null;
+
+  //     // Move to next question if available
+  //     if (currentQuestionIndex.value < testSeries.value.questions!.length - 1) {
+  //       currentQuestionIndex.value++;
+  //     } else {
+  //       // onTimeUp(); // Quiz is finished
+  //     }
+  //   } else {
+  //     submitAnswer(); // Skip unanswered questions
+  //   }
+  // }
+
+void submitAnswer() {
+  if (selectedOptionIndex.value != -1 ||
+      selectedOptionIndexes.isNotEmpty ||
+      integerAnswer.value != null) {
+    // Mark question as answered
+    answeredQuestions.add(currentQuestionIndex.value);
+
+    // Check if question is also marked for review
+    if (markedForReviewQuestions.contains(currentQuestionIndex.value)) {
+      // Remove it from marked for review list since it's now answered
+      markedForReviewQuestions.remove(currentQuestionIndex.value);
+      if (reviewMarks > 0) {
+        reviewMarks--; // Decrement review marks because answer is now submitted
+      }
     }
-    //else {
-    //  totalMarks--;
-    //  finalMarks.value--;
-    //}
+
+    // Reset selected options for next question
     selectedOptionIndex.value = -1;
+    selectedOptionIndexes.clear();
+    integerAnswer.value = null;
+
+    // Move to next question if available
     if (currentQuestionIndex.value < testSeries.value.questions!.length - 1) {
       currentQuestionIndex.value++;
     } else {
-      onTimeUp();
-      // Quiz is finished
-      // You can navigate to a score screen or show a dialog
+      // onTimeUp(); // Quiz is finished
     }
+  } else {
+    submitAnswer(); // Skip unanswered questions
   }
+}
 
   void previousQuestion() {
     if (currentQuestionIndex.value > 0) {
@@ -235,21 +271,148 @@ class TestseriesMcqController extends GetxController {
       selectedOptionIndex.value = -1; // Reset selected option
     }
   }
+//  void markForReview() {
+//   // Total number of questions
+//   final totalQuestions = testSeries.value.questions!.length;
 
-  void markForReview() {
-    markedForReviewQuestions.add(currentQuestionIndex.value);
-    selectedOptionIndex.value = -1; // Reset selected option
-    if (currentQuestionIndex.value < testSeries.value.questions!.length - 1) {
-      currentQuestionIndex.value++;
-      reviewMarks++;
-    } else {
-      // Quiz is finished
-      // You can navigate to a score screen or show a dialog
+//   // Check if the current question index is within the valid range
+//   if (currentQuestionIndex.value < totalQuestions) {
+//     // Add the current question to the marked for review list if not already added
+//     if (!markedForReviewQuestions.contains(currentQuestionIndex.value)) {
+//       markedForReviewQuestions.add(currentQuestionIndex.value);
+//       reviewMarks++; // Increment review marks
+//     }
+
+//     // Reset selected option index
+//     selectedOptionIndex.value = -1;
+
+//     // Check if we can move to the next question
+//     if (currentQuestionIndex.value < totalQuestions - 1) {
+//       currentQuestionIndex.value++;
+//     } else {
+//       // No more questions, print message
+//       print("Quiz is finished, no more questions to review.");
+//       // Optionally, navigate to a score screen or show a completion dialog
+//     }
+//   } else {
+//     // If index is already out of bounds, print error or handle it
+//     print("Index out of range: All questions have been reviewed.");
+//   }
+// }
+
+void unmarkForReview() {
+  // Check if the current question is marked for review
+  if (markedForReviewQuestions.contains(currentQuestionIndex.value)) {
+    // Remove the question from the marked for review list
+    markedForReviewQuestions.remove(currentQuestionIndex.value);
+
+    // Decrement review marks
+    if (reviewMarks > 0) {
+      reviewMarks--;
     }
+
+    // Unselect any selected option for MCQ
+    if (selectedOptionIndex.value != -1) {
+      selectedOptionIndex.value = -1; // Reset the selected option
+      savedAnswers.remove(testSeries.value.questions![currentQuestionIndex.value].id); // Remove saved answer
+    }
+
+    // Unselect any selected options for MSQ
+    if (selectedOptionIndexes.isNotEmpty) {
+      selectedOptionIndexes.clear(); // Clear all selected MSQ options
+      savedMsqAnswers.remove(testSeries.value.questions![currentQuestionIndex.value].id); // Remove saved MSQ answer
+    }
+
+    print("Question unmarked for review and answers unselected.");
+  } else {
+    print("Question is not marked for review.");
   }
+}
+
+
+
+
+
+void saveAndNext() {
+  // Check if the current question is within the valid range
+  final totalQuestions = testSeries.value.questions!.length;
+  
+  if (currentQuestionIndex.value < totalQuestions) {
+    // Logic to save the answer goes here (e.g., store the answer value to the API or local list)
+    
+    // If the question is marked for review, remove it and update marks
+    if (markedForReviewQuestions.contains(currentQuestionIndex.value)) {
+      markedForReviewQuestions.remove(currentQuestionIndex.value);
+      reviewMarks--; // Decrement review marks when saved
+    }
+
+    // Move to next question
+    if (currentQuestionIndex.value < totalQuestions - 1) {
+      currentQuestionIndex.value++;
+    } else {
+      print("Quiz finished.");
+    }
+  } else {
+    print("No more questions.");
+  }
+}
+
+// void markForReview() {
+//   // Total number of questions
+//   final totalQuestions = testSeries.value.questions!.length;
+
+//   // Check if the current question index is within the valid range
+//   if (currentQuestionIndex.value < totalQuestions) {
+//     // Add the current question to the marked for review list if not already added
+//     if (!markedForReviewQuestions.contains(currentQuestionIndex.value)) {
+//       markedForReviewQuestions.add(currentQuestionIndex.value);
+//       reviewMarks++; // Increment review marks
+//     }
+
+//     // Reset selected option index
+//     selectedOptionIndex.value = -1;
+
+//     // Move to next question
+//     if (currentQuestionIndex.value < totalQuestions - 1) {
+//       currentQuestionIndex.value++;
+//     } else {
+//       print("Quiz is finished, no more questions to review.");
+//     }
+//   } else {
+//     print("Index out of range: All questions have been reviewed.");
+//   }
+// }
+
 
   void updateCurrentQuestionIndex(int index) {
     currentQuestionIndex.value = index;
     // All AnswerList
   }
+
+  void markForReview() {
+  // Total number of questions
+  final totalQuestions = testSeries.value.questions!.length;
+
+  // Check if the current question index is within the valid range
+  if (currentQuestionIndex.value < totalQuestions) {
+    // Add the current question to the marked for review list if not already added
+    if (!markedForReviewQuestions.contains(currentQuestionIndex.value)) {
+      markedForReviewQuestions.add(currentQuestionIndex.value);
+      reviewMarks++; // Increment review marks
+    }
+
+    // Reset selected option index
+    selectedOptionIndex.value = -1;
+
+    // Move to next question
+    if (currentQuestionIndex.value < totalQuestions - 1) {
+      currentQuestionIndex.value++;
+    } else {
+      print("Quiz is finished, no more questions to review.");
+    }
+  } else {
+    print("Index out of range: All questions have been reviewed.");
+  }
+}
+
 }

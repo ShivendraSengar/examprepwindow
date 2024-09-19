@@ -148,8 +148,8 @@ Widget _buildCourseDropdown() {
           .toList();
 
       SchedulerBinding.instance.addPostFrameCallback((_) {
-        if (filteredData.length == 1 &&
-            controller.seleectrdvalue.value == null) {
+        // Auto-select the first course if the selection is null
+        if (filteredData.isNotEmpty && controller.seleectrdvalue.value == null) {
           final selectedCourse = filteredData[0];
           controller.seleectrdvalue.value = selectedCourse;
           controller.selectedid.value = selectedCourse.courseId!.exam!.id.toString();
@@ -171,7 +171,7 @@ Widget _buildCourseDropdown() {
           return DropdownMenuItem<CourseSub>(
             value: value,
             child: Text(
-              value.name.toString(),
+              value.courseId!.title.toString(),
               style: const TextStyle(
                 fontSize: 16,
                 color: Colors.black,
@@ -318,6 +318,7 @@ Widget _buildTabBarWithOnTap() {
     ),
   );
 }
+ 
   Widget _buildTab(String text, int index) {
     return Obx(() {
       final selected = controller.tabIndex.value == index;

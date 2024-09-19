@@ -21,70 +21,63 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
 
     controller.testSeries.value = testSeries;
     void submitTest() {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            //title: Text('Time is up!${testSeries.questions!.length}'),
-            content: Container(
-              height: Get.height / 4,
-              width: 400,
-              child: Center(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      "Your Test has been submmited"
-                          .text
-                          .size(20)
-                          .fontWeight(FontWeight.bold)
-                          .bold
-                          .make(),
-
-                      10.heightBox,
-                      //  10.heightBox,
-                      "You got ${(controller.totalMarks.value - controller.incorrectMarks.toDouble()).toStringAsFixed(2)} marks"
-                          .text
-                          .purple500
-                          .size(16)
-                          .bold
-                          .make()
-                          .p16(),
-                    ]),
-              ),
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Container(
+          height: Get.height / 4,
+          width: 400,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                "Your Test has been submitted"
+                    .text
+                    .size(20)
+                    .fontWeight(FontWeight.bold)
+                    .bold
+                    .make(),
+                10.heightBox,
+                "You got ${(controller.totalMarks.value - controller.incorrectMarks.toDouble()).toStringAsFixed(2)} marks"
+                    .text
+                    .purple500
+                    .size(16)
+                    .bold
+                    .make()
+                    .p16(),
+              ],
             ),
-            actions: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Get.back(); // Dismiss the dialog first
-                    },
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                    child: Text('Cancel'),
-                  ).p16(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          onSomeEvent();
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green),
-                        child: Text('View Analysis'),
-                      ).p16(),
-                    ],
-                  ),
-                ],
-              ),
+          ),
+        ),
+        actions: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  // First, dismiss the dialog
+                  Navigator.of(context).pop();
+controller.testcontroller.startTest();
+                            (); // End test and show solution
+                        
+                         
+                        
+                            controller.submitAnswerquestion();
+                  onSomeEvent();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                ),
+                child: Text('OK'),
+              ).p16(),
             ],
-          );
-        },
+          ),
+        ],
       );
-    }
+    },
+  );
+}
 
     // Define the onTimeUp function
     void onTimeUp() {
@@ -171,6 +164,14 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
                   ElevatedButton(
                     onPressed: () {
                       submitTest();
+                      Navigator.of(context).pop();
+controller.testcontroller.startTest();
+                            (); // End test and show solution
+                        
+                         
+                        
+                            controller.submitAnswerquestion();
+                  onSomeEvent();
                     },
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.green),
@@ -196,21 +197,21 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
     controller.startTimer(testSeries.timeData!.duration!.toInt(), submitTest);
 // double usedTime = controller.calculateUsedTime(controller. startTimeFormatted.value, DateTime.now());
 
-    return  Padding(
+    return  
+    Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-                "${testSeries.questionType.toString()}"),
+     
             20.widthBox,
             Card(
               elevation: 1,
               child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Container(
-                      width: 360,
+                      width: 345,
                       height: Get.height,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -237,13 +238,7 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
                                 .text
                                 .make();
                           }),
-                          //Text(controller.arguments[0]),
-                          "Time Remeaning"
-                              .text
-                              .size(18)
-                              .fontWeight(FontWeight.bold)
-                              .make(),
-                          8.heightBox,
+                     
                         
                           Row(
                             mainAxisAlignment:
@@ -268,59 +263,59 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
                           ),
                           //Text(questionsCount.toString()),
                           20.heightBox,
-                        
-                          Expanded(
-                            child: Container(
-                              width: 350,
-                              child: GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 5,
-                                  crossAxisSpacing: 8.0,
-                                  mainAxisSpacing: 8.0,
-                                ),
-                                itemCount: testSeries.questions?.length,
-                                itemBuilder: (context, index) {
-                                  Color cardColor;
-                        
-                                  if (controller.answeredQuestions
-                                      .contains(index)) {
-                                    cardColor = Colors.green[100]!;
-                                  } else if (controller
-                                      .markedForReviewQuestions
-                                      .contains(index)) {
-                                    cardColor = Colors.purple[100]!;
-                                  } else {
-                                    cardColor = Colors.red[100]!;
-                                  }
-                        
-                                  return Card(
-                                    color: cardColor,
-                                    child: Center(
-                                      child: Text(
-                                        '${index + 1}',
-                                        style: const TextStyle(
-                                            fontSize: 24),
-                                      ),
-                                    ),
-                                  ).onTap(() {
-                                    controller
-                                        .updateCurrentQuestionIndex(
-                                            index);
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        
-                          buildEndButton().onTap(() {
+                       Expanded(
+  child: Container(
+    width: 350,
+    child: GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 5,
+        crossAxisSpacing: 8.0,
+        mainAxisSpacing: 8.0,
+      ),
+      itemCount: testSeries.questions?.length ?? 0,
+      itemBuilder: (context, index) {
+        return Card(shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
+          child: Obx(() {
+            // only color chnaged box
+            Color cardColor;
+            if (controller.answeredQuestions.contains(index)) {
+              cardColor = const Color.fromARGB(255, 32, 233, 42)!;
+            } else if (controller.markedForReviewQuestions.contains(index)) {
+              cardColor = const Color.fromARGB(255, 200, 22, 231)!;
+            } else if(controller.notvisited.contains(index)) {
+              cardColor = const Color.fromARGB(255, 201, 27, 27)!;
+            }
+            else{
+              cardColor = Colors.white!;
+            }
+
+            return Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(8),
+            color: cardColor,),
+              
+              child: Center(
+                child: Text(
+                  '${index + 1}',
+                  style: const TextStyle(fontSize: 24),
+                ),
+              ),
+            );
+          }),
+        ).onTap(() {
+          controller.updateCurrentQuestionIndex(index);
+        });
+      },
+    ),
+  ),
+),
+   buildEndButton().onTap(() {
                             controller.testcontroller.startTest();
                             (); // End test and show solution
                         
                             // Solution view logic
-                        
+                        controller.stopTimer();
                             onTimeUp();
                             controller.submitAnswerquestion();
+                            controller.testcontroller.dispose();
                           })
                         ],
                       ))),
@@ -360,81 +355,7 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
     );
   }
 
-  buildButton(text) {
-    return Container(
-      alignment: Alignment.center,
-      height: 45,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-          color: HexColor("#BACDFF"), borderRadius: BorderRadius.circular(5)),
-      child: Text(text),
-    );
-  }
- Widget buildRow() {
-    return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-            height: 45,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(19)),
-            child: Column(
-              children: [
-                Table(
-                  border: TableBorder.all(),
-                  children: [
-                    //TableRow(children: [
-                    //  "Time Remain".text.make().p8(),
-                    //  "$hours:$minutes:$seconds".text.make().p8(),
-                    //]),
-                    TableRow(children: [
-                      "Total Questions".text.make().p8(),
-                      "65".text.make().p8(),
-                    ]),
-                    TableRow(children: [
-                      "Mark For Review".text.make().p8(),
-                      "5".text.make().p8(),
-                    ]),
-                    TableRow(children: [
-                      "Attempted".text.make().p8(),
-                      "45".text.make().p8(),
-                    ]),
-                    TableRow(children: [
-                      "Not Attempted".text.make().p8(),
-                      "15".text.make().p8(),
-                    ]),
-                  ],
-                ).p16(),
-                16.heightBox,
-                "Are You Sure To Submit The Test !"
-                    .text
-                    .purple500
-                    .size(18)
-                    .bold
-                    .make()
-                    .p16(),
-                16.heightBox,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        // Handle Yes action
-                      },
-                      //style: ElevatedButton.styleFrom(primary: Colors.green),
-                      child: Text('YES'),
-                    ).p16(),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Handle No action
-                      },
-                      //style: ElevatedButton.,
-                      child: Text('NO'),
-                    ).p16(),
-                  ],
-                ),
-              ],
-            )));
-  }
-
+ 
  void onSomeEvent() {
   // Test ID ko retrieve karein (for example purposes)
   String testId = controller.testcontroller.testSeries[0].id.toString();
@@ -443,7 +364,7 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
   controller.calculateFinalMarks(testId);
 
   // Navigate to the next page
-  Get.toNamed(Routes.TESTSERIES_VALUE_ANALYSIS, arguments: [
+  Get.offAndToNamed(Routes.TESTSERIES_VALUE_ANALYSIS, arguments: [
  controller.marksMap[testId],
     testId,]
   );

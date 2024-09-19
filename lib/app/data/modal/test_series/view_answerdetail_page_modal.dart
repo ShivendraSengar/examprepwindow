@@ -1,6 +1,4 @@
-// To parse this JSON data, do
-//
-//     final viewAnswerDetailModal = viewAnswerDetailModalFromJson(jsonString);
+
 
 import 'dart:convert';
 
@@ -41,13 +39,14 @@ class Answerlist {
     UserId? userId;
     TestId? testId;
     List<Answer>? answers;
-    double? marksGot;
+    int? marksGot;
     TimeData? timeData;
-    String? attempt;
+    dynamic attempt;
     String? submit;
     DateTime? createdAt;
     DateTime? updatedAt;
     int? v;
+    String? rank;
 
     Answerlist({
         this.id,
@@ -61,6 +60,7 @@ class Answerlist {
         this.createdAt,
         this.updatedAt,
         this.v,
+        this.rank,
     });
 
     factory Answerlist.fromJson(Map<String, dynamic> json) => Answerlist(
@@ -68,13 +68,14 @@ class Answerlist {
         userId: json["userId"] == null ? null : UserId.fromJson(json["userId"]),
         testId: json["testId"] == null ? null : TestId.fromJson(json["testId"]),
         answers: json["answers"] == null ? [] : List<Answer>.from(json["answers"]!.map((x) => Answer.fromJson(x))),
-        marksGot: json["marksGot"]?.toDouble(),
+        marksGot: json["marksGot"],
         timeData: json["timeData"] == null ? null : TimeData.fromJson(json["timeData"]),
         attempt: json["attempt"],
         submit: json["submit"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         v: json["__v"],
+        rank: json["rank"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -89,6 +90,7 @@ class Answerlist {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "__v": v,
+        "rank": rank,
     };
 }
 
@@ -148,35 +150,43 @@ class Question {
     String? id;
     String? question;
     String? questionImage;
+    String? type;
     List<Option>? options;
     Explanation? explanation;
     int? marks;
+    double? negativeMarks;
 
     Question({
         this.id,
         this.question,
         this.questionImage,
+        this.type,
         this.options,
         this.explanation,
         this.marks,
+        this.negativeMarks,
     });
 
     factory Question.fromJson(Map<String, dynamic> json) => Question(
         id: json["_id"],
         question: json["question"],
         questionImage: json["questionImage"],
+        type: json["type"],
         options: json["options"] == null ? [] : List<Option>.from(json["options"]!.map((x) => Option.fromJson(x))),
         explanation: json["explanation"] == null ? null : Explanation.fromJson(json["explanation"]),
         marks: json["marks"],
+        negativeMarks: json["negativeMarks"]?.toDouble(),
     );
 
     Map<String, dynamic> toJson() => {
         "_id": id,
         "question": question,
         "questionImage": questionImage,
+        "type": type,
         "options": options == null ? [] : List<dynamic>.from(options!.map((x) => x.toJson())),
         "explanation": explanation?.toJson(),
         "marks": marks,
+        "negativeMarks": negativeMarks,
     };
 }
 
@@ -231,7 +241,7 @@ class Option {
 class TimeData {
     String? rawStartDate;
     DateTime? startTimeString;
-    double? usedTime;
+    int? usedTime;
     DateTime? endTimeString;
     int? duration;
 
@@ -246,7 +256,7 @@ class TimeData {
     factory TimeData.fromJson(Map<String, dynamic> json) => TimeData(
         rawStartDate: json["rawStartDate"],
         startTimeString: json["startTimeString"] == null ? null : DateTime.parse(json["startTimeString"]),
-        usedTime: json["usedTime"]?.toDouble(),
+        usedTime: json["usedTime"],
         endTimeString: json["endTimeString"] == null ? null : DateTime.parse(json["endTimeString"]),
         duration: json["duration"],
     );

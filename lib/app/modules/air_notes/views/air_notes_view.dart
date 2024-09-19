@@ -1,6 +1,7 @@
 //import 'package:exam_prep_tool/app/modules/air_notes/controllers/localization_model.dart';
 import 'package:exam_prep_tool/app/data/modal/buycourses_modal.dart';
 import 'package:exam_prep_tool/app/data/modal/course.dart';
+import 'package:exam_prep_tool/app/data/modal/subjectfilterlist/subjectfilter.dart';
 
 import 'package:exam_prep_tool/app/data/modal/vidio_lecturesresponse/get_exam_id.dart';
 import 'package:exam_prep_tool/app/routes/app_pages.dart';
@@ -61,13 +62,6 @@ class AirNotesView extends GetView<AirNotesController> {
                                           .textStyle(AppStyle
                                               .txtPoppinsSemiBold14White90002)
                                           .make(),
-                                      //Obx(() {
-                                      //  // Use Obx widget to listen to changes in selectedIndex
-                                      //  return Text(
-                                      //    'Selected Index: ${controller.selectedIndex.value}',
-                                      //    style: TextStyle(fontSize: 18),
-                                      //  );
-                                      //}),
 
                                       40.heightBox,
                                       Container(
@@ -85,37 +79,37 @@ class AirNotesView extends GetView<AirNotesController> {
                                               left: 8, right: 0),
                                           // alignment: Alignment.center,
                                           child: Obx(() {
-                                            //final filteredData = controller.courdata
-                                            //    .where((coursedetails) =>
-                                            //        coursedetails.purchased != "no")
-                                            //    .toList();
-                                            return DropdownButton<CourseList>(
-                                              hint: "Choose Course".text.make(),
+                                            // Loading indicator while data is being fetched
+                                            if (controller.isLoading.value) {
+                                              return CircularProgressIndicator();
+                                            }
+
+                                            // DropdownButton to display the data
+                                            return DropdownButton<String>(
+                                              hint:
+                                                  "Choose Subject".text.make(),
                                               dropdownColor:
                                                   Colors.grey.shade300,
-                                              items: controller.getfreecouse
-                                                  .map((CourseList value) {
-                                                return DropdownMenuItem<
-                                                    CourseList>(
-                                                  value: value,
-                                                  child: Text(
-                                                    value.title.toString(),
-                                                    style: const TextStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
+
+                                              // Map subject name for the Dropdown
+                                              items: controller.courdata1.map(
+                                                  (SelectedSubjectlist
+                                                      subject) {
+                                                return DropdownMenuItem<String>(
+                                                  value: subject
+                                                      .subject, // Use subject name as the value
+                                                  child: Text(subject.subject ??
+                                                      ""), // Display subject name
                                                 );
                                               }).toList(),
-                                              // menuMaxHeight: 10,
-                                              value: controller
-                                                  .seleectrdfreevalue.value,
+
+                                              value: controller.selectedValue
+                                                  .value, // Bind selected subject name
 
                                               underline: Container(
                                                   color: Colors.black),
                                               isExpanded: true,
+
                                               icon: Container(
                                                 clipBehavior:
                                                     Clip.antiAliasWithSaveLayer,
@@ -123,118 +117,106 @@ class AirNotesView extends GetView<AirNotesController> {
                                                 height: 95,
                                                 width: 50,
                                                 decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    gradient: buttonColor),
+                                                  shape: BoxShape.circle,
+                                                  gradient: buttonColor,
+                                                ),
                                                 child: const Icon(
                                                   Icons.arrow_drop_down,
                                                   color: Colors.white,
                                                   size: 38,
                                                 ),
                                               ),
-                                              onChanged: (CourseList? newVal) {
-                                                controller.subjectList.clear();
 
-                                                controller.subjectList.addAll(
-                                                    newVal!.exam!.subjects!
-                                                        .toList());
-                                                if (newVal != null) {
-                                                  controller.selectedid.value =
-                                                      newVal.exam!.id
-                                                          .toString();
-                                                  // Update the selected ID in the controller
+                                              onChanged: (String? newVal) {
+                                                // Find the full selected subject object by name
+                                                SelectedSubjectlist?
+                                                    selectedSubject = controller
+                                                        .courdata1
+                                                        .firstWhereOrNull(
+                                                            (subject) =>
+                                                                subject
+                                                                    .subject ==
+                                                                newVal);
+
+                                                if (selectedSubject != null) {
+                                                  // Store the selected subject name and the full object
+                                                  controller
+                                                          .selectedValue.value =
+                                                      selectedSubject.subject;
+                                                  controller.selectedSubject1
+                                                      .value = selectedSubject;
+
+                                                  // Print the selected subject details
                                                   print(
-                                                      'Selected ID: ${controller.selectedid.value}');
-                                                  // Call API or perform actions with the selected value
-                                                  //controller.getProfile();
+                                                      'Selected Subject Name: ${controller.selectedValue.value}');
+                                                  // print('Selected Subject Details: ${controller.selectedSubject.value.id}');
+
+                                                  // Call a method or perform any action with the selected subject
+                                                  controller.showpdfview();
+                                                  controller.isVisible.value =
+                                                      true;
                                                 }
-                                                // Update the selected value in the controller
-                                                controller.seleectrdfreevalue
-                                                    .value = newVal;
                                               },
                                             );
                                           })),
-                                      20.heightBox,
-                                      //Text(subjectid.toString()),
-                                      Container(
-                                          height: 52,
-                                          width: 300,
-                                          decoration: BoxDecoration(
-                                              color: HexColor("#F3FFFF"),
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(25)),
-                                              border: Border.all(
-                                                  width: 1,
-                                                  color: Colors.grey)),
-                                          padding: const EdgeInsets.only(
-                                              left: 8, right: 0),
-                                          // alignment: Alignment.center,
-                                          child: Obx(
-                                            () => DropdownButton<String>(
-                                              hint:
-                                                  "Choose subject".text.make(),
-                                              dropdownColor:
-                                                  Colors.grey.shade300,
-                                              items: controller.subjectList
-                                                  .map((String subject) {
-                                                return DropdownMenuItem<String>(
-                                                  value: subject,
-                                                  child: Text(
-                                                    subject,
-                                                    style: const TextStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                );
-                                              }).toList(),
-                                              // menuMaxHeight: 10,
-                                              value: controller
-                                                  .seleectrdvalu4.value,
 
-                                              underline: Container(
-                                                  color: Colors.black),
-                                              isExpanded: true,
-                                              icon: Container(
-                                                clipBehavior:
-                                                    Clip.antiAliasWithSaveLayer,
-                                                alignment: Alignment.center,
-                                                height: 95,
-                                                width: 50,
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    gradient: buttonColor),
-                                                child: const Icon(
-                                                  Icons.arrow_drop_down,
-                                                  color: Colors.white,
-                                                  size: 38,
-                                                ),
-                                              ),
-                                              onChanged: (newValue) {
-                                                if (newValue != null) {
-                                                  controller.selectedSubject
-                                                          .value =
-                                                      newValue.toString();
-                                                  // Update the selected ID in the controller
-                                                  print(
-                                                      'Selected Subjects: ${controller.selectedSubject.value}');
-                                                  // Call API or perform actions with the selected value
-                                                  //controller.getProfile();
-                                                  controller.showpdfview();
-                                                }
-                                                controller.isVisible.value =
-                                                    true;
-                                                controller
-                                                        .seleectrdvalu4.value =
-                                                    newValue.toString();
-                                              },
-                                            ),
-                                          )),
-                                      //Text(
-                                      //    controller.showpdf.length.toString()),
                                       20.heightBox,
+//                                Container(
+//   height: 52,
+//   width: 300,
+//   decoration: BoxDecoration(
+//       color: HexColor("#F3FFFF"),
+//       borderRadius: const BorderRadius.all(Radius.circular(25)),
+//       border: Border.all(width: 1, color: Colors.grey)),
+//   padding: const EdgeInsets.only(left: 8, right: 0),
+//   child: Obx(
+//     () => DropdownButton<String>(
+//       hint: "Choose subject".text.make(),
+//       dropdownColor: Colors.grey.shade300,
+//       items: controller.subjectList.map((String subject) {
+//         return DropdownMenuItem<String>(
+//           value: subject,
+//           child: Text(
+//             subject,
+//             style: const TextStyle(
+//               fontSize: 16,
+//               color: Colors.black,
+//               fontWeight: FontWeight.w500,
+//             ),
+//           ),
+//         );
+//       }).toList(),
+//       value: controller.seleectrdvalu4.value,
+//       underline: Container(color: Colors.black),
+//       isExpanded: true,
+//       icon: Container(
+//         clipBehavior: Clip.antiAliasWithSaveLayer,
+//         alignment: Alignment.center,
+//         height: 95,
+//         width: 50,
+//         decoration: BoxDecoration(
+//           shape: BoxShape.circle,
+//           gradient: buttonColor,
+//         ),
+//         child: const Icon(
+//           Icons.arrow_drop_down,
+//           color: Colors.white,
+//           size: 38,
+//         ),
+//       ),
+//       onChanged: (newValue) {
+//         if (newValue != null) {
+//           controller.selectedSubject.value = newValue.toString();
+//           print('Selected Subjects: ${controller.selectedSubject.value}');
+//           // Fetch or display content related to selected subject
+//           controller.showpdfview();
+//         }
+//         controller.isVisible.value = true;
+//         controller.seleectrdvalu4.value = newValue.toString();
+//       },
+//     ),
+//   ),
+// ),
 
                                       Obx(() {
                                         final isVisible =
@@ -251,7 +233,7 @@ class AirNotesView extends GetView<AirNotesController> {
                                                       ? CustomAlertBox(
                                                           title:
                                                               "No data found",
-                                                          message: "aa",
+                                                          message: "",
                                                           onOkPressed: () {
                                                             controller.isVisible
                                                                 .value = false;
@@ -339,72 +321,54 @@ class AirNotesView extends GetView<AirNotesController> {
                                           .textStyle(AppStyle
                                               .txtPoppinsSemiBold14White90002)
                                           .make(),
-                                      //Obx(() {
-                                      //  // Use Obx widget to listen to changes in selectedIndex
-                                      //  return Text(
-                                      //    'Selected Index: ${controller.selectedIndex.value}',
-                                      //    style: TextStyle(fontSize: 18),
-                                      //  );
-                                      //}),
 
                                       40.heightBox,
                                       Container(
-                                        height: 52,
-                                        width: 300,
-                                        decoration: BoxDecoration(
-                                            color: HexColor("#F3FFFF"),
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(25)),
-                                            border: Border.all(
-                                                width: 1, color: Colors.grey)),
-                                        padding: const EdgeInsets.only(
-                                            left: 0, right: 0),
-                                        // alignment: Alignment.center,
-                                        child: Obx(() {
-                                          final filteredData = controller
-                                              .userdetais
-                                              .where((coursedetails) =>
-                                                  coursedetails.active == "yes")
-                                              .toList();
-                                          return Container(
-                                            height: 52,
-                                            // width: 380,
-                                            decoration: BoxDecoration(
+                                          height: 52,
+                                          width: 300,
+                                          decoration: BoxDecoration(
                                               color: HexColor("#F3FFFF"),
                                               borderRadius:
                                                   const BorderRadius.all(
                                                       Radius.circular(25)),
                                               border: Border.all(
-                                                  width: 1, color: Colors.grey),
-                                            ),
-                                            padding: const EdgeInsets.only(
-                                                left: 8, right: 0),
-                                            child: DropdownButton<CourseSub>(
-                                              hint: "Choose Course".text.make(),
+                                                  width: 1,
+                                                  color: Colors.grey)),
+                                          padding: const EdgeInsets.only(
+                                              left: 8, right: 0),
+                                          // alignment: Alignment.center,
+                                          child: Obx(() {
+                                            // Loading indicator while data is being fetched
+                                            if (controller.isLoading.value) {
+                                              return CircularProgressIndicator();
+                                            }
+
+                                            // DropdownButton to display the data
+                                            return DropdownButton<String>(
+                                              hint:
+                                                  "Choose Subject".text.make(),
                                               dropdownColor:
                                                   Colors.grey.shade300,
-                                              items: filteredData
-                                                  .map((CourseSub value) {
-                                                return DropdownMenuItem<
-                                                    CourseSub>(
-                                                  value: value,
-                                                  child: Text(
-                                                    value.name.toString(),
-                                                    style: const TextStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
+
+                                              // Map subject name for the Dropdown
+                                              items: controller.courdata1.map(
+                                                  (SelectedSubjectlist
+                                                      subject) {
+                                                return DropdownMenuItem<String>(
+                                                  value: subject
+                                                      .subject, // Use subject name as the value
+                                                  child: Text(subject.subject ??
+                                                      ""), // Display subject name
                                                 );
                                               }).toList(),
-                                              value: controller
-                                                  .seleectrdvalue.value,
+
+                                              value: controller.selectedValue
+                                                  .value, // Bind selected subject name
+
                                               underline: Container(
                                                   color: Colors.black),
                                               isExpanded: true,
+
                                               icon: Container(
                                                 clipBehavior:
                                                     Clip.antiAliasWithSaveLayer,
@@ -421,111 +385,184 @@ class AirNotesView extends GetView<AirNotesController> {
                                                   size: 38,
                                                 ),
                                               ),
-                                              onChanged: (CourseSub? newVal) {
-                                                controller.subjectList.clear();
-                                                controller.subjectList.addAll(
-                                                    newVal!.courseId!.exam!
-                                                        .subjects!
-                                                        .toList());
-                                                if (newVal != null) {
-                                                  controller.selectedid.value =
-                                                      newVal.courseId!.exam!.id
-                                                          .toString();
-                                                  // Update the selected ID in the controller
-                                                  print(
-                                                      'Selected ID: ${controller.selectedid.value}');
-                                                  // Call API or perform actions with the selected value
-                                                  //controller.getProfile();
-                                                  controller.seleectrdvalue
-                                                      .value = newVal;
-                                                }
-                                              },
-                                            ),
-                                          );
-                                        }),
-                                      ),
-                                      20.heightBox,
-                                      //Text(subjectid.toString()),
-                                      Container(
-                                          height: 52,
-                                          width: 300,
-                                          decoration: BoxDecoration(
-                                              color: HexColor("#F3FFFF"),
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(25)),
-                                              border: Border.all(
-                                                  width: 1,
-                                                  color: Colors.grey)),
-                                          padding: const EdgeInsets.only(
-                                              left: 8, right: 0),
-                                          // alignment: Alignment.center,
-                                          child: Obx(
-                                            () => DropdownButton<String>(
-                                              hint:
-                                                  "Choose subject".text.make(),
-                                              dropdownColor:
-                                                  Colors.grey.shade300,
-                                              items: controller.subjectList
-                                                  .map((String subject) {
-                                                return DropdownMenuItem<String>(
-                                                  value: subject,
-                                                  child: Text(
-                                                    subject,
-                                                    style: const TextStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                );
-                                              }).toList(),
-                                              // menuMaxHeight: 10,
-                                              value: controller
-                                                  .seleectrdvalue1.value,
 
-                                              underline: Container(
-                                                  color: Colors.black),
-                                              isExpanded: true,
-                                              icon: Container(
-                                                clipBehavior:
-                                                    Clip.antiAliasWithSaveLayer,
-                                                alignment: Alignment.center,
-                                                height: 95,
-                                                width: 50,
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    gradient: buttonColor),
-                                                child: const Icon(
-                                                  Icons.arrow_drop_down,
-                                                  color: Colors.white,
-                                                  size: 38,
-                                                ),
-                                              ),
-                                              onChanged: (newValue) {
-                                                if (newValue != null) {
-                                                  controller.selectedSubject
-                                                          .value =
-                                                      newValue.toString();
-                                                  // Update the selected ID in the controller
+                                              onChanged: (String? newVal) {
+                                                // Find the full selected subject object by name
+                                                SelectedSubjectlist?
+                                                    selectedSubject = controller
+                                                        .courdata1
+                                                        .firstWhereOrNull(
+                                                            (subject) =>
+                                                                subject
+                                                                    .subject ==
+                                                                newVal);
+
+                                                if (selectedSubject != null) {
+                                                  // Store the selected subject name and the full object
+                                                  controller
+                                                          .selectedValue.value =
+                                                      selectedSubject.subject;
+                                                  controller.selectedSubject1
+                                                      .value = selectedSubject;
+
+                                                  // Print the selected subject details
                                                   print(
-                                                      'Selected Subjects: ${controller.selectedSubject.value}');
-                                                  // Call API or perform actions with the selected value
-                                                  //controller.getProfile();
+                                                      'Selected Subject Name: ${controller.selectedValue.value}');
+                                                  // print('Selected Subject Details: ${controller.selectedSubject.value.id}');
+
+                                                  // Call a method or perform any action with the selected subject
+                                                  controller.isVisible.value = true;
                                                   controller.showpdfview();
                                                 }
-                                                controller.isVisible.value =
-                                                    true;
-                                                controller
-                                                        .seleectrdvalue1.value =
-                                                    newValue.toString();
                                               },
-                                            ),
-                                          )),
-                                      //Text(
-                                      //    controller.showpdf.length.toString()),
+                                            );
+                                          })),
+
                                       20.heightBox,
+// Container(
+//   height: 52,
+//   width: 300,
+//   decoration: BoxDecoration(
+//     color: HexColor("#F3FFFF"),
+//     borderRadius: const BorderRadius.all(Radius.circular(25)),
+//     border: Border.all(width: 1, color: Colors.grey),
+//   ),
+//   padding: const EdgeInsets.only(left: 0, right: 0),
+//   child: Obx(() {
+//     final filteredData = controller.userdetais
+//         .where((coursedetails) => coursedetails.active == "yes")
+//         .toList();
+
+//     // Use Future.microtask to defer state change until after the build phase
+//     Future.microtask(() {
+//       if (filteredData.isNotEmpty && controller.seleectrdvalue.value == null) {
+//         // Automatically select the first item (index 0)
+//         controller.seleectrdvalue.value = filteredData.first;
+//         controller.subjectList.clear();
+//         controller.subjectList.addAll(filteredData.first.courseId!.exam!.subjects!.toList());
+//         controller.selectedid.value = filteredData.first.courseId!.exam!.id.toString();
+//       }
+//     });
+
+//     return Container(
+//       height: 52,
+//       decoration: BoxDecoration(
+//         color: HexColor("#F3FFFF"),
+//         borderRadius: const BorderRadius.all(Radius.circular(25)),
+//         border: Border.all(width: 1, color: Colors.grey),
+//       ),
+//       padding: const EdgeInsets.only(left: 8, right: 0),
+//       child: DropdownButton<CourseSub>(
+//         hint: "Choose Course".text.make(),
+//         dropdownColor: Colors.grey.shade300,
+//         items: filteredData.map((CourseSub value) {
+//           return DropdownMenuItem<CourseSub>(
+//             value: value,
+//             child: Text(
+//               value.name.toString(),
+//               style: const TextStyle(
+//                 fontSize: 16,
+//                 color: Colors.black,
+//                 fontWeight: FontWeight.w500,
+//               ),
+//             ),
+//           );
+//         }).toList(),
+//         value: controller.seleectrdvalue.value,
+//         underline: Container(color: Colors.black),
+//         isExpanded: true,
+//         icon: Container(
+//           clipBehavior: Clip.antiAliasWithSaveLayer,
+//           alignment: Alignment.center,
+//           height: 95,
+//           width: 50,
+//           decoration: BoxDecoration(shape: BoxShape.circle, gradient: buttonColor),
+//           child: const Icon(Icons.arrow_drop_down, color: Colors.white, size: 38),
+//         ),
+//         onChanged: (CourseSub? newVal) {
+//           if (newVal != null) {
+//             controller.subjectList.clear();
+//             controller.subjectList.addAll(newVal.courseId!.exam!.subjects!.toList());
+//             controller.selectedid.value = newVal.courseId!.exam!.id.toString();
+//             controller.seleectrdvalue.value = newVal;
+//             print('Selected ID: ${controller.selectedid.value}');
+//           }
+//         },
+//       ),
+//     );
+//   }),
+// ),
+// 20.heightBox,
+
+//                                       //Text(subjectid.toString()),
+//                                       Container(
+//                                           height: 52,
+//                                           width: 300,
+//                                           decoration: BoxDecoration(
+//                                               color: HexColor("#F3FFFF"),
+//                                               borderRadius:
+//                                                   const BorderRadius.all(
+//                                                       Radius.circular(25)),
+//                                               border: Border.all(
+//                                                   width: 1,
+//                                                   color: Colors.grey)),
+//                                           padding: const EdgeInsets.only(
+//                                               left: 8, right: 0),
+//                                           // alignment: Alignment.center,
+//                                           child: Obx(() {
+//   return DropdownButton<String>(
+//     hint: "Choose Subject".text.make(),
+//     dropdownColor: Colors.grey.shade300,
+
+//     // Dropdown items (map subject.name to DropdownMenuItem value)
+//     items: controller.courdata1.map((SelectedSubjectlist subject) {
+//       return DropdownMenuItem<String>(
+//         value: subject.subject, // Bind subject name instead of ID
+//         child: Text(subject.subject ?? ""), // Display subject name
+//       );
+//     }).toList(),
+
+//     value: controller.selectedValue.value, // Bind the selected subject name
+
+//     underline: Container(color: Colors.black),
+//     isExpanded: true,
+
+//     icon: Container(
+//       clipBehavior: Clip.antiAliasWithSaveLayer,
+//       alignment: Alignment.center,
+//       height: 95,
+//       width: 50,
+//       decoration: BoxDecoration(
+//         shape: BoxShape.circle,
+//         gradient: buttonColor,
+//       ),
+//       child: const Icon(
+//         Icons.arrow_drop_down,
+//         color: Colors.white,
+//         size: 38,
+//       ),
+//     ),
+
+//     onChanged: (String? newVal) {
+//       // Clear the subject list
+//       controller.subjectList.clear();
+
+//       // Update selectedValue with the subject name
+//       controller.selectedValue.value = newVal;
+
+//       // // Update selectedSubject with the selected name
+//       // controller.selectedSubject.value = newVal.toString();
+
+//       // // Print the selected subject name
+//       // print('Selected Subject: ${controller.selectedSubject.value}');
+
+//       // Fetch or display content related to the selected subject
+//       controller.showpdfview();
+//     },
+//   );})),
+
+//                                       //    controller.showpdf.length.toString()),
+//                                       20.heightBox,
 
                                       Obx(() {
                                         final isVisible =

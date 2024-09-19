@@ -15,12 +15,21 @@ import 'package:exam_prep_tool/app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:intl/intl.dart';
 
 class TestsearisController extends GetxController
     with SingleGetTickerProviderMixin {
   final TestSeriesRepo repositry1 = TestSeriesRepoIMPL();
   var selectedTestSeries = Rxn<Testseries>();
   RxList<Testseries>? data;
+  // Function to format the date-time string
+String formatDateTime(String dateTimeString) {
+  // Parse the raw date-time string
+  DateTime parsedDate = DateTime.parse(dateTimeString);
+
+  // Format the date-time string as desired
+  return DateFormat("yyyy-MM-dd hh:mm a").format(parsedDate);
+}
 
   TabController? tabController;
   var isTestStarted = false.obs;
@@ -255,7 +264,7 @@ void showpdfview() async {
 ALLshowpdfview();
     super.onInit();
     Future.delayed(Duration(seconds: 2), () {
-      ALLshowpdfview();
+      // ALLshowpdfview();
     });
   }
 

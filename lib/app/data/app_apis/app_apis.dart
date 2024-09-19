@@ -18,6 +18,7 @@ import 'package:exam_prep_tool/app/data/modal/payments_modal.dart';
 import 'package:exam_prep_tool/app/data/modal/profile/profile_updated.dart';
 
 import 'package:exam_prep_tool/app/data/modal/signup/forget_password_response.dart';
+import 'package:exam_prep_tool/app/data/modal/subjectfilterlist/subjectfilter.dart';
 import 'package:exam_prep_tool/app/data/modal/test_series/random_question_testseries.dart';
 import 'package:exam_prep_tool/app/data/modal/test_series/submit_testseries_modal.dart';
 import 'package:exam_prep_tool/app/data/modal/test_series/view_answerdetail_page_modal.dart';
@@ -158,5 +159,10 @@ abstract class AppApis {
   Future<HttpResponse<ViewAnswerDetailModal>> viewAnswerdetail(
     @Query("userId") String userid,
     @Query("testId") String testid,
+  );
+  // filter subject list
+   @GET('subject/list')
+  Future<HttpResponse<SubjectfilterlistModal>> getsSubjectfilterlist(
+    @Query("sort") String sortedby,
   );
 }

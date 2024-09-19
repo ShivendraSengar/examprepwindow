@@ -2,6 +2,7 @@
 import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries_modal.dart';
 import 'package:exam_prep_tool/app/modules/testseries_value_analysis/controllers/testseries_view_analysis_controller.dart';
 import 'package:exam_prep_tool/app/modules/testseries_value_analysis/views/testseries_solution_page.dart';
+import 'package:exam_prep_tool/app/routes/app_pages.dart';
 import 'package:exam_prep_tool/app/themes/app_style.dart';
 import 'package:exam_prep_tool/app/widgets/custom_colors.dart';
 import 'package:exam_prep_tool/gen/assets.gen.dart';
@@ -28,254 +29,152 @@ class TestseriesViewAnlysispage
   // @override
   // Widget build(BuildContext context) {
     //  final Testseries testSeries = Get.arguments as Testseries;
-    return MaterialApp(
-      // color: Vx.white,
-      home: DefaultTabController(
+    return  DefaultTabController(
         length: 3,
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: HexColor('#0D2735'),
-            title: Text(
-              'Algorithm Weekly Test${controller.finalMarks} ',
-              style: AppStyle.txtPoppinsSemiBold18White90002,
-            ).centered(),
-            bottom: TabBar(
-              labelColor: Colors.white,
-              labelStyle: AppStyle.txtPoppinsSemiBold18White90002,
-              indicatorColor: Colors.yellow,
-              tabs: const [
-                Tab(text: 'Analysis'),
-                Tab(text: 'Solution'),
-                Tab(text: 'Leadership'),
-              ],
-            ),
-          ),
+          appBar: buildAppbar(),
+         
           body: Padding(
             padding: EdgeInsets.all(28.0),
             child: TabBarView(
               children: [
-                WidgetScreenOne(controller),
+                WidgetScreenOne(controller,context),
                 TestSeriesSolution(),
                 WidgetScreenThree(),
               ],
             ),
           ),
         ),
+      
+    );
+  }
+}
+
+Widget WidgetScreenOne(controller,context) {
+  double screenWidth = MediaQuery.of(context).size.width;
+
+  if (screenWidth < 600) {
+    // Width is less than 600, show the Column layout
+    return Column(
+      children: [
+        _buildScoreContainer(),
+        SizedBox(height: 30),
+        _buildRankContainer(controller),
+      ],
+    );
+  } else {
+    // Width is 600 or more, show the Row layout
+    return Container(
+      width: 300,
+      alignment: Alignment.topCenter,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildScoreContainer(width: screenWidth / 2.5 - 15),
+          SizedBox(width: 30),
+          _buildRankContainer(controller, width: screenWidth / 2.5 - 15),
+        ],
       ),
     );
   }
 }
 
-Widget WidgetScreenOne(controller) {
-  return LayoutBuilder(
-    builder: (context, constraints) {
-      bool isMobile = constraints.maxWidth < 600;
-
-      if (isMobile) {
-        return Column(
+Widget _buildScoreContainer({double? width}) {
+  return Container(
+    height: 90,
+    color: HexColor('#0D2735'),
+    width: width,
+    child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              height: 90,
-              color: HexColor('#0D2735'),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Image.asset(
-                        Assets.images.speedometer.path,
-                        height: 25,
-                        width: 25,
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          "Score",
-                          style: AppStyle.txtPoppinsSemiBold14White90002,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          "12",
-                          style: AppStyle.txtPoppinsSemiBold14White90002,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ).p(8),
-                  SizedBox(height: 14),
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    color: HexColor("#003D5E"),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "Average Score: ${1220}",
-                            style: AppStyle.txtPoppinsMedium12White90002,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        VerticalDivider(
-                          width: 16,
-                          color: Colors.white,
-                        ),
-                        Expanded(
-                          child: Text(
-                            "Best Score: ${1220}",
-                            style: AppStyle.txtPoppinsMedium12White90002,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                    ).p(8).color(HexColor("#003D5E")),
-                  ),
-                ],
+            Image.asset(
+              Assets.images.speedometer.path,
+              height: 25,
+              width: 25,
+            ),
+            SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                "Score",
+                style: AppStyle.txtPoppinsSemiBold14White90002,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis, // Prevent text overflow
               ),
             ),
-            SizedBox(height: 30),
-            Container(alignment: Alignment.center,
-              height: 90,
-              color: HexColor('#0D2735'),
-              child: Column(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(width: 20),
-                      Image.asset(
-                        Assets.images.rank.path,
-                        height: 25,
-                        width: 25,
-                      ),
-                      SizedBox(width: 20),
-                      Expanded(
-                        child: Text(
-                          "Rank",
-                          style: AppStyle.txtPoppinsSemiBold14White90002,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Text(
-                        "${controller.viewAnslist.length}/1200",
-                        style: AppStyle.txtPoppinsSemiBold14White90002,
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ],
+            Expanded(
+              child: Text(
+                "12",
+                style: AppStyle.txtPoppinsSemiBold14White90002,
+                textAlign: TextAlign.center,
               ),
             ),
           ],
-        );
-      } else {
-        return Container(
-          width: 400,
-          alignment: Alignment.topCenter,
+        ).p(8),
+        SizedBox(height: 14),
+        Container(
+          alignment: Alignment.bottomCenter,
+          color: HexColor("#003D5E"),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                height: 90,
-                color: HexColor('#0D2735'),
-                width: Get.width / 2 - 15,
-                child: Row(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Image.asset(
-                          Assets.images.speedometer.path,
-                          height: 25,
-                          width: 25,
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            "Score",
-                            style: AppStyle.txtPoppinsSemiBold14White90002,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            "12",
-                            style: AppStyle.txtPoppinsSemiBold14White90002,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                    ).p(8),
-                    SizedBox(height: 14),
-                    Container(
-                      alignment: Alignment.bottomCenter,
-                      color: HexColor("#003D5E"),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "Average Score: ${1220}",
-                              style: AppStyle.txtPoppinsMedium12White90002,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          VerticalDivider(
-                            width: 16,
-                            color: Colors.white,
-                          ),
-                          Expanded(
-                            child: Text(
-                              "Best Score: ${1220}",
-                              style: AppStyle.txtPoppinsMedium12White90002,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ).p(8).color(HexColor("#003D5E")),
-                    ),
-                  ],
+              Expanded(
+                child: Text(
+                  "Average Score: 1220",
+                  style: AppStyle.txtPoppinsMedium12White90002,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis, // Prevent text overflow
                 ),
               ),
-              SizedBox(width: 30),
-              Container(
-                height: 90,
-                color: HexColor('#0D2735'),
-                width: Get.width / 2 - 15,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(width: 20),
-                    Image.asset(
-                      Assets.images.rank.path,
-                      height: 25,
-                      width: 25,
-                    ),
-                    SizedBox(width: 20),
-                    Expanded(
-                      child: Text(
-                        "Rank",
-                        style: AppStyle.txtPoppinsSemiBold14White90002,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Text(
-                      "${controller.viewAnslist.length}/1200",
-                      style: AppStyle.txtPoppinsSemiBold14White90002,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+              VerticalDivider(
+                width: 16,
+                color: Colors.white,
+              ),
+              Expanded(
+                child: Text(
+                  "Best Score: 1220",
+                  style: AppStyle.txtPoppinsMedium12White90002,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis, // Prevent text overflow
                 ),
-              ).expand(),
+              ),
             ],
-          ),
-        );
-      }
-    },
+          ).p(8).color(HexColor("#003D5E")),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildRankContainer(controller, {double? width}) {
+  return Container(
+    height: 90,
+    color: HexColor('#0D2735'),
+    width: width,
+    alignment: Alignment.center,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Image.asset(
+          Assets.images.rank.path,
+          height: 25,
+          width: 25,
+        ),
+        SizedBox(width: 20),
+        Text(
+          "Rank",
+          style: AppStyle.txtPoppinsSemiBold14White90002,
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis, // Prevent text overflow
+        ),40.widthBox,
+        Text(
+          "${controller.viewAnslist.length}/1200",
+          style: AppStyle.txtPoppinsSemiBold14White90002,
+          textAlign: TextAlign.center,
+        ),
+      ],
+    ),
   );
 }
 
@@ -287,7 +186,9 @@ Widget WidgetScreenThree() {
 
 buildAppbar() {
   return AppBar(
+    
     elevation: 0,
+    
     iconTheme: const IconThemeData(color: Colors.white),
     title: Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -306,14 +207,26 @@ buildAppbar() {
             .make(),
       ],
     ),
+   
     flexibleSpace: Container(
       decoration: BoxDecoration(gradient: lineargrdient),
     ),
     leading: IconButton(
       icon: const Icon(Icons.arrow_back),
       onPressed: () {
-        Get.back();
+        Get.toNamed(Routes.HOME);
       },
     ),
+    bottom: 
+    TabBar(
+      unselectedLabelColor: Colors.black,
+              labelColor: Colors.white,
+              labelStyle: AppStyle.txtPoppinsSemiBold18White90002,
+              indicatorColor: Colors.yellow,
+              tabs: const [
+                Tab(text: 'Analysis'),
+                Tab(text: 'Solution'),
+                Tab(text: 'Leadership'),
+              ],)
   );
 }

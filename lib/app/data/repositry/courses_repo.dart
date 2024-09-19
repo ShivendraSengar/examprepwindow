@@ -4,6 +4,7 @@ import 'package:exam_prep_tool/app/data/modal/categories_filterdata.dart';
 import 'package:exam_prep_tool/app/data/modal/circulam_lists/circulam_modal.dart';
 import 'package:exam_prep_tool/app/data/modal/course.dart';
 import 'package:exam_prep_tool/app/data/modal/courses_category.dart';
+import 'package:exam_prep_tool/app/data/modal/subjectfilterlist/subjectfilter.dart';
 
 import 'package:exam_prep_tool/app/data/modal/vidio_lecturesresponse/get_exam_id.dart';
 //import 'package:exam_prep_tool/app/data/modal/pys_question/pys_question.dart';
@@ -15,6 +16,7 @@ import '../modal/Referralmodal/subscription_referal_modal.dart';
 
 abstract class CourseRepo {
   Future<DataState<Courses>> getcourses(String userId, String sortedby);
+    Future<DataState<SubjectfilterlistModal>> getsSubjectfilterlist( String sortedby);
   Future<DataState<VidioLecturesresponse>> getList(
     String exam,
   );
