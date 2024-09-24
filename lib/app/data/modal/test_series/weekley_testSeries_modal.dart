@@ -1,3 +1,6 @@
+// To parse this JSON data, do
+//
+//     final weeklyTestseriesModal = weeklyTestseriesModalFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -39,7 +42,7 @@ class Testseries {
     String? testType;
     List<CourseId>? courseId;
     List<String>? subject;
-    String? questionType;
+    dynamic questionType;
     String? questionSubType;
     List<Question>? questions;
     String? title;

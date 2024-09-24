@@ -164,13 +164,14 @@ controller.testcontroller.startTest();
                   ElevatedButton(
                     onPressed: () {
                       submitTest();
+                       controller.submitAnswerquestion();controller.testcontroller.startTest();
+                            (); // 
                       Navigator.of(context).pop();
-controller.testcontroller.startTest();
-                            (); // End test and show solution
+// End test and show solution
                         
                          
                         
-                            controller.submitAnswerquestion();
+                           
                   onSomeEvent();
                     },
                     style:
@@ -366,7 +367,8 @@ controller.testcontroller.startTest();
   // Navigate to the next page
   Get.offAndToNamed(Routes.TESTSERIES_VALUE_ANALYSIS, arguments: [
  controller.marksMap[testId],
-    testId,]
+    testId,
+    ]
   );
 }
 }

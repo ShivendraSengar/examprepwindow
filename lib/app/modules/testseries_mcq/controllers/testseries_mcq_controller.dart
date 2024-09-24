@@ -271,41 +271,13 @@ void submitAnswer() {
       selectedOptionIndex.value = -1; // Reset selected option
     }
   }
-//  void markForReview() {
-//   // Total number of questions
-//   final totalQuestions = testSeries.value.questions!.length;
-
-//   // Check if the current question index is within the valid range
-//   if (currentQuestionIndex.value < totalQuestions) {
-//     // Add the current question to the marked for review list if not already added
-//     if (!markedForReviewQuestions.contains(currentQuestionIndex.value)) {
-//       markedForReviewQuestions.add(currentQuestionIndex.value);
-//       reviewMarks++; // Increment review marks
-//     }
-
-//     // Reset selected option index
-//     selectedOptionIndex.value = -1;
-
-//     // Check if we can move to the next question
-//     if (currentQuestionIndex.value < totalQuestions - 1) {
-//       currentQuestionIndex.value++;
-//     } else {
-//       // No more questions, print message
-//       print("Quiz is finished, no more questions to review.");
-//       // Optionally, navigate to a score screen or show a completion dialog
-//     }
-//   } else {
-//     // If index is already out of bounds, print error or handle it
-//     print("Index out of range: All questions have been reviewed.");
-//   }
-// }
 
 void unmarkForReview() {
   // Check if the current question is marked for review
   if (markedForReviewQuestions.contains(currentQuestionIndex.value)) {
     // Remove the question from the marked for review list
     markedForReviewQuestions.remove(currentQuestionIndex.value);
-
+answeredQuestions.remove(currentQuestionIndex.value);
     // Decrement review marks
     if (reviewMarks > 0) {
       reviewMarks--;
@@ -357,31 +329,6 @@ void saveAndNext() {
   }
 }
 
-// void markForReview() {
-//   // Total number of questions
-//   final totalQuestions = testSeries.value.questions!.length;
-
-//   // Check if the current question index is within the valid range
-//   if (currentQuestionIndex.value < totalQuestions) {
-//     // Add the current question to the marked for review list if not already added
-//     if (!markedForReviewQuestions.contains(currentQuestionIndex.value)) {
-//       markedForReviewQuestions.add(currentQuestionIndex.value);
-//       reviewMarks++; // Increment review marks
-//     }
-
-//     // Reset selected option index
-//     selectedOptionIndex.value = -1;
-
-//     // Move to next question
-//     if (currentQuestionIndex.value < totalQuestions - 1) {
-//       currentQuestionIndex.value++;
-//     } else {
-//       print("Quiz is finished, no more questions to review.");
-//     }
-//   } else {
-//     print("Index out of range: All questions have been reviewed.");
-//   }
-// }
 
 
   void updateCurrentQuestionIndex(int index) {
@@ -398,7 +345,8 @@ void saveAndNext() {
     // Add the current question to the marked for review list if not already added
     if (!markedForReviewQuestions.contains(currentQuestionIndex.value)) {
       markedForReviewQuestions.add(currentQuestionIndex.value);
-      reviewMarks++; // Increment review marks
+      reviewMarks++; 
+       answeredQuestions.add(currentQuestionIndex.value);// Increment review marks
     }
 
     // Reset selected option index

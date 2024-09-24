@@ -172,52 +172,75 @@ class TestSeriesSolution extends GetView<TestseriesViewAnlysisController> {
       fontWeight: FontWeight.bold,
     ),
   ),
-  ...List.generate(question.options!.length, (optionIndex) {
-    var option = question.options![optionIndex].option.toString();
+// ...List.generate(question.options!.length, (optionIndex) {
+//   var option = question.options![optionIndex].option.toString();
 
-    // Check if the current option is the correct answer
-    bool isCorrectOption = answerItem.answers![index].isRight == true;
+//   // Check if the current option is the correct answer
+//   bool isCorrectOption = answerItem.answers![index].isRight == true &&
+//                          answerItem.answers![index].answer == option;
 
-    // Check if the user has selected this option
-    bool isOptionSelected = userAnswer?.answer == option;
+//   // Check if the user has selected this option
+//   bool isOptionSelected = answerItem.answers![index].answer == option;
 
-    // Check if the user selected an incorrect option
-    bool isIncorrectOption = userAnswer != null &&
-        userAnswer?.answer != option &&
-        userAnswer?.isRight == false;
+//   // Logic for determining background color:
+//   Color backgroundColor;
+//   if (isOptionSelected) {
+//     if (isCorrectOption) {
+//       backgroundColor = Colors.green;  // Correct answer selected
+//     } else {
+//       backgroundColor = Colors.red;    // Wrong answer selected
+//     }
+//   } else if (isCorrectOption) {
+//     backgroundColor = Colors.green;    // Show the correct option (if not selected)
+//   } else {
+//     backgroundColor = Colors.red;  // Default color for unselected wrong options
+//   }
 
-    // Logic for determining background color:
-    // - If the user selected this option and it's correct, highlight green.
-    // - If the user selected a wrong option, highlight it in red and also highlight the correct option in green.
-    // - If no option is selected, highlight only the correct option in green.
-    Color backgroundColor;
-    if (isOptionSelected) {
-      backgroundColor = isCorrectOption ? Colors.green : Colors.red; // Correct = green, wrong = red
-    } else if (!isOptionSelected && isCorrectOption) {
-      backgroundColor = Colors.white; // Automatically highlight correct option
-    } else {
-      backgroundColor = Colors.white; // Default color for unselected options
-    }
+//   return Container(
+//     padding: EdgeInsets.all(10),
+//     decoration: BoxDecoration(
+//       color: backgroundColor, // Apply the determined background color
+//       borderRadius: BorderRadius.circular(8),
+//       border: Border.all(color: Colors.black12),
+//     ),
+//     child: Text(
+//       option,
+//       style: TextStyle(
+//         color: Colors.black,
+//         fontSize: 16,
+//       ),
+//     ),
+//   );
+// }),
 
-    return Container(
-      color: backgroundColor,
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16), // Add padding for better UI
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              option,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              softWrap: true,
-            ),
+ListView.builder(
+  shrinkWrap: true,
+  physics: NeverScrollableScrollPhysics(),
+  itemCount: question.options!.length,
+  itemBuilder: (context, optionIndex) {
+    var option = question.options![optionIndex].option;
+    bool isRight = userAnswer != null && userAnswer.isRight!;
+    bool isSelected = userAnswer != null && userAnswer.answer == option;
+    bool isMatchedWithExplanation = question.explanation!.text!.contains(option!);
+
+    return ListTile(
+      title: Container(
+        color: isSelected
+            ? (isRight ? Colors.green : Colors.red) // सही हो तो ग्रीन बैकग्राउंड, गलत हो तो रेड बैकग्राउंड
+            : (isMatchedWithExplanation ? Colors.green : Colors.transparent), // एक्सप्लेनेशन से मैच हो रहा हो तो ग्रीन बैकग्राउंड
+        padding: EdgeInsets.all(8.0), // padding to make it look better
+        child: Text(
+          option!,
+          style: TextStyle(
+            color: Colors.black, // टेक्स्ट का रंग हमेशा काला रहेगा
           ),
-        ],
+        ),
       ),
     );
-  }),
-  SizedBox(height: 8.0),
-  Column(
+  },
+),
+
+ Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
     children: [

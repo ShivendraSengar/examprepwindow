@@ -350,12 +350,16 @@ class WeeklyTest extends GetView<TestsearisController> {
                         6.heightBox,
                         InkWell(
                           onTap: () {
+                           print('Test Series ID: ${data.id}');
+                           print('Test Series ID: $index');
                             controller.selectedFilter.value == "yes"
                                 ? Get.toNamed(Routes.TESTSERIES_VALUE_ANALYSIS,
                                     arguments: [
-                                        0,
+                                        index,
                                         data.id,
-                                      ])
+                                      ]
+                                    
+                                      )
                                 : Get.toNamed(
                                     Routes.TESTSERIES_INSTRUCTION,
                                     arguments: data,

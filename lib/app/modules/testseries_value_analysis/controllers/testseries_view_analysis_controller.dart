@@ -11,9 +11,11 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class TestseriesViewAnlysisController extends GetxController {
    final TestseriesMcqController controller1 = Get.find();
- final  receivedMarks = Get.arguments;
-  var finalMarks = Get.arguments[0]; // first argument jo pass kiya tha
-  var testSeriesId = Get.arguments[1];
+   var finalMarks;
+  var testSeriesId;
+//  final  receivedMarks = Get.arguments;
+//   var finalMarks = Get.arguments[0]; // first argument jo pass kiya tha
+//   var testSeriesId = Get.arguments[1];
   final TestSeriesRepo repositry = TestSeriesRepoIMPL();
   final RxList<Answerlist> viewAnslist = <Answerlist>[].obs;
 
@@ -54,8 +56,9 @@ var expandedIndex = (-1).obs;
 
     // TODO: implement onInit
     super.onInit();
-     // Arguments ko retrieve karen
-  // second argument jo pass kiya tha
+  final arguments = Get.arguments;
+    finalMarks = arguments[0]; // index
+    testSeriesId = arguments[1]; // data.id
 
   print('Final Marks: $finalMarks');
   print('Test Series ID: $testSeriesId');

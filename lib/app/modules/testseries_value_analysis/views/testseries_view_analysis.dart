@@ -32,7 +32,7 @@ class TestseriesViewAnlysispage
     return  DefaultTabController(
         length: 3,
         child: Scaffold(
-          appBar: buildAppbar(),
+          appBar: buildAppbar(controller),
          
           body: Padding(
             padding: EdgeInsets.all(28.0),
@@ -48,7 +48,7 @@ class TestseriesViewAnlysispage
       
     );
   }
-}
+
 
 Widget WidgetScreenOne(controller,context) {
   double screenWidth = MediaQuery.of(context).size.width;
@@ -62,7 +62,8 @@ Widget WidgetScreenOne(controller,context) {
         _buildRankContainer(controller),
       ],
     );
-  } else {
+  } 
+  else {
     // Width is 600 or more, show the Row layout
     return Container(
       width: 300,
@@ -184,7 +185,7 @@ Widget WidgetScreenThree() {
   );
 }
 
-buildAppbar() {
+buildAppbar(controller) {
   return AppBar(
     
     elevation: 0,
@@ -212,9 +213,12 @@ buildAppbar() {
       decoration: BoxDecoration(gradient: lineargrdient),
     ),
     leading: IconButton(
-      icon: const Icon(Icons.arrow_back),
+      icon:  Icon(Icons.arrow_back),
       onPressed: () {
-        Get.toNamed(Routes.HOME);
+        Get.back(result: {
+      'testSeriesId': controller.testSeriesId, // Ensure correct value is passed
+      'finalMarks': controller.testSeriesId, // Ensure finalMarks is correctly passed
+    }); 
       },
     ),
     bottom: 
@@ -229,4 +233,4 @@ buildAppbar() {
                 Tab(text: 'Leadership'),
               ],)
   );
-}
+}}
