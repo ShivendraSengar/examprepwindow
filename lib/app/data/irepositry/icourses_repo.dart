@@ -8,6 +8,7 @@ import 'package:exam_prep_tool/app/data/modal/categories_filterdata.dart';
 import 'package:exam_prep_tool/app/data/modal/circulam_lists/circulam_modal.dart';
 import 'package:exam_prep_tool/app/data/modal/course.dart';
 import 'package:exam_prep_tool/app/data/modal/courses_category.dart';
+import 'package:exam_prep_tool/app/data/modal/notes_filterlist/notes_fiterlist.dart';
 import 'package:exam_prep_tool/app/data/modal/subjectfilterlist/subjectfilter.dart';
 // import 'package:exam_prep_tool/app/data/modal/pyqs/twenty_pyq.dart';
 // import 'package:exam_prep_tool/app/data/modal/pys_ques.dart';
@@ -61,25 +62,25 @@ class CoursesRepoIml implements CourseRepo {
     }
   }
 
-  @override
-  Future<DataState<VidioLecturesresponse>> getList(String exam) async {
-    try {
-      final httpresponse = await CommonRepository.getApiService().getList(
-        exam,
-      );
-      if (httpresponse.response.statusCode == HttpStatus.ok) {
-        // print("Response Data: ${httpresponse.data.toJson()}");
-        return DataSuccess(httpresponse.data);
-      }
-      return DataFailed(DioError(
-          requestOptions: httpresponse.response.requestOptions,
-          error: httpresponse.response.statusMessage,
-          response: httpresponse.response,
-          type: DioErrorType.cancel));
-    } on DioError catch (e) {
-      return DataFailed(e);
-    }
-  }
+  // @override
+  // Future<DataState<VidioLecturesresponse>> getList(String exam) async {
+  //   try {
+  //     final httpresponse = await CommonRepository.getApiService().getList(
+  //       exam,
+  //     );
+  //     if (httpresponse.response.statusCode == HttpStatus.ok) {
+  //       // print("Response Data: ${httpresponse.data.toJson()}");
+  //       return DataSuccess(httpresponse.data);
+  //     }
+  //     return DataFailed(DioError(
+  //         requestOptions: httpresponse.response.requestOptions,
+  //         error: httpresponse.response.statusMessage,
+  //         response: httpresponse.response,
+  //         type: DioErrorType.cancel));
+  //   } on DioError catch (e) {
+  //     return DataFailed(e);
+  //   }
+  // }
 
   @override
   Future<DataState<VidioLecturesresponse>> getvidioList(
@@ -243,4 +244,27 @@ Future<DataState<CheckReferralcode>> checkreferrallist(
     print("DioError: $e");
     return DataFailed(e);
   }
-}}
+}
+ @override
+  Future<DataState<PyqandNotesfilter>> getpyqlist(String subject,String uploadType) async {
+    try {
+      final httpresponse = await CommonRepository.getApiService().getpyqlist(
+        subject,uploadType
+      );
+      if (httpresponse.response.statusCode == HttpStatus.ok) {
+        // print("Response Data: ${httpresponse.data.toJson()}");
+        return DataSuccess(httpresponse.data);
+      }
+      return DataFailed(DioError(
+          requestOptions: httpresponse.response.requestOptions,
+          error: httpresponse.response.statusMessage,
+          response: httpresponse.response,
+          type: DioErrorType.cancel));
+    } on DioError catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+
+
+}

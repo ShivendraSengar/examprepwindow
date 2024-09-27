@@ -301,11 +301,12 @@ class ResetpassScreenView extends GetView<ResetpassScreenController> {
       print('Passwords do not match');
       Get.snackbar('Error', 'Passwords do not match', snackPosition: SnackPosition.TOP);
     } else {
-      // पासवर्ड वैलिड हैं और मैच करते हैं, एपीआई कॉल करें
+      // password valid and match ,api call
+      
       controller.resetPassword();
       controller.forgetpass();
 
-      // सफल एपीआई कॉल के बाद इनपुट फील्ड क्लियर करें
+      // sucessful clear data after api call
       controller.confirmnewpassword.value.clear();
       controller.newpassword.value.clear();
       controller.otp.clear();

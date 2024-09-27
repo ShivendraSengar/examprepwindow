@@ -9,6 +9,7 @@ import 'package:exam_prep_tool/app/data/modal/circulam_lists/circulam_modal.dart
 import 'package:exam_prep_tool/app/data/modal/course.dart';
 import 'package:exam_prep_tool/app/data/modal/courses_category.dart';
 import 'package:exam_prep_tool/app/data/modal/live_lectures_list.dart';
+import 'package:exam_prep_tool/app/data/modal/notes_filterlist/notes_fiterlist.dart';
 import 'package:exam_prep_tool/app/data/modal/one_device_login.dart';
 import 'package:exam_prep_tool/app/data/modal/profile/edit_profile.dart';
 
@@ -57,12 +58,12 @@ abstract class AppApis {
     @Query("userId") String userId,
     @Query("sort") String sortedby,
   );
-  @GET("uploadData/list")
-  Future<HttpResponse<VidioLecturesresponse>> getList(
-    @Query("exam") String exam,
-    //@Query("subject") String subject,
-    //@Query("uploadType") String uploadType,
-  );
+  // @GET("uploadData/list")
+  // Future<HttpResponse<VidioLecturesresponse>> getList(
+  //   @Query("exam") String exam,
+  //   //@Query("subject") String subject,
+  //   //@Query("uploadType") String uploadType,
+  // );
   //// get exam id
   @GET("course")
   Future<HttpResponse<GetExamid>> getexamid();
@@ -161,8 +162,14 @@ abstract class AppApis {
     @Query("testId") String testid,
   );
   // filter subject list
-   @GET('subject/list')
+  @GET('subject/list')
   Future<HttpResponse<SubjectfilterlistModal>> getsSubjectfilterlist(
     @Query("sort") String sortedby,
+  );
+
+  @GET("uploadData/list-upload")
+  Future<HttpResponse<PyqandNotesfilter>> getpyqlist(
+    @Query("subject") String subject,
+    @Query("uploadType") String uploadType,
   );
 }

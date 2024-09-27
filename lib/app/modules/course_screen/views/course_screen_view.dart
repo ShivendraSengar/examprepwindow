@@ -71,7 +71,8 @@ class CourseScreenView extends GetView<CourseScreenController> {
                                                 child: Text("Cancel")),
                                             ElevatedButton(
                                                 onPressed: () {
-                                                  Get.toNamed(Routes.CATEGORIES);
+                                                  Get.toNamed(
+                                                      Routes.CATEGORIES);
                                                 },
                                                 child: Text("Explore courses")),
                                           ],

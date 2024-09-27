@@ -43,14 +43,12 @@ class CupanDiscountView extends GetView<CupanDiscountController> {
     RxInt finalReferalCost = 0.obs;
     finalReferalCost.value = (controller.ReferaldiscountPercentage).toInt();
 
-    return 
-    Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text(''),
         centerTitle: true,
       ),
-      body: 
-      Center(
+      body: Center(
         child: Container(
           width: 800,
           alignment: Alignment.center,
@@ -170,7 +168,6 @@ class CupanDiscountView extends GetView<CupanDiscountController> {
                                           print(
                                               "controller.finalCostdata.value  ${controller.finalCostdata.value}");
                                           controller.toggleCoupon();
-                                          
                                         } else {
                                           // Show a message indicating that the coupon code is not correct
                                           ScaffoldMessenger.of(context)
@@ -331,221 +328,126 @@ class CupanDiscountView extends GetView<CupanDiscountController> {
                     40.heightBox,
 
                     ///// Referral code
-  Obx(() => Visibility(
-  visible: controller.showReferralSection.value,
-  child: Column(
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            alignment: Alignment.center,
-            height: 45,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(width: 1.3, color: Vx.green700)),
-            child: TextField(
-              textAlign: TextAlign.center,
-              controller: controller.correctReferralCode,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: "Enter referral code",
-              ),
-              onChanged: (value) {
-                
-                controller.referalCode.value = value;
-              },
-            ).p(0),
-          ).expand(),
-          10.widthBox,
-          Container(
-            alignment: Alignment.center,
-            height: 35,
-            width: 120,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              gradient: horizontalGradient,
-            ),
-            child: GestureDetector(
-              onTap: () {
-                if (controller.correctReferralCode.text.isEmpty) {
-                  showToastMessage('Please Enter Referral Code', "");
-                } else {
-                  if (controller.finalCost.value <= 10) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text("Alert"),
-                          content: Text("No Referral discount allowed for this course"),
-                          actions: <Widget>[
-                            Text("OK").onTap(() {
-                              Navigator.pop(context);
-                            }),
-                          ],
-                        );
-                      });
-                  } else {
-                    controller.toggleCouponSection();
-                    controller.togglereferral();
-                    controller.checkReferralData(controller.referalCode.value);
-                  }
-                }
-              },
-              child: Obx(() => Text(
-                // If referral is applied and it's not own referral, show "Applied"
-                (controller.isReferralApplied.value && !controller.isOwnReferral.value) 
-                  ? "Applied" 
-                  : "Apply",
-                style: TextStyle(color: Colors.white),
-              )).centered(),
-            ),
-          )
-        ],
-      ),
-      // Error or success message
-      Obx(() {
-        if (controller.isReferralApplied.value && !controller.isOwnReferral.value) {
-          return Text(controller.referralErrorMessage.value,
-            style: TextStyle(color: Colors.green),
-          ).pOnly(top: 8);
-        } else if (controller.isOwnReferral.value) {
-          return Text("Own referral code cannot be used",
-            style: TextStyle(color: Colors.red),
-          ).pOnly(top: 8);
-        } else if (controller.referralErrorMessage.isNotEmpty) {
-          return Text(controller.referralErrorMessage.value,
-            style: TextStyle(color: Colors.red),
-          ).pOnly(top: 8);
-        } else {
-          return SizedBox.shrink();
-        }
-      }),
-      // Referral discount (hide when own referral is used)
-      Obx(() {
-        if (!controller.isOwnReferral.value && controller.isReferralApplied.value) {
-          return buildRow('Referral Discount', "Rs. ${controller.referralDiscountAmount.value}");
-        } else {
-          return SizedBox.shrink();
-        }
-      })
-    ],
-  ),
-)),
-
-//   Obx(() => Visibility(
-//   visible: controller.showReferralSection.value,
-//   child: Column(
-//     children: [
-//       Row(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         crossAxisAlignment: CrossAxisAlignment.center,
-//         children: [
-//           Container(
-//             alignment: Alignment.center,
-//             height: 45,
-//             decoration: BoxDecoration(
-//               borderRadius: BorderRadius.circular(20),
-//               border: Border.all(width: 1.3, color: Vx.green700)),
-//             child: TextField(
-//               textAlign: TextAlign.center,
-//               controller: controller.correctReferralCode,
-//               decoration: const InputDecoration(
-//                 border: InputBorder.none,
-//                 hintText: "Enter referral code",
-//               ),
-//               onChanged: (value) {
-//                 controller.referalCode.value = value;
-//               },
-//             ).p(0),
-//           ).expand(),
-//           10.widthBox,
-//           Container(
-//             alignment: Alignment.center,
-//             height: 35,
-//             width: 120,
-//             decoration: BoxDecoration(
-//               borderRadius: BorderRadius.circular(20),
-//               gradient: horizontalGradient,
-//             ),
-//             child: GestureDetector(
-//               onTap: () {
-//                 if (controller.correctReferralCode.text.isEmpty) {
-//                   showToastMessage('Please Enter Referral Code', "");
-//                 } else {
-//                   if (controller.finalCost.value <= 10) {
-//                     showDialog(
-//                       context: context,
-//                       builder: (BuildContext context) {
-//                         return AlertDialog(
-//                           title: Text("Alert"),
-//                           content: Text("No Referral discount allowed for this course"),
-//                           actions: <Widget>[
-//                             Text("OK").onTap(() {
-//                               Navigator.pop(context);
-//                             }),
-//                           ],
-//                         );
-//                       });
-//                   } else {
-//                     controller.toggleCouponSection();
-//                     controller.togglereferral();
-//                     controller.checkReferralData(controller.referalCode.value);
-//                   }
-//                 }
-//               },
-//               child: Obx(() => Text(
-//                 controller.isReferralApplied.value ? "Applied" : "Apply",
-//                 style: TextStyle(color: Colors.white),
-//               )).centered(),
-//             ),
-//           )
-//         ],
-//       ),
-
-//       // Show error or success message below referral code box
-//       Obx(() {
-//         if (controller.isReferralApplied.value) {
-//           // Success message in green color
-//           return Text(
-//              controller.referralErrorMessage.value,
-//             style: TextStyle(color: Colors.green),
-//           ).pOnly(top: 8);
-//         } else if (controller.isOwnReferral.value) {
-//           // Show own referral error message in red
-//           return Text(
-//             controller.referralErrorMessage.value,
-//             style: TextStyle(color: Colors.red),
-//           ).pOnly(top: 8);
-//         } else if (controller.referralErrorMessage.isNotEmpty) {
-//           // Show other error messages in red
-//           return Text(
-//             controller.referralErrorMessage.value,
-//             style: TextStyle(color: Colors.red),
-//           ).pOnly(top: 8);
-//         } else {
-//           return SizedBox.shrink(); // No message to show
-//         }
-//       }),
-
-//       // Display referral discount if applied, and no error exists
-//       Obx(() {
-//         if (!controller.isOwnReferral.value &&
-//             controller.referralErrorMessage.isEmpty &&
-//             controller.isReferralApplied.value) {
-//           return buildRow(
-//             'Referral Discount',
-//             "Rs. ${controller.referralDiscountAmount.value}",
-//           );
-//         } else {
-//           return SizedBox.shrink(); // Do not show amount if error exists
-//         }
-//       }),
-//     ],
-//   ),
-// )),
-//Text(controller.chechreferal.first.email.toString()),
+                    Obx(() => Visibility(
+                          visible: controller.showReferralSection.value,
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(
+                                            width: 1.3, color: Vx.green700)),
+                                    child: TextField(
+                                      textAlign: TextAlign.center,
+                                      controller:
+                                          controller.correctReferralCode,
+                                      decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: "Enter referral code",
+                                      ),
+                                      onChanged: (value) {
+                                        controller.referalCode.value = value;
+                                      },
+                                    ).p(0),
+                                  ).expand(),
+                                  10.widthBox,
+                                  Container(
+                                    alignment: Alignment.center,
+                                    height: 35,
+                                    width: 120,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      gradient: horizontalGradient,
+                                    ),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        if (controller
+                                            .correctReferralCode.text.isEmpty) {
+                                          showToastMessage(
+                                              'Please Enter Referral Code', "");
+                                        } else {
+                                          if (controller.finalCost.value <=
+                                              10) {
+                                            showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Alert"),
+                                                    content: Text(
+                                                        "No Referral discount allowed for this course"),
+                                                    actions: <Widget>[
+                                                      Text("OK").onTap(() {
+                                                        Navigator.pop(context);
+                                                      }),
+                                                    ],
+                                                  );
+                                                });
+                                          } else {
+                                            controller.toggleCouponSection();
+                                            controller.togglereferral();
+                                            controller.checkReferralData(
+                                                controller.referalCode.value);
+                                          }
+                                        }
+                                      },
+                                      child: Obx(() => Text(
+                                            // If referral is applied and it's not own referral, show "Applied"
+                                            (controller.isReferralApplied
+                                                        .value &&
+                                                    !controller
+                                                        .isOwnReferral.value)
+                                                ? "Applied"
+                                                : "Apply",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )).centered(),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              // Error or success message
+                              Obx(() {
+                                if (controller.isReferralApplied.value &&
+                                    !controller.isOwnReferral.value) {
+                                  return Text(
+                                    controller.referralErrorMessage.value,
+                                    style: TextStyle(color: Colors.green),
+                                  ).pOnly(top: 8);
+                                } else if (controller.isOwnReferral.value) {
+                                  return Text(
+                                    "Own referral code cannot be used",
+                                    style: TextStyle(color: Colors.red),
+                                  ).pOnly(top: 8);
+                                } else if (controller
+                                    .referralErrorMessage.isNotEmpty) {
+                                  return Text(
+                                    controller.referralErrorMessage.value,
+                                    style: TextStyle(color: Colors.red),
+                                  ).pOnly(top: 8);
+                                } else {
+                                  return SizedBox.shrink();
+                                }
+                              }),
+                              // Referral discount (hide when own referral is used)
+                              Obx(() {
+                                if (!controller.isOwnReferral.value &&
+                                    controller.isReferralApplied.value) {
+                                  return buildRow('Referral Discount',
+                                      "Rs. ${controller.referralDiscountAmount.value}");
+                                } else {
+                                  return SizedBox.shrink();
+                                }
+                              })
+                            ],
+                          ),
+                        )),
 
                     buildRow(
                         'Course Price', "Rs. ${controller.arguments[3]}" ?? ""),
@@ -558,8 +460,6 @@ class CupanDiscountView extends GetView<CupanDiscountController> {
                     }),
                     // Display Referral Discount if applied
 
-                    
-                 
                     // Obx(() {
                     //   String enteredReferralCode =
                     //       controller.correctReferralCode.text;
@@ -757,6 +657,8 @@ class CupanDiscountView extends GetView<CupanDiscountController> {
 
 // // Call the function after navigation
                             controller.paymentGetId();
+                            controller.correctReferralCode.clear();
+                            controller.correctCouponCode.clear();
                           }),
                           // controller.paymentGetId();
                         ],
@@ -786,6 +688,41 @@ class CupanDiscountView extends GetView<CupanDiscountController> {
           60.widthBox,
           Text(cost)
         ],
+      ),
+    );
+  }
+
+  buildAppbar() {
+    return AppBar(
+      elevation: 0,
+      iconTheme: const IconThemeData(color: Colors.white),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Image.asset(
+            Assets.images.headerLogo.path,
+            height: 40,
+            width: 110,
+            fit: BoxFit.contain,
+          ),
+          "Exam Prep Tool"
+              .text
+              .size(20)
+              .textStyle(AppStyle.txtPoppinsSemiBold16White90002)
+              .color(Vx.white)
+              .make(),
+        ],
+      ),
+      flexibleSpace: Container(
+        decoration: BoxDecoration(gradient: lineargrdient),
+      ),
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () {
+          Get.back();
+          controller.correctReferralCode.clear();
+          controller.correctCouponCode.clear();
+        },
       ),
     );
   }

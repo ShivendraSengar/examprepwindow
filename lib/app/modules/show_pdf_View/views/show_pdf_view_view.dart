@@ -1,10 +1,9 @@
 import 'package:exam_prep_tool/app/modules/terms_conditionscreen/views/terms_conditionscreen_view.dart';
-import 'package:exam_prep_tool/app/utils/const.dart';
+
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'dart:io';
+
 import 'package:get/get.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../controllers/show_pdf_view_controller.dart';
 

@@ -116,7 +116,7 @@ class CupanDiscountController extends GetxController {
     showReferralSection.value = !showReferralSection.value;
   }
   // Methods to toggle visibility
-  Future<void> checkReferralData(String id) async {
+ Future<void> checkReferralData(String id) async {
   print("Referral code: $referalCode");
 
   isLoading.value = true;
@@ -158,48 +158,9 @@ class CupanDiscountController extends GetxController {
   isLoading.value = false;
 }
 
-// Future<void> checkReferralData(String id) async {
-//   print("Referral code: $referalCode");
 
-//   isLoading.value = true;
-//   final response = await repository1.checkreferrallist(
-//     id,
-//     prefUtils.getID().toString(),
-//     'Bearer ${prefutils.getToken().toString()}',
-//   );
 
-//   if (response.data != null) {
-//     if (response.data!.success!) {
-//       // Retrieve referral discount from the response
-//       checkreferal.value = response.data!.data ?? [];
-
-//       // Calculate the final amount after subtracting the referral discount
-//       ReferaldiscountPercentage.value = calculateFinalAmount(
-//           checkreferal.first.referralDiscount!.toDouble());
-
-//       // Show toast message for successful application of referral code
-//       showToastMessage('${response.data!.message.toString()}', "");
-
-//       // Update the UI with the final amount
-//       updateFinalAmount(ReferaldiscountPercentage.value);
-
-//     } else {
-//       // Show specific error message returned by API
-//       showToastMessage('${response.data!.message.toString()}', "");
-//       isOwnReferral.value = true;
-//       updateFinalAmount(coursePrice.value.toDouble());
-//     }
-//   } else {
-//     // Show toast message for invalid referral code or other errors
-//     if (response.data!.message != null) {
-//       showToastMessage(response.data!.message.toString(), ""); // Show API error message
-//     } else {
-//       showToastMessage(response.data!.message.toString(), ""); // Fallback message
-//     }
-//     updateFinalAmount(coursePrice.value.toDouble());
-//   }
-// }
-
+//   //
 //   // Function to calculate the final amount after subtracting referral discount
   double calculateFinalAmount(double referralDiscount) {
     // Get the initial amount (replace this with your actual calculation)
@@ -225,33 +186,6 @@ class CupanDiscountController extends GetxController {
     ReferaldiscountPercentage.value = finalAmount;
   }
 
-// //   // cupon Applied
-//   // Function to calculate the final amount after subtracting referral discount
-//   double calculateFinalAmount(double referralDiscount) {
-//     // Get the initial amount (replace this with your actual calculation)
-//     int parsedCoursePrice = int.tryParse(arguments[3]) ?? 0;
-//     print("final amountt${coursePrice.value}");
-
-//     // Assign values to reactive variables
-//     coursePrice.value = parsedCoursePrice;
-
-//     final initialAmount = coursePrice.value;
-
-//     // Subtract the referral discount from the initial amount
-//     final referralAmount = (referralDiscount / 100) * coursePrice.value;
-//     print('ReferalAmont${referralAmount}');
-//     referralDiscountAmount.value = referralAmount;
-
-//     ReferaldiscountPercentage.value = initialAmount - referralAmount;
-//     // Ensure the final amount is non-negative
-//     return ReferaldiscountPercentage.value >= 0
-//         ? ReferaldiscountPercentage.value
-//         : 0;
-//   }
-
-//   void updateFinalAmount(double finalAmount) {
-//     ReferaldiscountPercentage.value.toInt();
-//   }
 
 //   // cupon Applied
   void togglereferral() {
@@ -330,17 +264,6 @@ class CupanDiscountController extends GetxController {
     }
   }
 
-  // void fetchData() {
-  //   final getdata = Get.arguments;
-  //   if (getdata != null && getdata is List && getdata.length > 12) {
-  //     amount = getdata[3];
-  //   } else {
-  //     amount = 0.obs;
-  //   }
-  // }
-  // ///set final cost afete discount
-  // Define variables to hold the values
-  // Rx variable to hold the final cost
   var finalCostdata = 0.obs;
 
   //  Date timeparsing

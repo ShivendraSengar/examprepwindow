@@ -217,60 +217,72 @@ class CourseSubscribeView extends GetView<CourseSubscribeController> {
       ),
     ).paddingSymmetric(horizontal: 10, vertical: 8);
   }
-
-  Widget buildviewmore() {
-    return Container(
-      height: Get.height,
-      
-      alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-      decoration: BoxDecoration(
+Widget buildviewmore() {
+  return Container(
+    alignment: Alignment.centerLeft,
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+    decoration: BoxDecoration(
+      color: HexColor("#F3FEFF"),
+      boxShadow: [
+        BoxShadow(
           color: HexColor("#F3FEFF"),
-          boxShadow: [
-            BoxShadow(
-              color: HexColor("#F3FEFF"), // Set the shadow color here
-              blurRadius: 5.0, // Adjust the blur radius
-              spreadRadius: 0.0, // Adjust the spread radius
-              offset: const Offset(0, 2), // Adjust the offset
-            ),
-          ],
-          border: Border.all(width: 2, color: Colors.grey.shade200),
-          borderRadius: BorderRadius.circular(10)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Text(
-            "Course description".toUpperCase(),
-            style: AppStyle.txtPoppinsMedium12darkGray,
-          ),
-          10.heightBox,
-          Obx(() {
-            final String displayedData = controller.showMore.value
-                ? controller.getdata[5]
-                : _truncateHtml(controller.getdata[5], 0, 630); // Truncate HTML
+          blurRadius: 5.0,
+          spreadRadius: 0.0,
+          offset: const Offset(0, 2),
+        ),
+      ],
+      border: Border.all(width: 2, color: Colors.grey.shade200),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(
+          "Course description".toUpperCase(),
+          style: AppStyle.txtPoppinsMedium12darkGray,
+        ),
+        10.heightBox,
+        Obx(() {
+          final String displayedData = controller.showMore.value
+              ? controller.getdata[5]
+              : _truncateHtml(controller.getdata[5], 0, 430); // Truncate HTML
 
-            return Html(
-              data: displayedData,
-            );
-          }),
-          GestureDetector(
-            onTap: () {
-              controller.toggleShowMore();
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              return ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: controller.showMore.value
+                      ? double.infinity
+                      : 400, // Set height limit
+                ),
+                child: SingleChildScrollView(
+                  physics: controller.showMore.value
+                      ? const AlwaysScrollableScrollPhysics() // Scroll only if expanded
+                      : const NeverScrollableScrollPhysics(),
+                  child: Html(
+                    data: displayedData,
+                  ),
+                ),
+              );
             },
-            child: Text(
-              controller.showMore.value ? 'Show Less' : 'Read More',
-              style: const TextStyle(
-                color: Colors.blue,
-                // decoration: TextDecoration.underline,
-              ),
+          );
+        }),
+        GestureDetector(
+          onTap: () {
+            controller.toggleShowMore();
+          },
+          child: Text(
+            controller.showMore.value ? 'Show Less' : 'Read More',
+            style: const TextStyle(
+              color: Colors.blue,
             ),
           ),
-        ],
-      ).p(8),
-    ).p(15);
-  }
-
+        ),
+      ],
+    ).p(8),
+  ).p(15);
+}
   String _truncateHtml(String html, int startIndex, int endIndex) {
     // Strip HTML tags
     RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: false);

@@ -62,49 +62,6 @@ class AirTestseriesController extends GetxController {
     }
   }
 
-  //final PaymentsRepo purchasesCourse = VerfypaymentRepoImpl();
-  //final userdetais = <CourseSub>[].obs;
-  //final count = 0.obs;
-  //checkcourses() async {
-  //  print("id ${prefutils.getID().toString()}");
-  //  try {
-  //    isLoading.value = true;
-  //    var response =
-  //        await purchasesCourse.checkCourseBuy(prefutils.getID().toString());
-  //    if (response.data != null) {
-  //      userdetais.value = response.data!.data ?? [];
-  //      print("Response${response.data.toString()}");
-  //      // If 'response.data.toString()' is a List, you might want to log each item separately
-  //      for (var item in userdetais.value) {
-  //        print(item);
-  //      }
-  //    } isLoading.value = false;
-  //  } catch (e) {
-  //    log(e.toString());
-  //  }
-  //}
-
-//COURSES SELECT PURCHASED
-  // getList() async {
-  //   isLoading.value = true;
-
-  //   try {
-  //     final response = await repositry.getcourses(prefutils.getID().toString());
-  //     if (response.data != null) {
-  //       print("course ${response.data!.data!.length}");
-
-  //       courdata.value = response.data!.data ?? [];
-  //       // pages.value = response.data!.data ?? [];
-  //     } else {
-  //       print("Data is null");
-  //       courdata.value = []; // or handle the null case in a different way
-  //     }
-  //     isLoading.value = false;
-  //   } catch (e) {
-  //     log("err $e");
-  //     isLoading.value = false;
-  //   }
-  // }
 
   void updateSelectedIndex(int index) {
     selectedIndex.value = index;
@@ -130,9 +87,9 @@ class AirTestseriesController extends GetxController {
 
   @override
   void onInit() {
-    //getList();
+
     checkcourses();
-    //getorderidin();
+   
     final data = Get.arguments;
 
     if (data != null && data is List && data.length >= 8) {

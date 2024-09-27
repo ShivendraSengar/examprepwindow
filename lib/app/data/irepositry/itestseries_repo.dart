@@ -66,8 +66,8 @@ class TestSeriesRepoIMPL implements TestSeriesRepo {
           requestOptions: httpresponse.response.requestOptions,
           response: httpresponse.response,
           error: httpresponse.response.statusMessage,
-          type: DioExceptionType.cancel));
-    } on DioException catch (e) {
+             type: DioErrorType.cancel));
+    } on DioError catch (e) {
       return DataFailed(e);
     }
   }
@@ -87,10 +87,9 @@ class TestSeriesRepoIMPL implements TestSeriesRepo {
           requestOptions: httpresponse.response.requestOptions,
           response: httpresponse.response,
           error: httpresponse.response.statusMessage,
-          type: DioExceptionType.cancel));
-    } on DioException catch (e) {
+             type: DioErrorType.cancel));
+    } on DioError catch (e) {
       return DataFailed(e);
     }
   }
-
 }

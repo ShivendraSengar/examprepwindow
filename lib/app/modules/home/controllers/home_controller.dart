@@ -149,12 +149,9 @@ class HomeController extends GetxController {
   void onInit() async {
     getList();
     await onedevicelogin();
-    // screenon();
-    // await onedevicelogin();
-    //  ProfileData();
- // 5 मिनट का टाइमर सेट करें
+ 
     _timer = Timer.periodic(const Duration(seconds: 25), (Timer timer) {
-      onedevicelogin(); // हर 5 मिनट में टोकन को वेरिफाई करें
+      onedevicelogin(); 
     });
     final data = Get.arguments;
 

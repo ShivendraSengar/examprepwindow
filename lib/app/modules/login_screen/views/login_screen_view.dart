@@ -60,7 +60,7 @@ class LoginScreenView extends GetView<LoginScreenController> {
                                   )
                                   .make()
                                   .paddingSymmetric(
-                                      horizontal: 25, vertical: 05).onTap(() {Get.toNamed(Routes.RAZOR_PAY_WINDOW);}),
+                                      horizontal: 25, vertical: 05).onTap(() {Get.toNamed(Routes.HOME);}),
                               5.heightBox,
                               "Please Signin to Continue"
                                   .text
