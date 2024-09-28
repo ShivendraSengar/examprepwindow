@@ -10,8 +10,7 @@ class AirTestseriesBinding extends Bindings {
     );
   }
 }
-
-//import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries_modal.dart';
+// import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries_modal.dart';
 // import 'package:exam_prep_tool/app/modules/testseries_mcq/views/random_question_card_page.dart';
 // import 'package:exam_prep_tool/app/routes/app_pages.dart';
 // import 'package:exam_prep_tool/app/themes/app_style.dart';
@@ -751,153 +750,299 @@ class AirTestseriesBinding extends Bindings {
 //                                                     Align(
 //                                                       alignment: Alignment
 //                                                           .bottomCenter,
-//                                                       child: 
-//                                                   Row(
-//   crossAxisAlignment: CrossAxisAlignment.start,
-//   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//   children: [
-//     // Previous button
-//     InkWell(
-//       onTap: () {
-//         if (controller.currentQuestionIndex.value > 0) {
-//           controller.previousQuestion();
-//         }
-//       },
-//       child: buildButton("Previous"),
-//     ),
-//     2.widthBox,
+//                                                       child: Row(
+//                                                         crossAxisAlignment:
+//                                                             CrossAxisAlignment
+//                                                                 .start,
+//                                                         mainAxisAlignment:
+//                                                             MainAxisAlignment
+//                                                                 .spaceBetween,
+//                                                         children: [
+//                                                           // Previous button
+//                                                           InkWell(
+//                                                             onTap: () {
+//                                                               if (controller
+//                                                                       .currentQuestionIndex
+//                                                                       .value >
+//                                                                   0) {
+//                                                                 controller
+//                                                                     .previousQuestion();
+//                                                               }
+//                                                             },
+//                                                             child: buildButton(
+//                                                                 "Previous"),
+//                                                           ),
+//                                                           2.widthBox,
 
-//     // Save and Next button
-//     InkWell(
-//       onTap: () {
-//         bool isAnswered = false;
-//         String? selectedOption;
-//         bool isCorrect = false;
+//                                                           // Save and Next button
+//                                                           InkWell(
+//                                                             onTap: () {
+//                                                               bool isAnswered =
+//                                                                   false;
+//                                                               String?
+//                                                                   selectedOption;
+//                                                               bool isCorrect =
+//                                                                   false;
 
-//         // Logic for mcq, msq, and integer types (similar to your original code)
-//         // Check if the answer is provided and validate it
-//         if (question.type == 'mcq') {
-//           final selectedOptionIndex = controller.selectedOptionIndex.value;
+//                                                               // Logic for mcq, msq, and integer types (similar to your original code)
+//                                                               // Check if the answer is provided and validate it
+//                                                               if (question
+//                                                                       .type ==
+//                                                                   'mcq') {
+//                                                                 final selectedOptionIndex =
+//                                                                     controller
+//                                                                         .selectedOptionIndex
+//                                                                         .value;
 
-//           if (selectedOptionIndex != -1) {
-//             selectedOption = question.options![selectedOptionIndex].option;
-//             isAnswered = true;
-//             controller.savedAnswers[question.id.toString()] = selectedOptionIndex;
-//           }
-//         } else if (question.type == 'msq') {
-//           if (controller.selectedOptionIndexes.isNotEmpty) {
-//             selectedOption = controller.selectedOptionIndexes
-//                 .map((index) => question.options![index].option)
-//                 .join(', ');
-//             isAnswered = true;
-//             isCorrect = controller.selectedOptionIndexes.every(
-//               (index) => question.explanation!.text!.contains(
-//                 question.options![index].option.toString(),
-//               ),
-//             );
-//           }
-//         } else if (question.type == 'integer') {
-//           if (controller.integerAnswer.value != null) {
-//             selectedOption = controller.integerAnswer.value.toString();
-//             isAnswered = true;
-//             isCorrect = question.explanation!.text == selectedOption;
-//           }
-//         }
+//                                                                 if (selectedOptionIndex !=
+//                                                                     -1) {
+//                                                                   selectedOption = question
+//                                                                       .options![
+//                                                                           selectedOptionIndex]
+//                                                                       .option;
+//                                                                   isAnswered =
+//                                                                       true;
+//                                                                   controller.savedAnswers[
+//                                                                           question
+//                                                                               .id
+//                                                                               .toString()] =
+//                                                                       selectedOptionIndex;
+//                                                                 }
+//                                                               } else if (question
+//                                                                       .type ==
+//                                                                   'msq') {
+//                                                                 if (controller
+//                                                                     .selectedOptionIndexes
+//                                                                     .isNotEmpty) {
+//                                                                   selectedOption = controller
+//                                                                       .selectedOptionIndexes
+//                                                                       .map((index) => question
+//                                                                           .options![
+//                                                                               index]
+//                                                                           .option)
+//                                                                       .join(
+//                                                                           ', ');
+//                                                                   isAnswered =
+//                                                                       true;
+//                                                                   isCorrect =
+//                                                                       controller
+//                                                                           .selectedOptionIndexes
+//                                                                           .every(
+//                                                                     (index) => question
+//                                                                         .explanation!
+//                                                                         .text!
+//                                                                         .contains(
+//                                                                       question
+//                                                                           .options![
+//                                                                               index]
+//                                                                           .option
+//                                                                           .toString(),
+//                                                                     ),
+//                                                                   );
+//                                                                 }
+//                                                               } else if (question
+//                                                                       .type ==
+//                                                                   'integer') {
+//                                                                 if (controller
+//                                                                         .integerAnswer
+//                                                                         .value !=
+//                                                                     null) {
+//                                                                   selectedOption =
+//                                                                       controller
+//                                                                           .integerAnswer
+//                                                                           .value
+//                                                                           .toString();
+//                                                                   isAnswered =
+//                                                                       true;
+//                                                                   isCorrect = question
+//                                                                           .explanation!
+//                                                                           .text ==
+//                                                                       selectedOption;
+//                                                                 }
+//                                                               }
 
-//         if (isAnswered) {
-//           if (question.type != 'integer') {
-//             isCorrect = question.explanation!.text!.contains(selectedOption!);
-//           }
+//                                                               if (isAnswered) {
+//                                                                 if (question
+//                                                                         .type !=
+//                                                                     'integer') {
+//                                                                   isCorrect = question
+//                                                                       .explanation!
+//                                                                       .text!
+//                                                                       .contains(
+//                                                                           selectedOption!);
+//                                                                 }
 
-//           final answerData = {
-//             "answer": selectedOption,
-//             "question": question.id,
-//             "isRight": isCorrect,
-//           };
+//                                                                 final answerData =
+//                                                                     {
+//                                                                   "answer":
+//                                                                       selectedOption,
+//                                                                   "question":
+//                                                                       question
+//                                                                           .id,
+//                                                                   "isRight":
+//                                                                       isCorrect,
+//                                                                 };
 
-//           controller.answersList.add(answerData);
+//                                                                 controller
+//                                                                     .answersList
+//                                                                     .add(
+//                                                                         answerData);
 
-//           if (isCorrect) {
-//             controller.totalMarks.value += question.marks!;
-//           } else {
-//             controller.incorrectMarks.value += question.negativeMarks!.toDouble();
-//           }
+//                                                                 if (isCorrect) {
+//                                                                   controller
+//                                                                           .totalMarks
+//                                                                           .value +=
+//                                                                       question
+//                                                                           .marks!;
+//                                                                 } else {
+//                                                                   controller
+//                                                                           .incorrectMarks
+//                                                                           .value +=
+//                                                                       question
+//                                                                           .negativeMarks!
+//                                                                           .toDouble();
+//                                                                 }
 
-//           controller.testAnswerquestion();
-//           controller.submitAnswer();
-//         } else {
-//           controller.submitAnswer();
-//         }
-//       },
-//       child: buildButton("Save and Next"),
-//     ),
-//     2.widthBox,
+//                                                                 controller
+//                                                                     .testAnswerquestion();
+//                                                                 controller
+//                                                                     .submitAnswer();
+//                                                               } else {
+//                                                                 controller
+//                                                                     .submitAnswer();
+//                                                               }
+//                                                               print(
+//                                                                   "Anlst${controller.answersList.string}");
+//                                                             },
+//                                                             child: buildButton(
+//                                                                 "Save and Next"),
+//                                                           ),
+//                                                           2.widthBox,
 
-//     // Mark for Review button
-//     InkWell(
-//       onTap: () {
-//         bool isAnswered = false;
-//         String? selectedOption;
-//         bool isCorrect = false;
+//                                                           // Mark for Review button
+//                                                           InkWell(
+//                                                             onTap: () {
+//                                                               bool isAnswered =
+//                                                                   false;
+//                                                               String?
+//                                                                   selectedOption;
+//                                                               bool isCorrect =
+//                                                                   false;
 
-//         // Similar answer logic as above (mcq, msq, integer types)
-//         if (question.type == 'mcq') {
-//           final selectedOptionIndex = controller.selectedOptionIndex.value;
+//                                                               // Similar answer logic as above (mcq, msq, integer types)
+//                                                               if (question
+//                                                                       .type ==
+//                                                                   'mcq') {
+//                                                                 final selectedOptionIndex =
+//                                                                     controller
+//                                                                         .selectedOptionIndex
+//                                                                         .value;
 
-//           if (selectedOptionIndex != -1) {
-//             selectedOption = question.options![selectedOptionIndex].option;
-//             isAnswered = true;
-//           }
-//         } else if (question.type == 'msq') {
-//           if (controller.selectedOptionIndexes.isNotEmpty) {
-//             selectedOption = controller.selectedOptionIndexes
-//                 .map((index) => question.options![index].option)
-//                 .join(', ');
-//             isAnswered = true;
-//           }
-//         } else if (question.type == 'integer') {
-//           if (controller.integerAnswer.value != null) {
-//             selectedOption = controller.integerAnswer.value.toString();
-//             isAnswered = true;
-//           }
-//         }
+//                                                                 if (selectedOptionIndex !=
+//                                                                     -1) {
+//                                                                   selectedOption = question
+//                                                                       .options![
+//                                                                           selectedOptionIndex]
+//                                                                       .option;
+//                                                                   isAnswered =
+//                                                                       true;
+//                                                                 }
+//                                                               } else if (question
+//                                                                       .type ==
+//                                                                   'msq') {
+//                                                                 if (controller
+//                                                                     .selectedOptionIndexes
+//                                                                     .isNotEmpty) {
+//                                                                   selectedOption = controller
+//                                                                       .selectedOptionIndexes
+//                                                                       .map((index) => question
+//                                                                           .options![
+//                                                                               index]
+//                                                                           .option)
+//                                                                       .join(
+//                                                                           ', ');
+//                                                                   isAnswered =
+//                                                                       true;
+//                                                                 }
+//                                                               } else if (question
+//                                                                       .type ==
+//                                                                   'integer') {
+//                                                                 if (controller
+//                                                                         .integerAnswer
+//                                                                         .value !=
+//                                                                     null) {
+//                                                                   selectedOption =
+//                                                                       controller
+//                                                                           .integerAnswer
+//                                                                           .value
+//                                                                           .toString();
+//                                                                   isAnswered =
+//                                                                       true;
+//                                                                 }
+//                                                               }
 
-//         if (isAnswered) {
-//           isCorrect = question.explanation!.text!.contains(selectedOption!);
+//                                                               if (isAnswered) {
+//                                                                 isCorrect = question
+//                                                                     .explanation!
+//                                                                     .text!
+//                                                                     .contains(
+//                                                                         selectedOption!);
 
-//           final answerData = {
-//             "answer": selectedOption,
-//             "question": question.id,
-//             "isRight": isCorrect,
-//           };
+//                                                                 final answerData =
+//                                                                     {
+//                                                                   "answer":
+//                                                                       selectedOption,
+//                                                                   "question":
+//                                                                       question
+//                                                                           .id,
+//                                                                   "isRight":
+//                                                                       isCorrect,
+//                                                                 };
 
-//           controller.answersList.add(answerData);
+//                                                                 controller
+//                                                                     .answersList
+//                                                                     .add(
+//                                                                         answerData);
 
-//           if (isCorrect) {
-//             controller.totalMarks.value += question.marks!;
-//           } else {
-//             controller.incorrectMarks.value += question.negativeMarks!.toDouble();
-//           }
+//                                                                 if (isCorrect) {
+//                                                                   controller
+//                                                                           .totalMarks
+//                                                                           .value +=
+//                                                                       question
+//                                                                           .marks!;
+//                                                                 } else {
+//                                                                   controller
+//                                                                           .incorrectMarks
+//                                                                           .value +=
+//                                                                       question
+//                                                                           .negativeMarks!
+//                                                                           .toDouble();
+//                                                                 }
 
-//           controller.markForReview();
-//         } else {
-//           controller.markForReview();
-//         }
-//       },
-//       child: buildButton("Mark for Review"),
-//     ),
+//                                                                 controller
+//                                                                     .markForReview();
+//                                                               } else {
+//                                                                 controller
+//                                                                     .markForReview();
+//                                                               }
+//                                                             },
+//                                                             child: buildButton(
+//                                                                 "Mark for Review"),
+//                                                           ),
 
-//     // Unmark button to remove the question from the "Review" list
-//     2.widthBox,
-//     InkWell(
-//       onTap: () {
-//         controller.unmarkForReview();  // Implement this method in your controller to handle unmarking logic.
-//       },
-//       child: buildButton("Unmark"),
-//     ),
-//   ],
-// ),
-//  ),
+//                                                           // Unmark button to remove the question from the "Review" list
+//                                                           2.widthBox,
+//                                                           InkWell(
+//                                                             onTap: () {
+//                                                               controller
+//                                                                   .unmarkForReview(); // Implement this method in your controller to handle unmarking logic.
+//                                                             },
+//                                                             child: buildButton(
+//                                                                 "Unmark"),
+//                                                           ),
+//                                                         ],
+//                                                       ),
+//                                                     ),
 //                                                   ],
 //                                                 ],
 //                                               ).w(Get.width / 2),
@@ -987,22 +1132,22 @@ class AirTestseriesBinding extends Bindings {
 //   //   });
 //   // }
 
-// void onSomeEvent() {
-//   // Test ID ko retrieve karein (for example purposes)
-//   String testId = controller.testcontroller.testSeries[0].id.toString();
+//   void onSomeEvent() {
+//     // Test ID ko retrieve karein (for example purposes)
+//     String testId = controller.testcontroller.testSeries[0].id.toString();
 
-//   // Delay to allow build to complete
-//   Future.delayed(Duration.zero, () {
-//     // Calculate and save final marks
-//     controller.calculateFinalMarks(testId);
+//     // Delay to allow build to complete
+//     Future.delayed(Duration.zero, () {
+//       // Calculate and save final marks
+//       controller.calculateFinalMarks(testId);
 
-//     // Navigate to the next page
-//     Get.toNamed(Routes.TESTSERIES_VALUE_ANALYSIS, arguments: {
-//       "finalMarks": controller.marksMap[testId],
-//       "testId": testId,
+//       // Navigate to the next page
+//       Get.toNamed(Routes.TESTSERIES_VALUE_ANALYSIS, arguments: {
+//         "finalMarks": controller.marksMap[testId],
+//         "testId": testId,
+//       });
 //     });
-//   });
-// }
+//   }
 
 //   String _stripHtmlTags(String html) {
 //     RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: false);
@@ -1047,6 +1192,4 @@ class AirTestseriesBinding extends Bindings {
 //           .make(),
 //     );
 //   }
-
 // }
-
