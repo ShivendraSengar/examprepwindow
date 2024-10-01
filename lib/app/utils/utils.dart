@@ -13,22 +13,22 @@ import 'package:crypto/crypto.dart';
 
 final Dio dio = Dio();
 
-String decryptURL(String encryptedURL, String key) {
-  final urlParts = encryptedURL.split('?');
-  if (urlParts.length == 2 && urlParts[1].startsWith('signature=')) {
-    final url = urlParts[0];
-    final signature = urlParts[1].substring('signature='.length);
-    final keyBytes = utf8.encode(key);
-    final urlBytes = utf8.encode(url);
-    final hmacSha256 = Hmac(sha256, keyBytes);
-    final expectedSignatureBytes = hmacSha256.convert(urlBytes).bytes;
-    final expectedSignature = base64UrlEncode(expectedSignatureBytes);
-    if (signature == expectedSignature) {
-      return url;
-    }
-  }
-  throw Exception('Invalid signature');
-}
+// String decryptURL(String encryptedURL, String key) {
+//   final urlParts = encryptedURL.split('?');
+//   if (urlParts.length == 2 && urlParts[1].startsWith('signature=')) {
+//     final url = urlParts[0];
+//     final signature = urlParts[1].substring('signature='.length);
+//     final keyBytes = utf8.encode(key);
+//     final urlBytes = utf8.encode(url);
+//     final hmacSha256 = Hmac(sha256, keyBytes);
+//     final expectedSignatureBytes = hmacSha256.convert(urlBytes).bytes;
+//     final expectedSignature = base64UrlEncode(expectedSignatureBytes);
+//     if (signature == expectedSignature) {
+//       return url;
+//     }
+//   }
+//   throw Exception('Invalid signature');
+// }
 
 void showToastMessage(String title, String message) {
   Get.snackbar(
@@ -52,15 +52,15 @@ class CommonRepository {
   }
 
   static Dio getDio() {
-    var token = getToken();
-    log("token $token");
-    return Dio(
-      BaseOptions(
-          contentType: 'application/json',
-          headers: {"Authorization": "Bearer $token"}),
-    );
-  }
-}
+  var token = getToken();
+  log("token $token");
+  return Dio(
+    BaseOptions(
+      contentType: 'application/json',
+      headers: {"Authorization": "Bearer $token"},
+    ),
+  )..interceptors.add(TokenInterceptor());
+}}
 
 abstract class DataState<T> {
   final T? data;
@@ -84,6 +84,8 @@ class DataFailed<T> extends DataState<T> {
 void setupInterceptors() {
   dio.interceptors.add(TokenInterceptor());
 }
+
+
 
 Future<String> getToken() async {
   try {
