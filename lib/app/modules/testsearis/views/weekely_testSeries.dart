@@ -383,7 +383,7 @@ class WeeklyTest extends GetView<TestsearisController> {
                             ),
                             child: Text(
                               controller.selectedFilter.value == "yes"
-                                  ? "View Anylysis"
+                                  ? "View Analysis"
                                   : "Start",
                               style: const TextStyle(
                                 color: Colors.black,

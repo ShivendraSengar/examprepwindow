@@ -1,6 +1,6 @@
 import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries_modal.dart';
 import 'package:exam_prep_tool/app/modules/testseries_mcq/views/random_question_card_page.dart';
-// import 'package:exam_prep_tool/app/modules/testseries_mcq/views/randow_question_card_page.dart';
+
 import 'package:exam_prep_tool/app/routes/app_pages.dart';
 import 'package:exam_prep_tool/app/themes/app_style.dart';
 import 'package:exam_prep_tool/app/utils/const.dart';
@@ -209,224 +209,273 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                    "${testSeries.questionType.toString()}"),
+                Text("${testSeries.questionType.toString()}"),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                            height: Get.height,
-                            child: Column(children: [
-                              SizedBox(height: 20),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Obx(() {
-                                    var currentQuestion = controller
-                                        .testSeries.value.questions?.length;
-                                    return Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 8, right: 60),
-                                        child: Text(
-                                          'Question : ${controller.currentQuestionIndex.value + 1}',
-                                          style: const TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ));
-                                  }),
-                                
-                                  60.widthBox,
-                                  Column(
-                                    children: [
-                                      "Marks".text.size(18).make(),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            height: 25,
-                                            width: 45,
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                color: Colors.red),
-                                            child: Obx(() {
-                                              return Text(
-                                                ' ${controller.incorrectMarks.value}',
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.white),
-                                              );
-                                            }),
-                                          ),
-                                          20.widthBox,
-                                          Obx(() {
-                                            return Container(
+                    SingleChildScrollView(
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                              height: Get.height,
+                              child: Column(children: [
+                                SizedBox(height: 20),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Obx(() {
+                                      var currentQuestion = controller
+                                          .testSeries.value.questions?.length;
+                                      return Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8, right: 60),
+                                          child: Text(
+                                            'Question : ${controller.currentQuestionIndex.value + 1}',
+                                            style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ));
+                                    }),
+                                    60.widthBox,
+                                    Column(
+                                      children: [
+                                        "Marks".text.size(18).make(),
+                                        Row(
+                                          children: [
+                                            Container(
                                               height: 25,
                                               width: 45,
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(15),
-                                                  color: Colors.green),
-                                              child: Text(controller
-                                                  .totalMarks.value
+                                                  color: Colors.red),
+                                              child: Obx(() {
+                                                return Text(
+                                                  ' ${controller.incorrectMarks.value}',
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.white),
+                                                );
+                                              }),
+                                            ),
+                                            20.widthBox,
+                                            Obx(() {
+                                              return Container(
+                                                height: 25,
+                                                width: 45,
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                    color: Colors.green),
+                                                child: Text(controller
+                                                    .totalMarks.value
+                                                    .toString()),
+                                              );
+                                            })
+                                          ],
+                                        ).paddingOnly(right: 20)
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                Obx(() {
+                                  var question = controller
+                                          .testSeries.value.questions?[
+                                      controller.currentQuestionIndex.value];
+
+                                  // Load the previously selected answer if available
+                                  if (question != null) {
+                                    controller.selectedOptionIndex.value =
+                                        controller.savedAnswers[question.id] ??
+                                            -1;
+                                    controller.selectedOptionIndexes.value =
+                                        controller
+                                                .savedMsqAnswers[question.id] ??
+                                            [];
+                                    controller
+                                        .inputAnswer.value.text = controller
+                                            .savedIntegerAnswers[question.id]
+                                            ?.toString() ??
+                                        '';
+                                  }
+
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      if (question != null) ...[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Html(
+                                              data: """
+                        <pre><code>
+                        ${correctHtmlContent(question.question.toString())}
+                                   
+                                     </code></pre>
+                                     """,
+                                              style: {
+                                                "body": Style(
+                                                  fontWeight: FontWeight.bold,
+                                                  whiteSpace: WhiteSpace.normal,
+                                                  fontSize: FontSize(16.0),
+                                                ),
+                                                "pre": Style(
+                                                  whiteSpace: WhiteSpace.normal,
+                                                  fontFamily: 'monospace',
+                                                ),
+                                                "code": Style(
+                                                  fontFamily: 'monospace',
+                                                  whiteSpace: WhiteSpace.normal,
+                                                  backgroundColor:
+                                                      Colors.grey.shade100,
+                                                ),
+                                              },
+                                            ).p(4).w(650),
+                                          ],
+                                        ),
+                                        8.heightBox,
+                                        if (question.questionImage != null &&
+                                            question.questionImage!.isNotEmpty)
+                                          Image.network(
+                                            "${imageUrl + question.questionImage.toString()}",
+                                            height: 150,
+                                            width: double.infinity,
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                              return Text(
+                                                  'Image not available'); // Placeholder text
+                                            },
+                                          )
+                                        else
+                                          Text(
+                                              ''), // Placeholder text when no image is available
+
+                                        SizedBox(height: 2),
+
+                                        // Different UI based on question type
+                                        if (question.type == 'mcq') ...[
+                                          ...List.generate(
+                                              question.options!.length,
+                                              (index) {
+                                            return RadioListTile(
+                                              title: Text(question
+                                                  .options![index].option
                                                   .toString()),
+                                              value: index,
+                                              groupValue: controller
+                                                  .selectedOptionIndex.value,
+                                              onChanged: (int? value) {
+                                                // If the same option is clicked again, unselect it
+                                                if (controller
+                                                        .selectedOptionIndex
+                                                        .value ==
+                                                    value) {
+                                                  controller.selectedOptionIndex
+                                                          .value =
+                                                      -1; // Unselect the option
+                                                  controller.savedAnswers
+                                                      .remove(question
+                                                          .id); // Remove the saved answer
+                                                } else {
+                                                  // Select the new option
+                                                  controller.selectedOptionIndex
+                                                      .value = value!;
+                                                  controller.savedAnswers[
+                                                          question.id
+                                                              .toString()] =
+                                                      value; // Save selected option
+                                                }
+
+                                                if (controller
+                                                        .selectedOptionIndex
+                                                        .value ==
+                                                    value) {
+                                                  // Unselect the option if the same option is clicked again
+                                                  controller.selectedOptionIndex
+                                                      .value = -1;
+                                                } else {
+                                                  // Select the new option
+                                                  controller.selectedOptionIndex
+                                                      .value = value!;
+                                                  controller.savedAnswers[
+                                                          question.id
+                                                              .toString()] =
+                                                      value; // Save selected option
+                                                }
+                                              },
                                             );
-                                          })
+                                          }),
+                                        ] else if (question.type == 'msq') ...[
+                                          ...List.generate(
+                                              question.options!.length,
+                                              (index) {
+                                            return CheckboxListTile(
+                                              title: Text(question
+                                                  .options![index].option
+                                                  .toString()),
+                                              value: controller
+                                                  .selectedOptionIndexes
+                                                  .contains(index),
+                                              onChanged: (bool? value) {
+                                                if (value == true) {
+                                                  controller
+                                                      .selectedOptionIndexes
+                                                      .add(index);
+                                                  controller.savedMsqAnswers[
+                                                      question.id
+                                                          .toString()] = controller
+                                                      .selectedOptionIndexes
+                                                      .toList(); // Save selected MSQ options
+                                                } else {
+                                                  controller
+                                                      .selectedOptionIndexes
+                                                      .remove(index);
+                                                  controller.savedMsqAnswers[
+                                                      question.id
+                                                          .toString()] = controller
+                                                      .selectedOptionIndexes
+                                                      .toList(); // Save selected MSQ options
+                                                }
+                                              },
+                                            );
+                                          }),
+                                        ] else if (question.type ==
+                                            'integer') ...[
+                                          TextField(
+                                            controller:
+                                                controller.inputAnswer.value,
+                                            decoration: InputDecoration(
+                                                labelText: "Enter your answer"),
+                                            keyboardType: TextInputType.number,
+                                            onChanged: (value) {
+                                              // controller.integerAnswer.value = int.tryParse(value);
+                                              controller.savedIntegerAnswers[
+                                                      question.id.toString()] =
+                                                  controller.integerAnswer
+                                                          .value ??
+                                                      0; // Save integer answer
+                                            },
+                                          ),
                                         ],
-                                      ).paddingOnly(right: 20)
-                                    ],
-                                  )
-                                ],
-                              ),
 
+                                        SizedBox(height: 10),
 
-
-Obx(() {
-  var question = controller.testSeries.value.questions?[controller.currentQuestionIndex.value];
-
-  // Load the previously selected answer if available
-  if (question != null) {
-    controller.selectedOptionIndex.value = controller.savedAnswers[question.id] ?? -1;
-    controller.selectedOptionIndexes.value = controller.savedMsqAnswers[question.id] ?? [];
-    controller.inputAnswer.value.text = controller.savedIntegerAnswers[question.id]?.toString() ?? '';
-  }
-
-  return SingleChildScrollView(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        
-       if (question != null) ...[
-        
-  Row(
-    mainAxisAlignment: MainAxisAlignment.start,
-    mainAxisSize: MainAxisSize.min,
-    children: [
-   Html(
-  data: """
-  <pre><code>
-  ${correctHtmlContent(question.question.toString())}
-
-  </code></pre>
-  """,
-  style: {
-    "body": Style(
-      fontWeight: FontWeight.bold,
-      whiteSpace:  WhiteSpace.normal, 
-      fontSize: FontSize(16.0),
-    ),
-    "pre": Style(
-      whiteSpace:  WhiteSpace.normal, 
-      fontFamily: 'monospace',
-  
-   
-    ),
-    "code": Style(
-      fontFamily: 'monospace',
-      whiteSpace:  WhiteSpace.normal, 
-      backgroundColor: Colors.grey.shade100,
-    ),
-  },
-).p(4).w(350),
-
-
-      // Text(
-      //   ' ${_stripHtmlTags(question.question.toString())}',
-      //   maxLines: 8,
-        
-      //   style: TextStyle(fontWeight: FontWeight.bold),
-      // ).p(8).w(350),
-      Text(
-        ' ${question.type}',
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-    ],
-  ),8.heightBox,
-  if (question.questionImage != null && question.questionImage!.isNotEmpty)
-    Image.network(
-      "${imageUrl + question.questionImage.toString()}",
-      errorBuilder: (context, error, stackTrace) {
-        return Text('Image not available'); // Placeholder text
-      },)
-    
-
-
-          else
-            Text(''), // Placeholder text when no image is available
-
-          SizedBox(height: 2),
-
-          // Different UI based on question type
-          if (question.type == 'mcq') ...[
-            ...List.generate(question.options!.length, (index) {
-              return RadioListTile(
-                title: Text(question.options![index].option.toString()),
-                value: index,
-                groupValue: controller.selectedOptionIndex.value,
-                onChanged: (int? value) {
-                // If the same option is clicked again, unselect it
-        if (controller.selectedOptionIndex.value == value) {
-          controller.selectedOptionIndex.value = -1; // Unselect the option
-          controller.savedAnswers.remove(question.id); // Remove the saved answer
-        } else {
-          // Select the new option
-          controller.selectedOptionIndex.value = value!;
-          controller.savedAnswers[question.id.toString()] = value; // Save selected option
-        }
-      
-                  if (controller.selectedOptionIndex.value == value) {
-                    // Unselect the option if the same option is clicked again
-                    controller.selectedOptionIndex.value = -1;
-                  } else {
-                    // Select the new option
-                    controller.selectedOptionIndex.value = value!;
-                    controller.savedAnswers[question.id.toString()] = value; // Save selected option
-                  }
-                },
-              );
-            }),
-          ] else if (question.type == 'msq') ...[
-            ...List.generate(question.options!.length, (index) {
-              return CheckboxListTile(
-                title: Text(question.options![index].option.toString()),
-                value: controller.selectedOptionIndexes.contains(index),
-                onChanged: (bool? value) {
-                  if (value == true) {
-                    controller.selectedOptionIndexes.add(index);
-                    controller.savedMsqAnswers[question.id.toString()] = controller.selectedOptionIndexes.toList(); // Save selected MSQ options
-                  } else {
-                    controller.selectedOptionIndexes.remove(index);
-                    controller.savedMsqAnswers[question.id.toString()] = controller.selectedOptionIndexes.toList(); // Save selected MSQ options
-                  }
-                },
-              );
-            }),
-          ] else if (question.type == 'integer') ...[
-            TextField(
-              controller: controller.inputAnswer.value,
-              decoration: InputDecoration(labelText: "Enter your answer"),
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                // controller.integerAnswer.value = int.tryParse(value);
-                controller.savedIntegerAnswers[question.id.toString()] = controller.integerAnswer.value ?? 0; // Save integer answer
-              },
-            ),
-          ],
-
-          SizedBox(height: 10),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              InkWell(
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            InkWell(
                                               onTap: () {
                                                 if (controller
                                                         .currentQuestionIndex
@@ -437,216 +486,211 @@ Obx(() {
                                               },
                                               child: buildButton("Previous"),
                                             ),
-           
-           
-                                                                    // Save and Next button
-                                                          InkWell(
-                                                            onTap: () {
-                                                              bool isAnswered =
-                                                                  false;
-                                                              String?
-                                                                  selectedOption;
-                                                              bool isCorrect =
-                                                                  false;
 
-                                                              // Logic for mcq, msq, and integer types (similar to your original code)
-                                                              // Check if the answer is provided and validate it
-                                                              if (question
-                                                                      .type ==
-                                                                  'mcq') {
-                                                                final selectedOptionIndex =
-                                                                    controller
-                                                                        .selectedOptionIndex
-                                                                        .value;
+                                            // Save and Next button
+                                            InkWell(
+                                              onTap: () {
+                                                bool isAnswered = false;
+                                                String? selectedOption;
+                                                bool isCorrect = false;
 
-                                                                if (selectedOptionIndex !=
-                                                                    -1) {
-                                                                  selectedOption = question
-                                                                      .options![
-                                                                          selectedOptionIndex]
-                                                                      .option;
-                                                                  isAnswered =
-                                                                      true;
-                                                                  controller.savedAnswers[
-                                                                          question
-                                                                              .id
-                                                                              .toString()] =
-                                                                      selectedOptionIndex;
-                                                                }
-                                                              } else if (question
-                                                                      .type ==
-                                                                  'msq') {
-                                                                if (controller
-                                                                    .selectedOptionIndexes
-                                                                    .isNotEmpty) {
-                                                                  selectedOption = controller
-                                                                      .selectedOptionIndexes
-                                                                      .map((index) => question
-                                                                          .options![
-                                                                              index]
-                                                                          .option)
-                                                                      .join(
-                                                                          ', ');
-                                                                  isAnswered =
-                                                                      true;
-                                                                  isCorrect =
-                                                                      controller
-                                                                          .selectedOptionIndexes
-                                                                          .every(
-                                                                    (index) => question
-                                                                        .explanation!
-                                                                        .text!
-                                                                        .contains(
-                                                                      question
-                                                                          .options![
-                                                                              index]
-                                                                          .option
-                                                                          .toString(),
-                                                                    ),
-                                                                  );
-                                                                }
-                                                              } else if (question
-                                                                      .type ==
-                                                                  'integer') {
-                                                                if (controller
-                                                                        .integerAnswer
-                                                                        .value !=
-                                                                    null) {
-                                                                  selectedOption =
-                                                                      controller
-                                                                          .integerAnswer
-                                                                          .value
-                                                                          .toString();
-                                                                  isAnswered =
-                                                                      true;
-                                                                  isCorrect = question
-                                                                          .explanation!
-                                                                          .text ==
-                                                                      selectedOption;
-                                                                }
-                                                              }
+                                                // Logic for mcq, msq, and integer types (similar to your original code)
+                                                // Check if the answer is provided and validate it
+                                                if (question.type == 'mcq') {
+                                                  final selectedOptionIndex =
+                                                      controller
+                                                          .selectedOptionIndex
+                                                          .value;
 
-                                                              if (isAnswered) {
-                                                                if (question
-                                                                        .type !=
-                                                                    'integer') {
-                                                                  isCorrect = question
-                                                                      .explanation!
-                                                                      .text!
-                                                                      .contains(
-                                                                          selectedOption!);
-                                                                }
+                                                  if (selectedOptionIndex !=
+                                                      -1) {
+                                                    selectedOption = question
+                                                        .options![
+                                                            selectedOptionIndex]
+                                                        .option;
+                                                    isAnswered = true;
+                                                    controller.savedAnswers[
+                                                            question
+                                                                .id
+                                                                .toString()] =
+                                                        selectedOptionIndex;
+                                                  }
+                                                } else if (question.type ==
+                                                    'msq') {
+                                                  if (controller
+                                                      .selectedOptionIndexes
+                                                      .isNotEmpty) {
+                                                    selectedOption = controller
+                                                        .selectedOptionIndexes
+                                                        .map((index) => question
+                                                            .options![index]
+                                                            .option)
+                                                        .join(', ');
+                                                    isAnswered = true;
+                                                    isCorrect = controller
+                                                        .selectedOptionIndexes
+                                                        .every(
+                                                      (index) => question
+                                                          .explanation!.text!
+                                                          .contains(
+                                                        question.options![index]
+                                                            .option
+                                                            .toString(),
+                                                      ),
+                                                    );
+                                                  }
+                                                } else if (question.type ==
+                                                    'integer') {
+                                                  if (controller.integerAnswer
+                                                          .value !=
+                                                      null) {
+                                                    selectedOption = controller
+                                                        .integerAnswer.value
+                                                        .toString();
+                                                    isAnswered = true;
+                                                    isCorrect = question
+                                                            .explanation!
+                                                            .text ==
+                                                        selectedOption;
+                                                  }
+                                                }
 
-                                                                final answerData =
-                                                                    {
-                                                                  "answer":
-                                                                      selectedOption,
-                                                                  "question":
-                                                                      question
-                                                                          .id,
-                                                                  "isRight":
-                                                                      isCorrect,
-                                                                };
+                                                if (isAnswered) {
+                                                  if (question.type !=
+                                                      'integer') {
+                                                    isCorrect = question
+                                                        .explanation!.text!
+                                                        .contains(
+                                                            selectedOption!);
+                                                  }
 
-                                                                controller
-                                                                    .answersList
-                                                                    .add(
-                                                                        answerData);
+                                                  final answerData = {
+                                                    "answer": selectedOption,
+                                                    "question": question.id,
+                                                    "isRight": isCorrect,
+                                                  };
 
-                                                                if (isCorrect) {
-                                                                  controller
-                                                                          .totalMarks
-                                                                          .value +=
-                                                                      question
-                                                                          .marks!;
-                                                                } else {
-                                                                  controller
-                                                                          .incorrectMarks
-                                                                          .value +=
-                                                                      question
-                                                                          .negativeMarks!
-                                                                          .toDouble();
-                                                                }
+                                                  controller.answersList
+                                                      .add(answerData);
 
-                                                                controller
-                                                                    .testAnswerquestion();
-                                                                controller
-                                                                    .submitAnswer();
-                                                              } else {
-                                                                controller
-                                                                    .submitAnswer();
-                                                              }
-                                                              print(
-                                                                  "Anlst${controller.answersList.string}");
-                                                            },
-                                                            child: buildButton(
-                                                                "Save and Next"),
-                                                          ),
-//// Mark button code
-              InkWell(
-                onTap: () {
-                  bool isAnswered = false;
-                  String? selectedOption;
-                  bool isCorrect = false;
+                                                  if (isCorrect) {
+                                                    controller
+                                                            .totalMarks.value +=
+                                                        question.marks!;
+                                                  } else {
+                                                    controller.incorrectMarks
+                                                            .value +=
+                                                        question.negativeMarks!
+                                                            .toDouble();
+                                                  }
 
-                  if (question.type == 'mcq') {
-                    final selectedOptionIndex = controller.selectedOptionIndex.value;
+                                                  controller
+                                                      .testAnswerquestion();
+                                                  controller.submitAnswer();
+                                                } else {
+                                                  controller.submitAnswer();
+                                                }
+                                                print(
+                                                    "Anlst${controller.answersList.string}");
+                                              },
+                                              child:
+                                                  buildButton("Save and Next"),
+                                            ),
+                                            //// Mark button code
+                                            InkWell(
+                                              onTap: () {
+                                                bool isAnswered = false;
+                                                String? selectedOption;
+                                                bool isCorrect = false;
 
-                    if (selectedOptionIndex != -1) {
-                      selectedOption = question.options![selectedOptionIndex].option;
-                      isAnswered = true;
-                    }
-                  } else if (question.type == 'msq') {
-                    if (controller.selectedOptionIndexes.isNotEmpty) {
-                      selectedOption = controller.selectedOptionIndexes.map((index) => question.options![index].option).join(', ');
-                      isAnswered = true;
-                    }
-                  } else if (question.type == 'integer') {
-                    if (controller.integerAnswer.value != null) {
-                      selectedOption = controller.integerAnswer.value.toString();
-                      isAnswered = true;
-                    }
-                  }
+                                                if (question.type == 'mcq') {
+                                                  final selectedOptionIndex =
+                                                      controller
+                                                          .selectedOptionIndex
+                                                          .value;
 
-                  if (isAnswered) {
-                    isCorrect = question.explanation!.text!.contains(selectedOption!);
+                                                  if (selectedOptionIndex !=
+                                                      -1) {
+                                                    selectedOption = question
+                                                        .options![
+                                                            selectedOptionIndex]
+                                                        .option;
+                                                    isAnswered = true;
+                                                  }
+                                                } else if (question.type ==
+                                                    'msq') {
+                                                  if (controller
+                                                      .selectedOptionIndexes
+                                                      .isNotEmpty) {
+                                                    selectedOption = controller
+                                                        .selectedOptionIndexes
+                                                        .map((index) => question
+                                                            .options![index]
+                                                            .option)
+                                                        .join(', ');
+                                                    isAnswered = true;
+                                                  }
+                                                } else if (question.type ==
+                                                    'integer') {
+                                                  if (controller.integerAnswer
+                                                          .value !=
+                                                      null) {
+                                                    selectedOption = controller
+                                                        .integerAnswer.value
+                                                        .toString();
+                                                    isAnswered = true;
+                                                  }
+                                                }
 
-                    final answerData = {
-                      "answer": selectedOption,
-                      "question": question.id,
-                      "isRight": isCorrect,
-                    };
+                                                if (isAnswered) {
+                                                  isCorrect = question
+                                                      .explanation!.text!
+                                                      .contains(
+                                                          selectedOption!);
 
-                    controller.answersList.add(answerData);
+                                                  final answerData = {
+                                                    "answer": selectedOption,
+                                                    "question": question.id,
+                                                    "isRight": isCorrect,
+                                                  };
 
-                    if (isCorrect) {
-                      controller.totalMarks.value += question.marks!;
-                    } else {
-                      controller.incorrectMarks.value += question.negativeMarks!.toDouble();
-                    }
+                                                  controller.answersList
+                                                      .add(answerData);
 
-                    controller.markForReview();
-                  } else {
-                    Get.snackbar("Unanswered Question", "Please select or enter an answer before marking for review.");
-                  }
-                },
-                child: buildButton("Mark for Review"),
-              ),
-            ],
-          ).w(400),
-        ],
-      ],
-    ).w(Get.width / 3),
-  );
-}),
+                                                  if (isCorrect) {
+                                                    controller
+                                                            .totalMarks.value +=
+                                                        question.marks!;
+                                                  } else {
+                                                    controller.incorrectMarks
+                                                            .value +=
+                                                        question.negativeMarks!
+                                                            .toDouble();
+                                                  }
 
-                  
-                           
-                            ])),
+                                                  controller.markForReview();
+                                                } else {
+                                                  Get.snackbar(
+                                                      "Unanswered Question",
+                                                      "Please select or enter an answer before marking for review.");
+                                                }
+                                              },
+                                              child: buildButton(
+                                                  "Mark for Review"),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ],
+                                  ).w(Get.width / 1.5);
+                                }),
+                              ])),
+                        ),
                       ),
                     ),
                     20.widthBox,
-                 const RandomQuestionPage() ],
+                    const RandomQuestionPage()
+                  ],
                 ),
               ],
             ),
@@ -655,8 +699,6 @@ Obx(() {
       ),
     );
   }
-
- 
 
   buildButton(text) {
     return Container(
@@ -703,33 +745,31 @@ Obx(() {
   }
 
   void onSomeEvent() {
-  // Test ID ko retrieve karein (for example purposes)
-  String testId = controller.testcontroller.testSeries[0].id.toString();
+    // Test ID ko retrieve karein (for example purposes)
+    String testId = controller.testcontroller.testSeries[0].id.toString();
 
-  // Calculate and save final marks
-  controller.calculateFinalMarks(testId);
+    // Calculate and save final marks
+    controller.calculateFinalMarks(testId);
 
-  // Navigate to the next page
-  Get.toNamed(Routes.TESTSERIES_VALUE_ANALYSIS, arguments: {
-    "finalMarks": controller.marksMap[testId],
-    "testId": testId,
-  });
-}
-String _stripHtmlTags(String html) {
-  RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: false);
-  return html.replaceAll(exp, '');
-}
-String correctHtmlContent(String html) {
-  return html
-      .replaceAll('&lt;', '<')
-      .replaceAll('&gt;', '>')
-      .replaceAll('<pre>', '')
-      .replaceAll('</pre>', '')
-      .replaceAll('<stdio.h>', '&lt;stdio.h&gt;')
-      .replaceAll('</stdio.h>', '');
-}
+    // Navigate to the next page
+    Get.toNamed(Routes.TESTSERIES_VALUE_ANALYSIS, arguments: {
+      "finalMarks": controller.marksMap[testId],
+      "testId": testId,
+    });
+  }
 
+  String _stripHtmlTags(String html) {
+    RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: false);
+    return html.replaceAll(exp, '');
+  }
 
-
-
+  String correctHtmlContent(String html) {
+    return html
+        .replaceAll('&lt;', '<')
+        .replaceAll('&gt;', '>')
+        .replaceAll('<pre>', '')
+        .replaceAll('</pre>', '')
+        .replaceAll('<stdio.h>', '&lt;stdio.h&gt;')
+        .replaceAll('</stdio.h>', '');
+  }
 }
