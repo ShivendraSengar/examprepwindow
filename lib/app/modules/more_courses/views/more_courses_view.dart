@@ -58,7 +58,7 @@ class MoreCoursesView extends GetView<MoreCoursesController> {
                         children: [
                           SizedBox(
                             width: 250,
-                              height: Get.height,
+                            height: Get.height,
                             child: ListView.builder(
                               shrinkWrap: true, // Add this line
                               scrollDirection:
@@ -211,6 +211,16 @@ class MoreCoursesView extends GetView<MoreCoursesController> {
         final filteredData = controller.filterlist
             .where((coursedetails) => coursedetails.purchased != "yes")
             .toList();
+        // Check if the filtered data is empty
+        if (filteredData.isEmpty) {
+          // Show "No courses available" message
+          return Center(
+            child: Text(
+              "No courses available in this category.",
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          );
+        }
 
         return GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

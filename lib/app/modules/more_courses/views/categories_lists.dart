@@ -34,11 +34,15 @@ class Mobileview extends GetView<MoreCoursesController> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          IconButton(onPressed: (){
-                            Get.back();
-                          }, icon: Icon(Icons.arrow_back,
-                          color: Vx.white,size: 8,)),
-                          
+                          IconButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              icon: Icon(
+                                Icons.arrow_back,
+                                color: Vx.white,
+                                size: 8,
+                              )),
                           Icon(
                             Icons.category,
                             color: Colors.white,
@@ -81,54 +85,54 @@ class Mobileview extends GetView<MoreCoursesController> {
                     // ],
                     flexibleSpace: Container(
                       decoration: BoxDecoration(gradient: lineargrdient),
-                    )
-                    ),
+                    )),
                 drawer: buildDrawer(),
-                body: Obx(() {
-                  return Container(
-                      height: double.infinity,
-                      width: double.infinity,
-                      decoration: BoxDecoration(gradient: lineargrdient),
-                      child: Center(
-                          child: Container(
-                              alignment: Alignment.center,
-                              //width: 100,
-                              height: Get.height,
-                              child: Row(children: [
-                                controller.isLoading.isTrue
-                                    ? BuildShimmer(
-                                        child: Column(
-                                          children: [
-                                            buildSkeltion(),
-                                            buildSkeltion(),
-                                            buildSkeltion(),
-                                            buildSkeltion(),
-                                          ],
-                                        ),
-                                      ).w(300)
-                                    : allCourses().w(450).h(900)
-                              ]))));
-                }))));
+                body: Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                    decoration: BoxDecoration(gradient: lineargrdient),
+                    child: controller.isLoading.isTrue
+                        ? BuildShimmer(
+                            child: Column(
+                              children: [
+                                buildSkeltion(),
+                                buildSkeltion(),
+                                buildSkeltion(),
+                                buildSkeltion(),
+                              ],
+                            ),
+                          ).w(300)
+                        : allCourses().w(450).h(900)))));
   }
 
   Widget allCourses() {
     return Container(
-      height: 400,
+      height: 900,
       //color: const Color.fromARGB(255, 64, 214, 255),
       child: Obx(() {
         final filteredData = controller.filterlist
             .where((coursedetails) => coursedetails.purchased != "yes")
             .toList();
+        // Check if the filtered data is empty
+        if (filteredData.isEmpty) {
+          // Show "No courses available" message
+          return const Center(
+            child: Text(
+              "No courses available in this category.",
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          );
+        }
 
         return GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            //crossAxisSpacing: 4.0,
-            //mainAxisSpacing: 20.0,
+            crossAxisSpacing: 4.0,
+            mainAxisSpacing: 20.0,
             childAspectRatio: 2 / 3.4,
           ),
           itemCount: filteredData.length,
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(bottom: 20),
           itemBuilder: (context, index) {
             var coursedetails = filteredData[index];
             // Check if a discount is applicable
@@ -169,11 +173,8 @@ class Mobileview extends GetView<MoreCoursesController> {
                     )
                   : Stack(
                       clipBehavior: Clip.none,
-                      alignment: Alignment.bottomCenter,
                       children: [
                         Container(
-                          width: 180,
-                          height: 350,
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -272,7 +273,7 @@ class Mobileview extends GetView<MoreCoursesController> {
                                       style: const TextStyle(color: Vx.white),
                                     ),
                                 ],
-                              ).p(15),
+                              ).p(10),
                               5.heightBox,
                               if (coursedetails.discount == "yes")
                                 Row(
@@ -291,15 +292,14 @@ class Mobileview extends GetView<MoreCoursesController> {
                                     ),
                                   ],
                                 ),
-                              14.heightBox,
+                              10.heightBox,
                             ],
                           ),
                         ).paddingSymmetric(horizontal: 8),
                         Positioned(
                           left: 50,
                           right: 50,
-                          bottom: 8,
-                          //top: 15,
+                          bottom: -15,
                           child: InkWell(
                             onTap: () {
                               print("object${coursedetails.rating}");
@@ -353,7 +353,7 @@ class Mobileview extends GetView<MoreCoursesController> {
                               ),
                             ),
                           ),
-                        ).w(100)
+                        )
                       ],
                     ).p(5);
             });
@@ -417,114 +417,131 @@ class Mobileview extends GetView<MoreCoursesController> {
                 ),
               ),
               SizedBox(
-                width: 250,
-                child: ListView.builder(
-                  shrinkWrap: true, // Add this line
-                  scrollDirection: Axis.vertical, // Change this line
-                  //gridDelegate:
-                  //    const SliverGridDelegateWithFixedCrossAxisCount(
-                  //  crossAxisCount: 4,
-                  //  crossAxisSpacing: 2.0,
-                  //  mainAxisSpacing: 8.0,
-                  //  childAspectRatio: 9.9 / 3,
-                  //),
+                  width: 250,
+                  child: Obx(() {
+                    return controller.isLoading.isTrue
+                        ? BuildShimmer(
+                            child: Column(
+                              children: [
+                                buildSkeltion(),
+                                buildSkeltion(),
+                                buildSkeltion(),
+                                buildSkeltion(),
+                              ],
+                            ),
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true, // Add this line
+                            scrollDirection: Axis.vertical, // Change this line
+                            //gridDelegate:
+                            //    const SliverGridDelegateWithFixedCrossAxisCount(
+                            //  crossAxisCount: 4,
+                            //  crossAxisSpacing: 2.0,
+                            //  mainAxisSpacing: 8.0,
+                            //  childAspectRatio: 9.9 / 3,
+                            //),
 
-                  itemCount: controller.categorieslist.length +
-                      1, // Add 1 for "All Courses" item
-                  itemBuilder: (BuildContext ctx, index) {
-                    if (index == 0) {
-                      return Obx(() => InkWell(
-                            onTap: () {
-                              controller.categoryId.value = '';
-                              controller.clearCategoriesList();
-                              print(
-                                  "filter data list${controller.clearCategoriesList}");
-                              controller.getFilterList();
-                            },
-                            child: Container(
-                              height: 45,
-                              width: 150,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: HexColor('#0D2735'),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment
-                                    .start, // Center the content vertically
-                                children: [
-                                  SizedBox(width: 18),
-                                  Image.asset(
-                                    controller.images[0],
-                                    height: 30,
-                                    width: 30,
-                                  ),
-                                  SizedBox(width: 5),
-                                  SizedBox(
-                                    height: 19,
-                                    child: VerticalDivider(
-                                      color: Colors.white,
-                                      width: 6,
+                            itemCount: controller.categorieslist.length +
+                                1, // Add 1 for "All Courses" item
+                            itemBuilder: (BuildContext ctx, index) {
+                              if (index == 0) {
+                                return Obx(() => InkWell(
+                                      onTap: () {
+                                        controller.categoryId.value = '';
+                                        controller.clearCategoriesList();
+                                        print(
+                                            "filter data list${controller.clearCategoriesList}");
+                                        controller.getFilterList();
+                                      },
+                                      child: Container(
+                                        height: 45,
+                                        width: 150,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: HexColor('#0D2735'),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment
+                                              .start, // Center the content vertically
+                                          children: [
+                                            SizedBox(width: 18),
+                                            Image.asset(
+                                              controller.images[0],
+                                              height: 30,
+                                              width: 30,
+                                            ),
+                                            SizedBox(width: 5),
+                                            SizedBox(
+                                              height: 19,
+                                              child: VerticalDivider(
+                                                color: Colors.white,
+                                                width: 6,
+                                              ),
+                                            ),
+                                            SizedBox(width: 5),
+                                            Text(
+                                              "All Courses",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ],
+                                        ),
+                                      ).p(5),
+                                    ));
+                              } else {
+                                var data = controller.categorieslist[index - 1];
+                                return InkWell(
+                                  onTap: () {
+                                    controller.categoryId.value =
+                                        data.id.toString();
+                                    controller.getFilterList();
+                                    print(data.id);
+                                  },
+                                  child: Container(
+                                    height: 45,
+                                    width: 150,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: HexColor('#0D2735'),
+                                      borderRadius: BorderRadius.circular(15),
                                     ),
-                                  ),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    "All Courses",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ],
-                              ),
-                            ).p(5),
-                          ));
-                    } else {
-                      var data = controller.categorieslist[index - 1];
-                      return InkWell(
-                        onTap: () {
-                          controller.categoryId.value = data.id.toString();
-                          controller.getFilterList();
-                          print(data.id);
-                        },
-                        child: Container(
-                          height: 45,
-                          width: 150,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: HexColor('#0D2735'),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment
-                                .start, // Center the content vertically
-                            children: [
-                              SizedBox(width: 18),
-                              Image.asset(
-                                controller.images[index - 1],
-                                height: 30,
-                                width: 30,
-                              ),
-                              SizedBox(width: 5),
-                              SizedBox(
-                                height: 19,
-                                child: VerticalDivider(
-                                  color: Colors.white,
-                                  width: 6,
-                                ),
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                data.category.toString(),
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ).p(5),
-                      );
-                    }
-                  },
-                ),
-              )
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start, // Center the content vertically
+                                      children: [
+                                        SizedBox(width: 18),
+                                        Image.asset(
+                                          controller.images[index - 1],
+                                          height: 30,
+                                          width: 30,
+                                        ),
+                                        SizedBox(width: 5),
+                                        SizedBox(
+                                          height: 19,
+                                          child: VerticalDivider(
+                                            color: Colors.white,
+                                            width: 6,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          data.category.toString(),
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ).p(5),
+                                );
+                              }
+                            },
+                          );
+                  }))
             ]))).paddingOnly(bottom: 30);
   }
 }

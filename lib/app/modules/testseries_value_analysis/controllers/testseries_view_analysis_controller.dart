@@ -10,35 +10,33 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class TestseriesViewAnlysisController extends GetxController {
-   final TestseriesMcqController controller1 = Get.find();
-   var finalMarks;
+  final TestseriesMcqController controller1 = Get.find();
+  var finalMarks;
   var testSeriesId;
-//  final  receivedMarks = Get.arguments;
-//   var finalMarks = Get.arguments[0]; // first argument jo pass kiya tha
-//   var testSeriesId = Get.arguments[1];
+
   final TestSeriesRepo repositry = TestSeriesRepoIMPL();
   final RxList<Answerlist> viewAnslist = <Answerlist>[].obs;
 
-var expandedIndex = (-1).obs;
+  var expandedIndex = (-1).obs;
 
   void updateExpandedIndex(int index) {
     expandedIndex.value = index;
-  }// To track the expanded index
+  } // To track the expanded index
+
   // final testSeries = Testseries().obs; // Rx<Testseries>
   var isLoading = false.obs;
   final PrefUtils prefutils = Get.find();
-  
-   void viewAnswerdetails() async {
+
+  void viewAnswerdetails() async {
+    print("Testseriesid ${testSeriesId.toString()}");
     try {
       isLoading(true);
       final response = await repositry.viewAnswerdetail(
-         prefutils.getID().toString(),
-        testSeriesId.toString()
-      ); // Your API call here
+          prefutils.getID().toString(),
+          testSeriesId.toString()); // Your API call here
       if (response.data != null) {
         viewAnslist.value = response.data?.data ?? [];
-        // final viewAnswerDetailModal = viewAnswerDetailModalFromJson(response.body);
-        // viewAnslist.assignAll(viewAnswerDetailModal.data ?? []);
+
         print('Data fetched: ${viewAnslist.length} items');
       } else {
         print('Failed to fetch data');
@@ -50,20 +48,23 @@ var expandedIndex = (-1).obs;
     }
   }
 
-
   @override
   void onInit() {
-
-    // TODO: implement onInit
     super.onInit();
-  final arguments = Get.arguments;
+    final arguments = Get.arguments;
     finalMarks = arguments[0]; // index
     testSeriesId = arguments[1]; // data.id
 
-  print('Final Marks: $finalMarks');
-  print('Test Series ID: $testSeriesId');
+    print('Final Marks: $finalMarks');
+    print('Test Series ID: $testSeriesId');
     print("userid ${prefutils.getID().toString()}");
     viewAnswerdetails();
   }
- 
+
+  @override
+  void onClose() {
+    super.onClose();
+    testSeriesId = null; // Clear testSeriesId
+    finalMarks = null; // Clear final marks
+  }
 }

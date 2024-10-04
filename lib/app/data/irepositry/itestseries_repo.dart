@@ -79,7 +79,7 @@ class TestSeriesRepoIMPL implements TestSeriesRepo {
       final httpresponse = await CommonRepository.getApiService()
           .viewAnswerdetail(userid, testId);
       if (httpresponse.response.statusCode == HttpStatus.ok) {
-         print("Answerdata${httpresponse.data.toJson()}");
+        //  print("Answerdata${httpresponse.data.toJson()}");
         return DataSuccess(httpresponse.data);
         // print(httpresponse.data.toJson());
       }

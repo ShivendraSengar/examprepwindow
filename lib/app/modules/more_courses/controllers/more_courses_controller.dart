@@ -6,9 +6,6 @@ import 'package:exam_prep_tool/app/data/modal/courses_category.dart';
 import 'package:exam_prep_tool/app/data/repositry/courses_repo.dart';
 import 'package:exam_prep_tool/app/utils/pref_utis.dart';
 import 'package:get/get.dart';
-import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class MoreCoursesController extends GetxController {
