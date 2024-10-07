@@ -20,3 +20,92 @@ class TestseriesViewAnlysisBinding extends Bindings {
     );
   }
 }
+
+// ///////////////////agr is right true h tn k liy
+// Padding(
+//   padding: const EdgeInsets.all(5.0),
+//   child: Container(
+//     child: Column(
+//       crossAxisAlignment: CrossAxisAlignment.start, // Align text to the start
+//       children: [
+//         if (!userAnswer!.isRight) ...[
+//           if (question.type == "msq") ...[
+//             const Text(
+//               "You have not attempted all correct Answers:",
+//               style: TextStyle(
+//                 color: Colors.black,
+//                 fontWeight: FontWeight.bold,
+//               ),
+//             ),
+//             Container(
+//               padding: const EdgeInsets.all(8.0), // Add some padding for better presentation
+//               decoration: const BoxDecoration(
+//                 borderRadius: BorderRadius.all(Radius.circular(5)),
+//                 color: Colors.red,
+//               ),
+//               child: Text(
+//                 " ${userAnswer!.answer.toString()}",
+//                 style: const TextStyle(color: Colors.white),
+//               ),
+//             ),
+//           ] else if (question.type == "mcq") ...[
+//             const Text(
+//               "You have not selected the correct Answer:",
+//               style: TextStyle(
+//                 color: Colors.black,
+//                 fontWeight: FontWeight.bold,
+//               ),
+//             ),
+//             Container(
+//               padding: const EdgeInsets.all(8.0), // Add some padding for better presentation
+//               decoration: const BoxDecoration(
+//                 borderRadius: BorderRadius.all(Radius.circular(5)),
+//                 color: Colors.red,
+//               ),
+//               child: Text(
+//                 " ${userAnswer!.answer.toString()}",
+//                 style: const TextStyle(color: Colors.white),
+//               ),
+//             )
+//           ] else if (question.type == "integer") ...[
+//             Row(
+//               children: [
+//                 const Text(
+//                   "Attempted Answer:",
+//                   style: TextStyle(
+//                     color: Colors.black,
+//                     fontWeight: FontWeight.bold,
+//                   ),
+//                 ),
+//                 Container(
+//                   padding: const EdgeInsets.all(8.0), // Add some padding for better presentation
+//                   decoration: const BoxDecoration(
+//                     borderRadius: BorderRadius.all(Radius.circular(5)),
+//                     color: Colors.red,
+//                   ),
+//                   child: Text(
+//                     "${userAnswer!.answer.toString()}",
+//                     style: const TextStyle(color: Colors.white),
+//                   ),
+//                 )
+//               ],
+//             ),
+//           ] else ...[
+//             const Text(
+//               "Attempted Answer:",
+//               style: TextStyle(
+//                 color: Colors.black,
+//                 fontWeight: FontWeight.bold,
+//               ),
+//             ),
+//             Text(
+//               "${userAnswer!.answer.toString()}",
+//               style: const TextStyle(color: Colors.black),
+//             ),
+//           ],
+//         ],
+//       ],
+//     ),
+//   ),
+// );
+

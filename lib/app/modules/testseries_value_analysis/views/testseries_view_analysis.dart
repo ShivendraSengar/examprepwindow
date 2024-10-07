@@ -29,7 +29,7 @@ class TestseriesViewAnlysispage
     // Widget build(BuildContext context) {
     //  final Testseries testSeries = Get.arguments as Testseries;
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         appBar: buildAppbar(controller),
         body: Padding(
@@ -38,7 +38,7 @@ class TestseriesViewAnlysispage
             children: [
               WidgetScreenOne(controller, context),
               TestSeriesSolution(),
-              WidgetScreenThree(),
+              // WidgetScreenThree(),
             ],
           ),
         ),
@@ -81,63 +81,42 @@ class TestseriesViewAnlysispage
       color: HexColor('#0D2735'),
       width: width,
       child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Image.asset(
-                Assets.images.speedometer.path,
-                height: 25,
-                width: 25,
-              ),
-              SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  "Score",
-                  style: AppStyle.txtPoppinsSemiBold14White90002,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis, // Prevent text overflow
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  "12",
-                  style: AppStyle.txtPoppinsSemiBold14White90002,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ).p(8),
-          SizedBox(height: 14),
-          Container(
-            alignment: Alignment.bottomCenter,
-            color: HexColor("#003D5E"),
-            child: Row(
+        children: List.generate(controller.viewAnslist.length, (index) {
+          var answerItem = controller.viewAnslist[index];
+
+          if (answerItem.testId != null &&
+              answerItem.testId!.questions != null) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Image.asset(
+                  Assets.images.speedometer.path,
+                  height: 25,
+                  width: 25,
+                ),
+                SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    "Average Score: 1220",
-                    style: AppStyle.txtPoppinsMedium12White90002,
+                    "Score",
+                    style: AppStyle.txtPoppinsSemiBold14White90002,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis, // Prevent text overflow
                   ),
                 ),
-                VerticalDivider(
-                  width: 16,
-                  color: Colors.white,
-                ),
                 Expanded(
                   child: Text(
-                    "Best Score: 1220",
-                    style: AppStyle.txtPoppinsMedium12White90002,
+                    "Marks: ${answerItem.marksGot?.toStringAsFixed(2) ?? '0'}", // Display Marks Got
+                    style: AppStyle.txtPoppinsSemiBold14White90002,
                     textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis, // Prevent text overflow
                   ),
                 ),
               ],
-            ).p(8).color(HexColor("#003D5E")),
-          ),
-        ],
+            ).p(8);
+          } else {
+            return SizedBox.shrink(); // Return an empty widget if no questions
+          }
+        }),
+
       ),
     );
   }
@@ -148,33 +127,47 @@ class TestseriesViewAnlysispage
       color: HexColor('#0D2735'),
       width: width,
       alignment: Alignment.center,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            Assets.images.rank.path,
-            height: 25,
-            width: 25,
-          ),
-          SizedBox(width: 20),
-          Text(
-            "Rank",
-            style: AppStyle.txtPoppinsSemiBold14White90002,
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis, // Prevent text overflow
-          ),
-          40.widthBox,
-          Text(
-            "${controller.viewAnslist.length}/1200",
-            style: AppStyle.txtPoppinsSemiBold14White90002,
-            textAlign: TextAlign.center,
-          ),
-        ],
+      child: ListView.builder(
+        itemCount: controller.viewAnslist.length,
+        itemBuilder: (context, index) {
+          var answerItem = controller.viewAnslist[index];
+
+          // Ensure that testId and questions are not null before accessing them
+          if (answerItem.testId != null &&
+              answerItem.testId!.questions != null) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  Assets.images.rank.path,
+                  height: 25,
+                  width: 25,
+                ),
+                SizedBox(width: 20),
+                Text(
+                  "Rank",
+                  style: AppStyle.txtPoppinsSemiBold14White90002,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(width: 40),
+                Text(
+                  "${answerItem.rank?.toString()}", // Display only the integer part of the rank
+                  style: AppStyle.txtPoppinsSemiBold14White90002,
+                  textAlign: TextAlign.center,
+                ),
+              
+              ],
+            );
+          }
+          return SizedBox(); // Return empty space if testId or questions are null
+        },
       ),
     );
   }
 
+ 
   Widget WidgetScreenThree() {
     return Container(
       child: Text("Leadership"),
@@ -228,7 +221,7 @@ class TestseriesViewAnlysispage
           tabs: const [
             Tab(text: 'Analysis'),
             Tab(text: 'Solution'),
-            Tab(text: 'Leadership'),
+            // Tab(text: 'Leadership'),
           ],
         ));
   }

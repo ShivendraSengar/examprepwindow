@@ -73,13 +73,14 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
                 width: 1900,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Obx(() => Checkbox(
                           value: controller.isChecked.value,
                           onChanged: controller.toggleCheckbox,
                         )),
                     10.widthBox,
+                    // ignore: prefer_const_constructors
                     Flexible(
                       child: const Text(
                         "I have read all the instructions carefully and have understood them. I agree not to cheat or use unfair means in this examination. I understand that using unfair means of any sort for my own or someone else's advantage will lead to my immediate disqualification. The decision of Exampreptool will be final in these matters and cannot be appealed.",
@@ -87,13 +88,10 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
                         style: TextStyle(fontSize: 16),
                         overflow: TextOverflow
                             .ellipsis, // Adds ellipsis if text overflows
-                      ).w(900),
-                    )
-                  ],
-                ),
-              ),
-              20.heightBox,
-              Obx(() => InkWell(
+                      ),
+                    ),
+                    5.widthBox,
+                    Obx(() => InkWell(
                     onTap: () {
                       if (controller.isChecked.value == true) {
                         Get.toNamed(Routes.TESTSERIES_MCQ, arguments: testSeries
@@ -131,6 +129,13 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
                       ),
                     ),
                   )),
+              
+                  ],
+                ),
+              ),
+              20.heightBox,
+             
+            
               20.heightBox
             ]),
       ),

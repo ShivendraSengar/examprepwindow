@@ -1,11 +1,8 @@
 import 'package:exam_prep_tool/app/data/modal/test_series/view_answerdetail_page_modal.dart';
-import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries_modal.dart';
 import 'package:exam_prep_tool/app/modules/testseries_value_analysis/controllers/testseries_view_analysis_controller.dart';
 import 'package:exam_prep_tool/app/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -45,151 +42,9 @@ class TestSeriesSolution extends GetView<TestseriesViewAnlysisController> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            //                           // Question header and marks
-                            //                           Row(
-                            //                             crossAxisAlignment: CrossAxisAlignment.start,
-                            //                             mainAxisAlignment: MainAxisAlignment.end,
-                            //                             children: [
-                            //                               "${question.type}"
-                            //                                   .toUpperCase()
-                            //                                   .text
-                            //                                   .semiBold
-                            //                                   .color(Vx.white)
-                            //                                   .make()
-                            //                                   .p(5)
-                            //                                   .box
-                            //                                   .roundedSM
-                            //                                   .color(Color.fromARGB(255, 233, 233, 10))
-                            //                                   .make(),
-                            //                               5.widthBox,
-                            //                               " + ${question.marks}"
-                            //                                   .toUpperCase()
-                            //                                   .text
-                            //                                   .semiBold
-                            //                                   .color(Vx.white)
-                            //                                   .make()
-                            //                                   .p(5)
-                            //                                   .box
-                            //                                   .roundedSM
-                            //                                   .color(Vx.green700)
-                            //                                   .make(),
-                            //                               5.widthBox,
-                            //                               " - ${question.negativeMarks}"
-                            //                                   .toUpperCase()
-                            //                                   .text
-                            //                                   .semiBold
-                            //                                   .color(Vx.white)
-                            //                                   .make()
-                            //                                   .p(5)
-                            //                                   .box
-                            //                                   .roundedSM
-                            //                                   .color(Vx.red700)
-                            //                                   .make(),
-                            //                               5.widthBox,
-                            //                             ],
-                            //                           ),
-                            // //                           // Question text and options
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Question : ${questionIndex + 1}",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18)),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        "${question.type}"
-                                            .toUpperCase()
-                                            .text
-                                            .semiBold
-                                            .color(Vx.white)
-                                            .make()
-                                            .p(5)
-                                            .box
-                                            .roundedSM
-                                            .color(const Color.fromARGB(
-                                                255, 233, 233, 10))
-                                            .make(),
-                                        5.widthBox,
-                                        " + ${question.marks}"
-                                            .toUpperCase()
-                                            .text
-                                            .semiBold
-                                            .color(Vx.white)
-                                            .make()
-                                            .p(5)
-                                            .box
-                                            .roundedSM
-                                            .color(Vx.green700)
-                                            .make(),
-                                        5.widthBox,
-                                        " - ${question.negativeMarks}"
-                                            .toUpperCase()
-                                            .text
-                                            .semiBold
-                                            .color(Vx.white)
-                                            .make()
-                                            .p(5)
-                                            .box
-                                            .roundedSM
-                                            .color(Vx.red700)
-                                            .make(),
-                                        5.widthBox,
-                                      ],
-                                    ),
-                                    //
-                                  ],
-                                ),
-                                isSmallScreen
-                                    ? Html(
-                                        data: """
-                              <pre><code>${correctHtmlContent(question.question.toString())}</code></pre>
-                            """,
-                                        style: {
-                                          "body": Style(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: FontSize(16.0)),
-                                          "pre": Style(fontFamily: 'monospace'),
-                                          "code": Style(
-                                              backgroundColor:
-                                                  Colors.grey.shade100),
-                                        },
-                                      ).w(350)
-                                    : Html(
-                                        data: """
-                              <pre><code>${correctHtmlContent(question.question.toString())}</code></pre>
-                            """,
-                                        style: {
-                                          "body": Style(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: FontSize(16.0)),
-                                          "pre": Style(fontFamily: 'monospace'),
-                                          "code": Style(
-                                              backgroundColor:
-                                                  Colors.grey.shade100),
-                                        },
-                                      ).w(650),
-                                if (question.explanation?.image != null &&
-                                    question.explanation!.image!.isNotEmpty)
-                                  Image.network(
-                                    imageUrl +
-                                        question.explanation!.image.toString(),
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return const Text('');
-                                    },
-                                  )
-                                else
-                                  const Text(''),
-                              ],
-                            ),
-                          
+                            buildQuestionHeader(
+                                question, questionIndex, isSmallScreen),
+
                             // Options and user answer
                             ListTile(
                               subtitle: Column(
@@ -212,118 +67,152 @@ class TestSeriesSolution extends GetView<TestseriesViewAnlysisController> {
                                       itemBuilder: (context, optionIndex) {
                                         var option = question
                                             .options![optionIndex].option;
-                                        bool isSelected = userAnswer != null &&
-                                            userAnswer.answer == option;
-                                        bool isMatchedWithExplanation = question
-                                            .explanation!.text!
+                                        question.explanation!.text!
                                             .contains(option!);
+                                        bool isCorrectAnswerInExplanation =
+                                            question.explanation!.text!
+                                                .contains(option);
 
-                                        // Check if the question type is MSQ
-                                        if (question.type == "msq") {
-                                          // Highlight all correct answers in green
-                                          bool isCorrectAnswerInExplanation =
-                                              question.explanation!.text!
-                                                  .contains(option!);
-
-                                          return ListTile(
-                                            title: Container(
-                                              color:
-                                                  isCorrectAnswerInExplanation
-                                                      ? Colors
-                                                          .green // Correct answers in explanation are green
-                                                      : (isSelected
-                                                          ? Colors
-                                                              .red // Selected wrong answers are red
-                                                          : Colors.transparent),
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                option!,
-                                                style: const TextStyle(
-                                                    color: Colors.black),
+                                        // Common option display for all question types (msq, mcq, integer)
+                                        return Column(
+                                          children: [
+                                            ListTile(
+                                              title: Container(
+                                                color:
+                                                    isCorrectAnswerInExplanation
+                                                        ? Colors
+                                                            .green // Highlight correct answers in green
+                                                        : Colors
+                                                            .transparent, // No color for other options
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  option,
+                                                  style: TextStyle(
+                                                    color:
+                                                        isCorrectAnswerInExplanation
+                                                            ? Colors.white
+                                                            : Colors.black,
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                          );
-                                        } else {
-                                          // For non-MSQ types, show green if it's matched with the explanation, otherwise highlight selected options
-                                          return ListTile(
-                                            title: Container(
-                                              color: isSelected
-                                                  ? (userAnswer.isRight!
-                                                      ? Colors.green
-                                                      : Colors.red)
-                                                  : (isMatchedWithExplanation
-                                                      ? Colors.green
-                                                      : Colors.transparent),
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                option!,
-                                                style: const TextStyle(
-                                                    color: Colors.black),
-                                              ),
-                                            ),
-                                          );
-                                        }
+                                            // Show correct answer if selected answer is wrong
+                                            // if (isSelected &&
+                                            //     !userAnswer.isRight!)
+                                            //   Padding(
+                                            //     padding: const EdgeInsets.only(
+                                            //         left: 10.0),
+                                            //     child: Text(
+                                            //       'Correct Answer: ${question.explanation!.text}',
+                                            //       style: const TextStyle(
+                                            //         color: Colors.green,
+                                            //         fontWeight: FontWeight.bold,
+                                            //       ),
+                                            //     ),
+                                            //   ),
+                                          ],
+                                        );
                                       },
                                     ),
                                   ),
-                                  // Show a message if the user did not select the correct answers
-                                  if (question.type == "msq" &&
-                                      userAnswer != null &&
-                                      !userAnswer.isRight!)
-                                    const Padding(
-                                      padding: EdgeInsets.only(top: 10),
-                                      child: Text(
-                                        'You did not select the correct answers.',
-                                        style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
                                 ],
                               ),
                             ),
-// // Options and user answer
-                            //                           // ListTile(
-                            //                           //   subtitle: Column(
-                            //                           //     crossAxisAlignment: CrossAxisAlignment.start,
-                            //                           //     children: [
-                            //                           //       Text(
-                            //                           //         "Options :",
-                            //                           //         style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
-                            //                           //       ),
-                            //                           //       Padding(
-                            //                           //         padding: const EdgeInsets.all(8.0),
-                            //                           //         child: ListView.builder(
-                            //                           //           shrinkWrap: true,
-                            //                           //           physics: NeverScrollableScrollPhysics(),
-                            //                           //           itemCount: question.options!.length,
-                            //                           //           itemBuilder: (context, optionIndex) {
-                            //                           //             var option = question.options![optionIndex].option;
-                            //                           //             bool isRight = userAnswer != null && userAnswer.isRight!;
-                            //                           //             bool isSelected = userAnswer != null && userAnswer.answer == option;
-                            //                           //             bool isMatchedWithExplanation = question.explanation!.text!.contains(option!);
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment
+                                    .start, // Align text to the start
+                                children: [
+                                  if (question.type == "msq") ...[
+                                    const Text(
+                                      "You have not attempted all correct Answers:",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.all(
+                                          8.0), // Add some padding for better presentation
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
+                                        color: Colors.red,
+                                      ),
+                                      child: Text(
+                                        " ${userAnswer!.answer.toString()}",
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                  ] else if (question.type == "mcq") ...[
+                                    const Text(
+                                      "You have not selected the correct Answer:",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.all(
+                                          8.0), // Add some padding for better presentation
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
+                                        color: Colors.red,
+                                      ),
+                                      child: Text(
+                                        " ${userAnswer!.answer.toString()}",
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                    )
+                                  ] else if (question.type == "integer") ...[
+                                    Row(
+                                      children: [
+                                        const Text(
+                                          "Attempted Answer:",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.all(
+                                              8.0), // Add some padding for better presentation
+                                          decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(5)),
+                                            color: Colors.red,
+                                          ),
+                                          child: Text(
+                                            userAnswer!.answer.toString(),
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ] else ...[
+                                    const Text(
+                                      "Attempted Answer:",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      userAnswer!.answer.toString(),
+                                      style: const TextStyle(
+                                          color: Colors.black),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            ),
 
-                            //             return ListTile(
-                            //               title: Container(
-                            //                 color: isSelected
-                            //                     ? (isRight ? Colors.green : Colors.red)
-                            //                     : (isMatchedWithExplanation ? Colors.green : Colors.transparent),
-                            //                 padding: EdgeInsets.all(8.0),
-                            //                 child: Text(
-                            //                   option!,
-                            //                   style: TextStyle(color: Colors.black),
-                            //                 ),
-                            //               ),
-                            //             );
-                            //           },
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
-                            // // Explanation and images
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -337,20 +226,22 @@ class TestSeriesSolution extends GetView<TestseriesViewAnlysisController> {
                                           style:
                                               TextStyle(color: Colors.white)),
                                     ),
-                                    Html(
-                                      data: """
-                                  <pre><code>${correctHtmlContent(question.explanation?.text ?? 'N/A')}</code></pre>
-                                """,
-                                      style: {
-                                        "body": Style(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: FontSize(16.0)),
-                                        "pre": Style(fontFamily: 'monospace'),
-                                        "code": Style(
-                                            backgroundColor:
-                                                Colors.grey.shade100),
-                                      },
-                                    ).w(650),
+                                    Flexible(
+                                      child: Html(
+                                        data: """
+                                                                      <pre><code>${correctHtmlContent(question.explanation?.text ?? 'N/A')}</code></pre>
+                                                                      """,
+                                        style: {
+                                          "body": Style(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: FontSize(16.0)),
+                                          "pre": Style(fontFamily: 'monospace'),
+                                          "code": Style(
+                                              backgroundColor:
+                                                  Colors.grey.shade100),
+                                        },
+                                      ).w(650),
+                                    ),
                                   ],
                                 ),
                                 if (question.explanation?.image != null &&
@@ -401,5 +292,96 @@ class TestSeriesSolution extends GetView<TestseriesViewAnlysisController> {
         .replaceAll('</pre>', '')
         .replaceAll('<stdio.h>', '&lt;stdio.h&gt;')
         .replaceAll('</stdio.h>', '');
+  }
+
+  Widget buildQuestionHeader(question, int questionIndex, isSmallScreen) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Question : ${questionIndex + 1}",
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                "${question.type}"
+                    .toUpperCase()
+                    .text
+                    .semiBold
+                    .color(Vx.white)
+                    .make()
+                    .p(5)
+                    .box
+                    .roundedSM
+                    .color(const Color.fromARGB(255, 233, 233, 10))
+                    .make(),
+                5.widthBox,
+                " + ${question.marks}"
+                    .toUpperCase()
+                    .text
+                    .semiBold
+                    .color(Vx.white)
+                    .make()
+                    .p(5)
+                    .box
+                    .roundedSM
+                    .color(Vx.green700)
+                    .make(),
+                5.widthBox,
+                " - ${question.negativeMarks}"
+                    .toUpperCase()
+                    .text
+                    .semiBold
+                    .color(Vx.white)
+                    .make()
+                    .p(5)
+                    .box
+                    .roundedSM
+                    .color(Vx.red700)
+                    .make(),
+                5.widthBox,
+              ],
+            ),
+          ],
+        ),
+        isSmallScreen
+            ? Html(
+                data: """
+                <pre><code>${correctHtmlContent(question.question.toString())}</code></pre>
+              """,
+                style: {
+                  "body": Style(
+                      fontWeight: FontWeight.bold, fontSize: FontSize(16.0)),
+                  "pre": Style(fontFamily: 'monospace'),
+                  "code": Style(backgroundColor: Colors.grey.shade100),
+                },
+              ).w(350)
+            : Html(
+                data: """
+                <pre><code>${correctHtmlContent(question.question.toString())}</code></pre>
+              """,
+                style: {
+                  "body": Style(
+                      fontWeight: FontWeight.bold, fontSize: FontSize(16.0)),
+                  "pre": Style(fontFamily: 'monospace'),
+                  "code": Style(backgroundColor: Colors.grey.shade100),
+                },
+              ).w(650),
+        if (question.explanation?.image != null &&
+            question.explanation!.image!.isNotEmpty)
+          Image.network(
+            imageUrl + question.explanation!.image.toString(),
+            errorBuilder: (context, error, stackTrace) {
+              return const Text('');
+            },
+          )
+        else
+          const Text(''),
+      ],
+    );
   }
 }

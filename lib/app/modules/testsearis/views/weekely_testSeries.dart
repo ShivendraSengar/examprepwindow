@@ -191,7 +191,7 @@ class WeeklyTest extends GetView<TestsearisController> {
                   controller.selectedFilter.value = 'yes';
                   controller.filterTestSeries();
                 },
-                child: Text("Attempted"),
+                          child: const Text("Attempted"),
               ),
               18.widthBox,
               ElevatedButton(
@@ -199,7 +199,7 @@ class WeeklyTest extends GetView<TestsearisController> {
                   controller.selectedFilter.value = 'Not Attempted';
                   controller.filterTestSeries();
                 },
-                child: Text("Not Attempted"),
+                          child: const Text("Not Attempted"),
               ),
             ],
           ).paddingSymmetric(horizontal: 16, vertical: 10),
@@ -239,7 +239,7 @@ class WeeklyTest extends GetView<TestsearisController> {
                 crossAxisCount: isSmallScreen ? 1 : 3,
                 crossAxisSpacing: 4.0,
                 mainAxisSpacing: 20.0,
-                childAspectRatio: 3 / 1.5,
+                childAspectRatio: isSmallScreen ? 3 / 1.5 : 3 / 1.2,
               ),
               itemCount: controller.filteredTestSeries.length,
               itemBuilder: (context, index) {
@@ -278,7 +278,7 @@ class WeeklyTest extends GetView<TestsearisController> {
                           child: Text(
                             data.testName.toString(),
                             maxLines: 1,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -301,7 +301,7 @@ class WeeklyTest extends GetView<TestsearisController> {
                                   2.widthBox,
                                   Text(
                                     "${data.questions!.length.toString()} ques",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Vx.black,
                                     ),
                                   ),
@@ -318,7 +318,7 @@ class WeeklyTest extends GetView<TestsearisController> {
                               ),
                               Text(
                                 "${data.totalMarks.toString()} marks",
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Vx.black,
                                 ),
                               ),
@@ -336,7 +336,7 @@ class WeeklyTest extends GetView<TestsearisController> {
                               
                               Text(
                                 "${data.timeData!.duration.toString()} mins ",
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Vx.black,
                                 ),
                               ),
@@ -405,7 +405,7 @@ class WeeklyTest extends GetView<TestsearisController> {
   Widget allTest(bool isSmallScreen) {
     return Container(
       width: Get.width,
-      height: 110,
+      height: 90,
       alignment: Alignment.topCenter,
       //color: const Color.fromARGB(255, 64, 214, 255),
       child: GridView.builder(
@@ -413,7 +413,7 @@ class WeeklyTest extends GetView<TestsearisController> {
             crossAxisCount: isSmallScreen ? 1 : 3,
             crossAxisSpacing: 4.0,
             mainAxisSpacing: 20.0,
-            childAspectRatio: 3 / 1.5,
+            childAspectRatio: isSmallScreen ? 3 / 1.5 : 3 / 1.2,
           ),
           itemCount: controller.testSeries.length,
 
@@ -466,7 +466,7 @@ class WeeklyTest extends GetView<TestsearisController> {
                                   data.testName
                                       .toString(), // Adjust 'maxLength' to your desired character limit
                                   maxLines: 1,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.black,
                                       overflow: TextOverflow.ellipsis),
                                   textAlign: TextAlign.center,
@@ -492,7 +492,7 @@ class WeeklyTest extends GetView<TestsearisController> {
                                         2.widthBox,
                                         Text(
                                           "${data.questions!.length.toString()} ques",
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Vx.black,
                                           ),
                                         ),
@@ -509,7 +509,7 @@ class WeeklyTest extends GetView<TestsearisController> {
                                     ),
                                     Text(
                                       "${data.totalMarks.toString()} marks",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Vx.black,
                                       ),
                                     ),
@@ -526,7 +526,7 @@ class WeeklyTest extends GetView<TestsearisController> {
                                     ),
                                     Text(
                                       "${data.timeData!.duration.toString()} mins ",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Vx.black,
                                       ),
                                     ),
@@ -562,9 +562,9 @@ class WeeklyTest extends GetView<TestsearisController> {
                                         Radius.circular(15),
                                       ),
                                       color: Colors.green),
-                                  child: Text(
+                                  child: const Text(
                                     "Start",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: Colors.black,
                                     ),
                                     textAlign: TextAlign.center,
