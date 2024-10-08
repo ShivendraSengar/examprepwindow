@@ -34,7 +34,7 @@ class TestSeriesSolution extends GetView<TestseriesViewAnlysisController> {
                           answerItem.testId!.questions![questionIndex];
                       var userAnswer = answerItem.answers?.firstWhere(
                         (a) => a.question == question.id,
-                        orElse: () => Answer(answer: 'N/A', isRight: false),
+                        orElse: () => Answer(answer: '', isRight: false),
                       );
 
                       return Padding(
@@ -47,78 +47,63 @@ class TestSeriesSolution extends GetView<TestseriesViewAnlysisController> {
 
                             // Options and user answer
                             ListTile(
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              subtitle: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   const Text(
                                     "Options:",
                                     style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: ListView.builder(
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemCount: question.options!.length,
-                                      itemBuilder: (context, optionIndex) {
-                                        var option = question
-                                            .options![optionIndex].option;
-                                        question.explanation!.text!
-                                            .contains(option!);
-                                        bool isCorrectAnswerInExplanation =
-                                            question.explanation!.text!
-                                                .contains(option);
+                                    child: Wrap(
+                                      spacing: 10.0, // Spacing between options
+                                      runSpacing:
+                                          5.0, // Spacing between rows when options overflow
+                                      children: List.generate(
+                                        question.options!.length,
+                                        (optionIndex) {
+                                          var option = question
+                                              .options![optionIndex].option;
+                                          bool isCorrectAnswerInExplanation =
+                                              question.explanation!.text!
+                                                  .contains(option!);
 
-                                        // Common option display for all question types (msq, mcq, integer)
-                                        return Column(
-                                          children: [
-                                            ListTile(
-                                              title: Container(
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  isCorrectAnswerInExplanation
+                                                      ? Colors
+                                                          .green // Highlight correct answers in green
+                                                      : Colors
+                                                          .transparent, // No color for other options
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                            ),
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              option,
+                                              style: TextStyle(
                                                 color:
                                                     isCorrectAnswerInExplanation
-                                                        ? Colors
-                                                            .green // Highlight correct answers in green
-                                                        : Colors
-                                                            .transparent, // No color for other options
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  option,
-                                                  style: TextStyle(
-                                                    color:
-                                                        isCorrectAnswerInExplanation
-                                                            ? Colors.white
-                                                            : Colors.black,
-                                                  ),
-                                                ),
+                                                        ? Colors.white
+                                                        : Colors.black,
                                               ),
                                             ),
-                                            // Show correct answer if selected answer is wrong
-                                            // if (isSelected &&
-                                            //     !userAnswer.isRight!)
-                                            //   Padding(
-                                            //     padding: const EdgeInsets.only(
-                                            //         left: 10.0),
-                                            //     child: Text(
-                                            //       'Correct Answer: ${question.explanation!.text}',
-                                            //       style: const TextStyle(
-                                            //         color: Colors.green,
-                                            //         fontWeight: FontWeight.bold,
-                                            //       ),
-                                            //     ),
-                                            //   ),
-                                          ],
-                                        );
-                                      },
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
                             ),
+
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: Column(

@@ -43,86 +43,87 @@ class TestsearisView extends GetView<TestsearisController> {
               appBar: buildAppbar(),
               body: Center(
                 child: Container(
-                  height: Get.height,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        5.heightBox,
-                        Image.asset(
-                          Assets.images.testseriesImage.path,
-                          height: 250,
-                          width: double.infinity,
-                          fit: BoxFit.fill,
-                        ),
-                        16.heightBox,
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: isSmallScreen
-                              ? Column(
-                                  children: [
-                                    _buildCourseDropdown(),
-                                    20.heightBox,
-                                    _buildSubjectDropdown(),
-                                  ],
-                                )
-                              : Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    _buildCourseDropdown(),
-                                    20.heightBox,
-                                    _buildSubjectDropdown(),
-                                  ],
-                                ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: DottedBorder(
-                            color: Colors.deepOrange.shade500,
-                            padding: const EdgeInsets.all(16),
-                            strokeWidth: 1,
-                            child: const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                    height: 1900,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          5.heightBox,
+                          Image.asset(
+                            Assets.images.testseriesImage.path,
+                            height: 250,
+                            width: double.infinity,
+                            fit: BoxFit.fill,
+                          ),
+                          16.heightBox,
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: isSmallScreen
+                                ? Column(
+                                    children: [
+                                      _buildCourseDropdown(),
+                                      20.heightBox,
+                                      _buildSubjectDropdown(),
+                                    ],
+                                  )
+                                : Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      _buildCourseDropdown(),
+                                      20.heightBox,
+                                      _buildSubjectDropdown(),
+                                    ],
+                                  ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: DottedBorder(
+                              color: Colors.deepOrange.shade500,
+                              padding: const EdgeInsets.all(16),
+                              strokeWidth: 1,
+                              child: const Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Warning:',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8.0),
+                                  Text(
+                                    'Kindly refrain from engaging in any form of unauthorized actions like screen recording or screenshots unauthorized downloading as it may lead to legal complications.\n'
+                                    'Don\'t share your account credentials to anyone because on every lecture screen your credentials will be there using those details. Legal action will be taken if any unauthorized action happened.',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          20.heightBox,
+                          _buildTabBarWithOnTap(),
+                          10.heightBox,
+                          Container(
+                            height: 700,
+                            child: TabBarView(
+                              controller: controller.tabController,
                               children: [
-                                Text(
-                                  'Warning:',
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18.0,
-                                  ),
-                                ),
-                                SizedBox(height: 8.0),
-                                Text(
-                                  'Kindly refrain from engaging in any form of unauthorized actions like screen recording or screenshots unauthorized downloading as it may lead to legal complications.\n'
-                                  'Don\'t share your account credentials to anyone because on every lecture screen your credentials will be there using those details. Legal action will be taken if any unauthorized action happened.',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14.0,
-                                  ),
-                                ),
+                                const PracticeTestSeries(),
+                                WeeklyTest(),
+                                LiveTestSeries()
                               ],
                             ),
                           ),
-                        ),
-                        20.heightBox,
-                        _buildTabBarWithOnTap(),
-                        10.heightBox,
-                        Container(
-                          height: 600,
-                          child: TabBarView(
-                            controller: controller.tabController,
-                            children: [
-                              const PracticeTestSeries(),
-                              WeeklyTest(),
-                              LiveTestSeries()
-                            ],
-                          ),
-                        ),
-                        200.heightBox,
-                      ],
+                          // 200.heightBox,
+                        ],
+                      ),
                     ),
-                  ),
                 ),
               ),
             ),

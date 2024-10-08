@@ -76,18 +76,29 @@ class TestseriesViewAnlysispage
   }
 
   Widget _buildScoreContainer({double? width}) {
+    return Obx(() {
+      // Check if the list is empty
+      if (controller.viewAnslist.isEmpty) {
+        return Center(
+          child: Text(
+            'No data available',
+            style: AppStyle.txtPoppinsSemiBold14White90002,
+          ),
+        );
+      }
+
     return Container(
       height: 90,
       color: HexColor('#0D2735'),
       width: width,
       child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
         children: List.generate(controller.viewAnslist.length, (index) {
-          var answerItem = controller.viewAnslist[index];
-
-          if (answerItem.testId != null &&
-              answerItem.testId!.questions != null) {
+            var answerItem = controller.viewAnslist[index];
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(
                   Assets.images.speedometer.path,
@@ -100,7 +111,7 @@ class TestseriesViewAnlysispage
                     "Score",
                     style: AppStyle.txtPoppinsSemiBold14White90002,
                     textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis, // Prevent text overflow
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Expanded(
@@ -112,62 +123,76 @@ class TestseriesViewAnlysispage
                 ),
               ],
             ).p(8);
-          } else {
-            return SizedBox.shrink(); // Return an empty widget if no questions
-          }
         }),
-
-      ),
-    );
+        ),
+      );
+    });
   }
 
   Widget _buildRankContainer(controller, {double? width}) {
+    return Obx(() {
+      // Check if the list is empty
+      if (controller.viewAnslist.isEmpty) {
+        return Center(
+          child: Text(
+            'No data available',
+            style: AppStyle.txtPoppinsSemiBold14White90002,
+          ),
+        );
+      }
+
     return Container(
       height: 90,
       color: HexColor('#0D2735'),
       width: width,
       alignment: Alignment.center,
-      child: ListView.builder(
-        itemCount: controller.viewAnslist.length,
-        itemBuilder: (context, index) {
-          var answerItem = controller.viewAnslist[index];
-
-          // Ensure that testId and questions are not null before accessing them
-          if (answerItem.testId != null &&
-              answerItem.testId!.questions != null) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset(
-                  Assets.images.rank.path,
-                  height: 25,
-                  width: 25,
-                ),
-                SizedBox(width: 20),
-                Text(
-                  "Rank",
-                  style: AppStyle.txtPoppinsSemiBold14White90002,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(width: 40),
-                Text(
-                  "${answerItem.rank?.toString()}", // Display only the integer part of the rank
-                  style: AppStyle.txtPoppinsSemiBold14White90002,
-                  textAlign: TextAlign.center,
-                ),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+        children: List.generate(controller.viewAnslist.length, (index) {
+            var answerItem = controller.viewAnslist[index];
+             return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  
+              SizedBox(width: 20),
+                  Image.asset(
+                    Assets.images.rank.path,
+                    height: 25,
+                    width: 25,
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: Text(
+                      "Rank",
+                      style: AppStyle.txtPoppinsSemiBold14White90002,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  SizedBox(width: 40),
+                  Expanded(
+                    child: Text(
+                      "${answerItem.rank?.toString()}", // Display only the integer part of the rank
+                      style: AppStyle.txtPoppinsSemiBold14White90002,
+                      textAlign: TextAlign.center,
+                      ),
+                  ),
+                ],
               
-              ],
             );
-          }
-          return SizedBox(); // Return empty space if testId or questions are null
-        },
-      ),
-    );
-  }
 
- 
+          
+       }),
+        ),
+      );
+    });
+  }
+          // Return empty space if testId or questions are null
+     
+
+
   Widget WidgetScreenThree() {
     return Container(
       child: Text("Leadership"),

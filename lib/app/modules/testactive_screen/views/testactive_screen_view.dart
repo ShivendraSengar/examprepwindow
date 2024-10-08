@@ -22,122 +22,125 @@ class TestactiveScreenView extends GetView<TestactiveScreenController> {
     //final String testName = args['testName'] as String;
     return Scaffold(
       appBar: buildAppbar(),
-      body: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-       
-
-              20.widthBox,
-              RichText(
-                text: const TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Test(',
-                      style: TextStyle(fontSize: 20, color: Colors.black),
-                    ),
-                    TextSpan(
-                      text: 'Active',
-                      style: TextStyle(fontSize: 20, color: Colors.green),
-                    ),
-                    TextSpan(
-                      text: ')',
-                      style: TextStyle(fontSize: 20, color: Colors.black),
-                    ),
-                  ],
-                ),
-              ),
-              20.heightBox,
-
-              //Text(controller.testcontroller.data!.first.questions!.length
-              //    .toString()),
-              buildRow(
-                  Assets.images.totalQuestion.path,
-                  'total ${testSeries.questions?.length ?? '0'} questions'
-                      .toUpperCase()),
-              buildRow(
-                  Assets.images.timer.path,
-                  'total time ${testSeries.timeData?.duration ?? '0'}  Minutes'
-                      .toUpperCase()),
-              buildRow(Assets.images.totalMarks.path,
-                  'total marks ${testSeries.totalMarks ?? '0'}'.toUpperCase()),
-              //buildRow(Assets.images.totalMarks.path,
-              //    'total marks ${testName}'.toUpperCase()),
-              buildRow(Assets.images.language.path,
-                  'language- English'.toUpperCase()),
-              "Declaration : ".text.size(18).make().paddingOnly(left: 20),
-              Container(
-                width: 1900,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Obx(() => Checkbox(
-                          value: controller.isChecked.value,
-                          onChanged: controller.toggleCheckbox,
-                        )),
-                    10.widthBox,
-                    // ignore: prefer_const_constructors
-                    Flexible(
-                      child: const Text(
-                        "I have read all the instructions carefully and have understood them. I agree not to cheat or use unfair means in this examination. I understand that using unfair means of any sort for my own or someone else's advantage will lead to my immediate disqualification. The decision of Exampreptool will be final in these matters and cannot be appealed.",
-                        maxLines:9,
-                        style: TextStyle(fontSize: 16),
-                        overflow: TextOverflow
-                            .ellipsis, // Adds ellipsis if text overflows
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+         
+        
+                20.widthBox,
+                RichText(
+                  text: const TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Test(',
+                        style: TextStyle(fontSize: 20, color: Colors.black),
                       ),
-                    ),
-                    5.widthBox,
-                    Obx(() => InkWell(
-                    onTap: () {
-                      if (controller.isChecked.value == true) {
-                        Get.toNamed(Routes.TESTSERIES_MCQ, arguments: testSeries
-                            //'duration': duration,
-                            //'totalMarks': totalMarks,
-                            //'questionsCount': questionsCount,
-                            //'testName': testName,
-                            );
-                      }
-                      controller.isChecked.value = false;
-                    },
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 45,
-                        width: 250,
-                        decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(15),
-                            ),
-                            color: controller.isChecked.value
-                                ? Colors.green
-                                : Vx.green100),
-                        child: Text(
-                          'Ready to Begin',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: controller.isChecked.value
-                                ? Colors.white
-                                : Colors.grey,
-                          ),
-                          textAlign: TextAlign.center,
+                      TextSpan(
+                        text: 'Active',
+                        style: TextStyle(fontSize: 20, color: Colors.green),
+                      ),
+                      TextSpan(
+                        text: ')',
+                        style: TextStyle(fontSize: 20, color: Colors.black),
+                      ),
+                    ],
+                  ),
+                ).paddingSymmetric(horizontal: 10,vertical: 10),
+                20.heightBox,
+        
+                //Text(controller.testcontroller.data!.first.questions!.length
+                //    .toString()),
+                buildRow(
+                    Assets.images.totalQuestion.path,
+                    'total ${testSeries.questions?.length ?? '0'} questions'
+                        .toUpperCase()),
+                buildRow(
+                    Assets.images.timer.path,
+                    'total time ${testSeries.timeData?.duration ?? '0'}  Minutes'
+                        .toUpperCase()),
+                buildRow(Assets.images.totalMarks.path,
+                    'total marks ${testSeries.totalMarks ?? '0'}'.toUpperCase()),
+                //buildRow(Assets.images.totalMarks.path,
+                //    'total marks ${testName}'.toUpperCase()),
+                buildRow(Assets.images.language.path,
+                    'language- English'.toUpperCase()),
+                "Declaration : ".text.size(18).make().paddingOnly(left: 20),
+                Container(
+                  width: 1900,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Obx(() => Checkbox(
+                            value: controller.isChecked.value,
+                            onChanged: controller.toggleCheckbox,
+                          )),
+                      10.widthBox,
+                      // ignore: prefer_const_constructors
+                      Flexible(
+                        child: const Text(
+                          "I have read all the instructions carefully and understand them. I have agree not to cheat and unfair means in examination.The descision of exampreptool.com will be final in these matters and cannot be appealed.",
+                          maxLines: 9,
+                          style: TextStyle(fontSize: 16),
+                          overflow: TextOverflow
+                              .ellipsis, // Adds ellipsis if text overflows
                         ),
                       ),
-                    ),
-                  )),
-              
-                  ],
+                      5.widthBox,
+                     
+                
+                    ],
+                  ),
                 ),
-              ),
-              20.heightBox,
-             
-            
-              20.heightBox
-            ]),
+                10.heightBox,
+                Obx(() => InkWell(
+                      onTap: () {
+                        if (controller.isChecked.value == true) {
+                          Get.toNamed(Routes.TESTSERIES_MCQ, arguments: testSeries
+                              //'duration': duration,
+                              //'totalMarks': totalMarks,
+                              //'questionsCount': questionsCount,
+                              //'testName': testName,
+                              );
+                        }
+                        controller.isChecked.value = false;
+                      },
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 45,
+                          width: 250,
+                          decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(15),
+                              ),
+                              color: controller.isChecked.value
+                                  ? Colors.green
+                                  : Vx.green100),
+                          child: Text(
+                            'Ready to Begin',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: controller.isChecked.value
+                                  ? Colors.white
+                                  : Colors.grey,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    )),
+              
+                20.heightBox
+              ]),
+        ),
       ),
     );
   }

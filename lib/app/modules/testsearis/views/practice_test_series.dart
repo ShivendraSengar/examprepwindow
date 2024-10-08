@@ -56,7 +56,7 @@ return Obx(() {
                         final allShowPdf = controller.allshowpdf.value;
                         return SizedBox(
                           width: isNarrowScreen ? constraints.maxWidth : 800,
-                          height: 220,
+                              height: 400,
                           child: Container(
                             child: allShowPdf.isEmpty
                                 ? CustomAlertBox(
