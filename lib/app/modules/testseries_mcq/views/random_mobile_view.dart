@@ -1,14 +1,7 @@
 import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries_modal.dart';
 import 'package:exam_prep_tool/app/modules/testseries_mcq/controllers/testseries_mcq_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
-
 import 'package:exam_prep_tool/app/routes/app_pages.dart';
-
-import 'package:flutter/widgets.dart';
-
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -248,9 +241,16 @@ controller.testcontroller.startTest();
                           Colors.red);
                     }),
                     buildEndButton().onTap(() {
+                    
                       controller.testcontroller.startTest();
-                      onTimeUp();
-                      controller.submitAnswerquestion();
+                          // End test and show solution
+
+                          // Solution view logic
+                          controller.stopTimer();
+                          onTimeUp();
+                          controller.submitAnswerquestion();
+                          controller.testcontroller.dispose();
+                      print("End Test");
                     }),
                   ],
                 ),
@@ -328,163 +328,6 @@ controller.testcontroller.startTest();
           ),
         ),
 
-        // Determine if the screen width is less than 600 pixels
-        // IconButton(
-        //         onPressed: () {
-        //           // Show RandomQuestionPage data in an alert dialog
-        //           controller.startTimer(
-        //               testSeries
-        //                   .timeData!.duration!
-        //                   .toInt(),
-        //               submitTest);
-        //           showDialog(
-        //             context: context,
-        //             builder: (BuildContext
-        //                 context) {
-        //               return AlertDialog(
-        //                 title: const Text(
-        //                     'Random Question'),
-        //                 content:
-        //                     SingleChildScrollView(
-        //                   child: Padding(
-        //                     padding:
-        //                         const EdgeInsets
-        //                             .symmetric(
-        //                             horizontal:
-        //                                 2,
-        //                             vertical:
-        //                                 5),
-        //                     child:
-        //                     Column(
-        //                       crossAxisAlignment:
-        //                           CrossAxisAlignment
-        //                               .center,
-        //                       mainAxisAlignment:
-        //                           MainAxisAlignment
-        //                               .center,
-        //                       children: [
-        //                         Text(
-        //                             "${testSeries.questionType.toString()}"),
-        //                         const SizedBox(
-        //                             height:
-        //                                 20),
-        //                         Card(
-        //                           elevation:
-        //                               1,
-        //                           child:
-        //                               Padding(
-        //                             padding: const EdgeInsets
-        //                                 .all(
-        //                                 0.0),
-        //                             child:
-        //                                 SizedBox(
-        //                               width:
-        //                                   400,
-        //                               child:
-        //                                   Column(
-        //                                 crossAxisAlignment:
-        //                                     CrossAxisAlignment.center,
-        //                                 mainAxisAlignment:
-        //                                     MainAxisAlignment.start,
-        //                                 children: [
-        //                                   const Text(
-        //                                     'Time Remaining',
-        //                                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        //                                   ),
-        //                                   const SizedBox(height: 8),
-        //                                   Obx(() {
-        //                                     final duration = controller.duration.value;
-        //                                     final hours = duration.inHours.toString().padLeft(2, '0');
-        //                                     final minutes = (duration.inMinutes % 60).toString().padLeft(2, '0');
-        //                                     final seconds = (duration.inSeconds % 60).toString().padLeft(2, '0');
-        //                                     return Text("$hours:$minutes:$seconds");
-        //                                   }),
-        //                                   const SizedBox(height: 8),
-        //                                   Row(
-        //                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                                     children: [
-        //                                       Obx(() {
-        //                                         return buildAnswerContainer("${controller.answeredQuestions.value.length.toString()}  answered", Colors.green);
-        //                                       }),
-        //                                       Obx(() {
-        //                                         return buildAnswerContainer("${controller.notAttemptedCount.toString()} unanswered", Colors.red);
-        //                                       }),
-        //                                       Obx(() {
-        //                                         return buildAnswerContainer("${controller.markedForReviewQuestions.value.length.toString()} marked", Colors.purple);
-        //                                       }),
-        //                                     ],
-        //                                   ),
-        //                                   const SizedBox(height: 20),
-        //                                   Container(
-        //                                     width: 350,
-        //                                     height: 200, // Set a specific height for the GridView
-        //                                     child: ListView.builder(
-        //                                       // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        //                                        scrollDirection: Axis.horizontal,
-
-        //                                       itemCount: testSeries.questions?.length ?? 0,
-        //                                       itemBuilder: (context, index) {
-        //                                         Color cardColor;
-
-        //                                         if (controller.answeredQuestions.contains(index)) {
-        //                                           cardColor = const Color.fromARGB(255, 106, 232, 110)!;
-        //                                         } else if (controller.markedForReviewQuestions.contains(index)) {
-        //                                           cardColor = const Color.fromARGB(255, 210, 94, 231)!;
-        //                                         } else {
-        //                                           cardColor = Color.fromARGB(255, 224, 148, 156)!;
-        //                                         }
-
-        //                                         return Card(
-        //                                           color: cardColor,
-        //                                           child: Center(
-        //                                             child: Text(
-        //                                               '${index + 1}',
-        //                                               style: const TextStyle(fontSize: 24),
-        //                                             ),
-        //                                           ),
-        //                                         ).onTap(() {
-        //                                           controller.updateCurrentQuestionIndex(index);
-        //                                         });
-        //                                       },
-        //                                     ),
-        //                                   ),
-        //                                   const SizedBox(height: 20),
-        //                                   buildEndButton().onTap(() {
-        //                                     controller.testcontroller.startTest();
-        //                                     onTimeUp();
-        //                                     controller.submitAnswerquestion();
-        //                                   }),
-        //                                 ],
-        //                               ),
-        //                             ),
-        //                           ),
-        //                         ),
-        //                       ],
-        //                     ),
-        //                   ),
-        //                 ),
-        //                 actions: [
-        //                   TextButton(
-        //                     onPressed: () {
-        //                       Navigator.of(
-        //                               context)
-        //                           .pop(); // Close the dialog
-        //                     },
-        //                     child: const Text(
-        //                         'Close'),
-        //                   ),
-        //                 ],
-        //               );
-        //             },
-        //           );
-        //         },
-        //         icon: const Align(
-        //             alignment:
-        //                 Alignment.centerLeft,
-        //             child: Icon(Icons.menu,
-        //                 color: Colors.black)),
-        //       )
-        //     ,
       ],
     );
   }

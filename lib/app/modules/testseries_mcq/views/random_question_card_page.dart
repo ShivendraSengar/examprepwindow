@@ -195,7 +195,7 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
 // double usedTime = controller.calculateUsedTime(controller. startTimeFormatted.value, DateTime.now());
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -204,10 +204,10 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
           Card(
             elevation: 1,
             child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Container(
                     width: 345,
-                    height: Get.height,
+                    height: 580,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,

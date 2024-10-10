@@ -22,6 +22,36 @@ class TestsearisController extends GetxController
   final TestSeriesRepo repositry1 = TestSeriesRepoIMPL();
   var selectedTestSeries = Rxn<Testseries>();
   RxList<Testseries>? data;
+  
+  var tabIndex = 0.obs;
+  //TODO: Implement TestsearisController
+
+  final PrefUtils prefutils = Get.find();
+  Rxn<CourseSub> seleectrdvalue = Rxn<CourseSub>();
+  Rxn<String> seleectrdvalue1 = Rxn<String>();
+  final CourseRepo repositry = CoursesRepoIml();
+  List<String> subjectList = <String>[].obs;
+  RxBool isVisible = false.obs;
+  List<String> pdfview = <String>[].obs;
+  final allshowpdf = <Vidio>[].obs;
+  final showpdf = <Vidio>[].obs;
+  RxBool isLoading = false.obs;
+  final GlobalKey dropdownKey = GlobalKey();
+  var selectedid = "".obs;
+  var selectedSubject = "".obs;
+  bool? isTrue = Get.arguments;
+  //final data = <Exam>[].obs;
+  var selectedUrl = "".obs;
+  RxInt selectedIndex = RxInt(1);
+  RxBool changesvlaue = false.obs;
+
+  final String token = prefUtils.getToken().toString();
+  // purchased coursed
+
+  final PaymentsRepo purchasesCourse = VerfypaymentRepoImpl();
+
+  final userdetais = <CourseSub>[].obs;
+  
   // Function to format the date-time string
 String formatDateTime(String dateTimeString) {
   // Parse the raw date-time string
@@ -56,47 +86,71 @@ String formatDateTime(String dateTimeString) {
   var livetestSeries = <Testseries>[].obs; //
   var filteredTestSeries = <Testseries>[].obs; // Filtered list based on selection
 
+ 
+  // Fetch test series from repository
+  void fetchWeeklyTests() async {
+    try {
+      isLoading.value = true;
+      var response = await repositry1.weeklytestseries(
+        selectedSubject.value,
+        selectedid.value,
+        prefutils.getID().toString(),
+        "",
+      );
+      if (response.data != null) {
+        testSeries.value = response.data!.data ?? [];
+        filterTestSeries(); // Initial filter
+      }
+      isLoading.value = false;
+    } catch (e) {
+      log(e.toString());
+      isLoading.value = false;
+    }
+  }
+
+  // Filtering logic based on selected filter
   void filterTestSeries() {
-    if (selectedFilter.value == 'yes') {
+    if (selectedFilter.value == 'attempted') {
       filteredTestSeries.value =
           testSeries.where((test) => test.attempted == 'yes').toList();
-    } else if (selectedFilter.value == 'Not Attempted') {
+    } else if (selectedFilter.value == 'notStarted') {
       filteredTestSeries.value =
-          testSeries.where((test) => test.attempted != 'yes').toList();
+          testSeries.where((test) => test.attempted == 'notStarted').toList();
     } else {
       filteredTestSeries.value = testSeries.toList();
     }
   }
 
-  var tabIndex = 0.obs;
-  //TODO: Implement TestsearisController
+  // Update filter and re-filter the list
+  void updateFilter(String filter) {
+    selectedFilter.value = filter;
+    filterTestSeries();
+  }
 
-  final PrefUtils prefutils = Get.find();
-  Rxn<CourseSub> seleectrdvalue = Rxn<CourseSub>();
-  Rxn<String> seleectrdvalue1 = Rxn<String>();
-  final CourseRepo repositry = CoursesRepoIml();
-  List<String> subjectList = <String>[].obs;
-  RxBool isVisible = false.obs;
-  List<String> pdfview = <String>[].obs;
-   final allshowpdf = <Vidio>[].obs;
-  final showpdf = <Vidio>[].obs;
-  RxBool isLoading = false.obs;
-  final GlobalKey dropdownKey = GlobalKey();
-  var selectedid = "".obs;
-  var selectedSubject = "".obs;
-  bool? isTrue = Get.arguments;
-  //final data = <Exam>[].obs;
-  var selectedUrl = "".obs;
-  RxInt selectedIndex = RxInt(1);
- RxBool changesvlaue = false.obs;
 
-  final String token = prefUtils.getToken().toString();
-  // purchased coursed
 
-  final PaymentsRepo purchasesCourse = VerfypaymentRepoImpl();
+  weeklytest() async {
+    try {
+      isLoading.value = true;
+      print("id ${selectedid.value}");
+      print("subject ${selectedSubject.value}");
 
-  final userdetais = <CourseSub>[].obs;
-  
+      var response = await repositry1.weeklytestseries(selectedSubject.value,
+          selectedid.value, prefutils.getID().toString(), "");
+      if (response.data != null) {
+        testSeries.value = response.data!.data ?? [];
+        print("TestSeries ${response.data!.toJson()}");
+        // If 'response.data.toString()' is a List, you might want to log each item separately
+        for (var item in testSeries.value) {
+          print(item);
+        }
+      }
+      isLoading.value = false;
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
   // /////////////////////////////////////////////////////Live test
   void livetest() async {
     try {
@@ -120,28 +174,6 @@ String formatDateTime(String dateTimeString) {
     }
   }
 ////////////////////////weekely test//////////////////////////////////
-
-  weeklytest() async {
-    try {
-      isLoading.value = true;
-      print("id ${selectedid.value}");
-      print("subject ${selectedSubject.value}");
-
-      var response = await repositry1.weeklytestseries(selectedSubject.value,
-          selectedid.value, prefutils.getID().toString(), "");
-      if (response.data != null) {
-        testSeries.value = response.data!.data ?? [];
-        // print("TestSeries ${response.data!.toJson()}");
-        // If 'response.data.toString()' is a List, you might want to log each item separately
-        for (var item in testSeries.value) {
-          print(item);
-        }
-      }
-      isLoading.value = false;
-    } catch (e) {
-      log(e.toString());
-    }
-  }
 
   void checkcourses() async {
     print("ID in checkcourses: ${prefutils.getID().toString()}");
@@ -237,6 +269,8 @@ void showpdfview() async {
 
   @override
   void onInit() {
+fetchWeeklyTests();
+
     filteredTestSeries.value = allTestSeries;
     tabController = TabController(length: 3, vsync: this);
     print("id ${selectedid.value}");

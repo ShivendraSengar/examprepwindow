@@ -354,7 +354,7 @@ Widget _buildTabBarWithOnTap() {
       height: 30,
       color: color,
       child: Text(text),
-    ).paddingSymmetric(horizontal: 20);
+    );
   }
 
   buildAppbar() {

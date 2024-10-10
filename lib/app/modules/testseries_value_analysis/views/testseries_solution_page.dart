@@ -48,7 +48,7 @@ class TestSeriesSolution extends GetView<TestseriesViewAnlysisController> {
                             // Options and user answer
                             ListTile(
                               subtitle: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                // crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   const Text(
@@ -59,51 +59,59 @@ class TestSeriesSolution extends GetView<TestseriesViewAnlysisController> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Wrap(
-                                      spacing: 10.0, // Spacing between options
-                                      runSpacing:
-                                          5.0, // Spacing between rows when options overflow
-                                      children: List.generate(
-                                        question.options!.length,
-                                        (optionIndex) {
-                                          var option = question
-                                              .options![optionIndex].option;
-                                          bool isCorrectAnswerInExplanation =
-                                              question.explanation!.text!
-                                                  .contains(option!);
+                                  const SizedBox(
+                                      width:
+                                          10), // Add spacing between text and options
+                                  Expanded(
+                                    // Use Expanded to ensure Wrap takes available space
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Wrap(
+                                        spacing:
+                                            10.0, // Spacing between options
+                                        runSpacing:
+                                            5.0, // Spacing between rows when options overflow
+                                        children: List.generate(
+                                          question.options!.length,
+                                          (optionIndex) {
+                                            var option = question
+                                                .options![optionIndex].option;
+                                            bool isCorrectAnswerInExplanation =
+                                                question.explanation!.text!
+                                                    .contains(option!);
 
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  isCorrectAnswerInExplanation
-                                                      ? Colors
-                                                          .green // Highlight correct answers in green
-                                                      : Colors
-                                                          .transparent, // No color for other options
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
-                                            ),
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              option,
-                                              style: TextStyle(
+                                            return Container(
+                                              decoration: BoxDecoration(
                                                 color:
                                                     isCorrectAnswerInExplanation
-                                                        ? Colors.white
-                                                        : Colors.black,
+                                                        ? Colors
+                                                            .green // Highlight correct answers in green
+                                                        : Colors
+                                                            .transparent, // No color for other options
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
                                               ),
-                                            ),
-                                          );
-                                        },
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                option,
+                                                maxLines: 10,
+                                                style: TextStyle(
+                                                  color:
+                                                      isCorrectAnswerInExplanation
+                                                          ? Colors.white
+                                                          : Colors.black,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: Column(
