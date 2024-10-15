@@ -657,6 +657,7 @@ class CupanDiscountView extends GetView<CupanDiscountController> {
 
 // // Call the function after navigation
                             controller.paymentGetId();
+                            // controller.paymentPay();
                             controller.correctReferralCode.clear();
                             controller.correctCouponCode.clear();
                           }),

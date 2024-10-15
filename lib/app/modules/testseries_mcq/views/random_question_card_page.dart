@@ -59,7 +59,7 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
                       // First, dismiss the dialog
                       Navigator.of(context).pop();
                       controller.testcontroller.startTest();
-                      (); // End test and show solution
+                      
 
                       controller.submitAnswerquestion();
                       onSomeEvent();
@@ -130,7 +130,7 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
                                 controller.notAttemptedCount.text.make().p8(),
                               ]),
                             ],
-                          ).p16(),
+                          ).p8(),
                           //                          10.heightBox,
                           //                    "You got ${(controller.totalMarks.value - controller.incorrectMarks.toDouble()).toStringAsFixed(2)} marks"
                           // .text
@@ -139,14 +139,14 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
                           // .bold
                           // .make()
                           // .p16(),
-                          10.heightBox,
+                          8.heightBox,
                           "Are You Sure To Submit The Test !"
                               .text
                               .purple500
                               .size(18)
                               .bold
                               .make()
-                              .p16(),
+                              .p8(),
                           12.heightBox,
                         ],
                       );
@@ -163,8 +163,10 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
                     onPressed: () {
                       submitTest();
                       controller.submitAnswerquestion();
+                      controller.stopTimer();
+                      
                       controller.testcontroller.startTest();
-                      (); //
+                    
                       Navigator.of(context).pop();
 // End test and show solution
  
@@ -267,26 +269,29 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
                               itemBuilder: (context, index) {
                                 return Card(
                                   shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8))),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8)),
+                                  ),
                                   child: Obx(() {
-                                    // only color chnaged box
+                                    // Define card color based on question status
                                     Color cardColor;
-                                    if (controller.answeredQuestions
+
+                                    // Priority check
+                                    if (controller.markedForReviewQuestions
                                         .contains(index)) {
-                                      cardColor = const Color.fromARGB(
-                                          255, 32, 233, 42)!;
-                                    } else if (controller
-                                        .markedForReviewQuestions
+                                      cardColor = const Color.fromARGB(255, 200,
+                                          22, 231); // Purple for marked review
+                                    } else if (controller.answeredQuestions
                                         .contains(index)) {
-                                      cardColor = const Color.fromARGB(
-                                          255, 200, 22, 231)!;
+                                      cardColor = const Color.fromARGB(255, 32,
+                                          233, 42); // Green for answered
                                     } else if (controller.notvisited
                                         .contains(index)) {
-                                      cardColor = const Color.fromARGB(
-                                          255, 201, 27, 27)!;
+                                      cardColor = const Color.fromARGB(255, 201,
+                                          27, 27); // Red for not visited
                                     } else {
-                                      cardColor = Colors.white!;
+                                      cardColor = Colors
+                                          .white; // Default white for other cases
                                     }
 
                                     return Container(
@@ -305,6 +310,7 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
                                 ).onTap(() {
                                   controller.updateCurrentQuestionIndex(index);
                                 });
+
                               },
                             ),
                           ),
@@ -315,8 +321,8 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
                           controller.testcontroller.startTest();
                           // End test and show solution
 
-                          // Solution view logic
-                          controller.stopTimer();
+                          // // Solution view logic
+                          // controller.stopTimer();
                           onTimeUp();
                           controller.submitAnswerquestion();
                           controller.testcontroller.dispose();

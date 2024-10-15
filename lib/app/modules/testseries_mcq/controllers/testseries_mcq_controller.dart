@@ -305,30 +305,40 @@ class TestseriesMcqController extends GetxController {
     }
   }
 
-  void saveAndNext() {
-    // Check if the current question is within the valid range
-    final totalQuestions = testSeries.value.questions!.length;
+void saveAndNext() {
+  // Total questions ki count check karo
+  final totalQuestions = testSeries.value.questions!.length;
 
-    if (currentQuestionIndex.value < totalQuestions) {
-      // Logic to save the answer goes here (e.g., store the answer value to the API or local list)
-
-      // If the question is marked for review, remove it and update marks
-      if (markedForReviewQuestions.contains(currentQuestionIndex.value)) {
-        markedForReviewQuestions.remove(currentQuestionIndex.value);
-        reviewMarks--; // Decrement review marks when saved
-        currentQuestionIndex.value++;
-      }
-
-      // Move to next question
-      if (currentQuestionIndex.value < totalQuestions - 1) {
-        currentQuestionIndex.value++;
-      } else {
-        print("Quiz finished.");
-      }
-    } else {
-      print("No more questions.");
+  // Agar current question last question se kam hai toh save karo
+  if (currentQuestionIndex.value < totalQuestions) {
+    // Answer save karne ka logic yaha lagao (e.g., store answer value to the API or local list)
+    
+    // Agar question review ke liye mark kiya gaya hai toh remove karo aur review marks update karo
+    if (markedForReviewQuestions.contains(currentQuestionIndex.value)) {
+      markedForReviewQuestions.remove(currentQuestionIndex.value);
+      reviewMarks--; // Review marks ko decrement karo jab save ho jaye
     }
+
+    // Next question par jao
+    if (currentQuestionIndex.value < totalQuestions - 1) {
+      currentQuestionIndex.value++;
+    } else {
+      // Agar last question hai toh "Save and Next" button ko disable ya hide karo
+      print("Quiz finished. No more questions.");
+      // Optionally, automatic save functionality last question ke liye
+      autoSaveLastQuestion(); 
+    }
+  } else {
+    print("No more questions.");
   }
+}
+
+// Last question automatic save karne ke liye method
+void autoSaveLastQuestion() {
+  // Last question ka answer automatic save karne ka logic
+  print("Last question answer saved automatically.");
+}
+
 
   void updateCurrentQuestionIndex(int index) {
     currentQuestionIndex.value = index;

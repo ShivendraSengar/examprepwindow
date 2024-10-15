@@ -189,7 +189,9 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                         ).paddingOnly(
                                                             right: isSmallScreen
                                                                 ? 20
-                                                                : 60), // Adjust padding based on screen size
+                                                                : 60),
+
+                                                        // Adjust padding based on screen size
                                                       ],
                                                     ),
                                                   ],
@@ -241,13 +243,15 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             whiteSpace:
-                                                                WhiteSpace.normal,
+                                                                WhiteSpace
+                                                                    .normal,
                                                             fontSize:
                                                                 FontSize(16.0),
                                                           ),
                                                           "pre": Style(
                                                             whiteSpace:
-                                                                WhiteSpace.normal,
+                                                                WhiteSpace
+                                                                    .normal,
                                                             fontFamily:
                                                                 'monospace',
                                                           ),
@@ -255,23 +259,26 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                             fontFamily:
                                                                 'monospace',
                                                             whiteSpace:
-                                                                WhiteSpace.normal,
+                                                                WhiteSpace
+                                                                    .normal,
                                                             backgroundColor:
                                                                 Colors.grey
                                                                     .shade100,
                                                           ),
                                                         },
                                                       ).p(0).w(600),
-                                                
+
                                                       if (question.questionImage !=
                                                               null &&
-                                                          question.questionImage!
+                                                          question
+                                                              .questionImage!
                                                               .isNotEmpty)
                                                         Image.network(
                                                           "${imageUrl + question.questionImage.toString()}",
                                                           height: 90,
-                                                          errorBuilder: (context,
-                                                              error, stackTrace) {
+                                                          errorBuilder:
+                                                              (context, error,
+                                                                  stackTrace) {
                                                             return const Text(
                                                                 ''); // Placeholder text
                                                           },
@@ -285,12 +292,14 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                           'mcq') ...[
                                                         ...List.generate(
                                                             question.options!
-                                                                .length, (index) {
+                                                                .length,
+                                                            (index) {
                                                           return RadioListTile(
                                                             dense: true,
                                                             visualDensity:
                                                                 const VisualDensity(
-                                                                    vertical: -4),
+                                                                    vertical:
+                                                                        -4),
                                                             title: Text(question
                                                                 .options![index]
                                                                 .option
@@ -331,12 +340,14 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                           'msq') ...[
                                                         ...List.generate(
                                                             question.options!
-                                                                .length, (index) {
+                                                                .length,
+                                                            (index) {
                                                           return CheckboxListTile(
                                                             dense: true,
                                                             visualDensity:
                                                                 const VisualDensity(
-                                                                    vertical: -4),
+                                                                    vertical:
+                                                                        -4),
                                                             controlAffinity:
                                                                 ListTileControlAffinity
                                                                     .leading,
@@ -346,10 +357,12 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                 .toString()),
                                                             value: controller
                                                                 .selectedOptionIndexes
-                                                                .contains(index),
+                                                                .contains(
+                                                                    index),
                                                             onChanged:
                                                                 (bool? value) {
-                                                              if (value == true) {
+                                                              if (value ==
+                                                                  true) {
                                                                 controller
                                                                     .selectedOptionIndexes
                                                                     .add(index);
@@ -374,11 +387,13 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                             },
                                                           );
                                                         }),
-                                                      ] else if (question.type ==
+                                                      ] else if (question
+                                                              .type ==
                                                           'integer') ...[
                                                         TextField(
                                                           controller: controller
-                                                              .inputAnswer.value,
+                                                              .inputAnswer
+                                                              .value,
                                                           decoration:
                                                               const InputDecoration(
                                                                   labelText:
@@ -404,10 +419,11 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                               controller
                                                                       .integerAnswer
                                                                       .value =
-                                                                  double.tryParse(
-                                                                      value);
+                                                                  double
+                                                                      .tryParse(
+                                                                          value);
                                                             }
-                                                
+
                                                             // Save the value (either int converted to double, or double) in savedIntegerAnswers map
                                                             controller.savedIntegerAnswers[
                                                                     question.id
@@ -419,7 +435,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                           },
                                                         ),
                                                       ],
-                                                
+
                                                       SizedBox(
                                                         height: question.questionImage !=
                                                                         null &&
@@ -444,154 +460,90 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                   onTap: () {
                                                                     controller
                                                                         .unmarkForReview();
-                                                                   
-                                                                  },
-                                                                  child:
-                                                                      buildButton(
-                                                                          "clear"),
-                                                                ),
-                                                
-                                                                // Save and Next button
-                                                                InkWell(
-                                                                  onTap: () {
-                                                                    bool
-                                                                        isAnswered =
-                                                                        false;
-                                                                    String?
-                                                                        selectedOption;
-                                                                    bool
-                                                                        isCorrect =
-                                                                        false;
-                                                
-                                                                    // Logic for mcq, msq, and integer types (similar to your original code)
-                                                                    // Check if the answer is provided and validate it
-                                                                    if (question
-                                                                            .type ==
-                                                                        'mcq') {
-                                                                      final selectedOptionIndex =
-                                                                          controller
-                                                                              .selectedOptionIndex
-                                                                              .value;
-                                                
-                                                                      if (selectedOptionIndex !=
-                                                                          -1) {
-                                                                        selectedOption = question
-                                                                            .options![
-                                                                                selectedOptionIndex]
-                                                                            .option;
-                                                                        isAnswered =
-                                                                            true;
-                                                                        controller
-                                                                                .savedAnswers[
-                                                                            question
-                                                                                .id
-                                                                                .toString()] = selectedOptionIndex;
-                                                                      }
-                                                                    } else if (question
-                                                                            .type ==
-                                                                        'msq') {
-                                                                      if (controller
-                                                                          .selectedOptionIndexes
-                                                                          .isNotEmpty) {
-                                                                        selectedOption = controller
-                                                                            .selectedOptionIndexes
-                                                                            .map((index) => question
-                                                                                .options![index]
-                                                                                .option)
-                                                                            .join(', ');
-                                                                        isAnswered =
-                                                                            true;
-                                                                        isCorrect = controller
-                                                                            .selectedOptionIndexes
-                                                                            .every(
-                                                                          (index) => question
-                                                                              .explanation!
-                                                                              .text!
-                                                                              .contains(
-                                                                            question
-                                                                                .options![index]
-                                                                                .option
-                                                                                .toString(),
-                                                                          ),
-                                                                        );
-                                                                      }
-                                                                    } else if (question
-                                                                            .type ==
-                                                                        'integer') {
-                                                                      if (controller
-                                                                              .integerAnswer
-                                                                              .value !=
-                                                                          null) {
-                                                                        selectedOption = controller
-                                                                            .integerAnswer
-                                                                            .value
-                                                                            .toString();
-                                                                        isAnswered =
-                                                                            true;
-                                                                        isCorrect = question
-                                                                                .explanation!
-                                                                                .text ==
-                                                                            selectedOption;
-                                                                      }
-                                                                    }
-                                                
-                                                                    if (isAnswered) {
-                                                                      if (question
-                                                                              .type !=
-                                                                          'integer') {
-                                                                        isCorrect = question
-                                                                            .explanation!
-                                                                            .text!
-                                                                            .contains(
-                                                                                selectedOption!);
-                                                                      }
-                                                
-                                                                      final answerData =
-                                                                          {
-                                                                        "answer":
-                                                                            selectedOption,
-                                                                        "question":
-                                                                            question
-                                                                                .id,
-                                                                        "isRight":
-                                                                            isCorrect,
-                                                                      };
-                                                
-                                                                      controller
-                                                                          .answersList
-                                                                          .add(
-                                                                              answerData);
-                                                
-                                                                      if (isCorrect) {
-                                                                        controller
-                                                                                .totalMarks
-                                                                                .value +=
-                                                                            question
-                                                                                .marks!;
-                                                                      } else {
-                                                                        controller
-                                                                                .incorrectMarks
-                                                                                .value +=
-                                                                            question
-                                                                                .negativeMarks!
-                                                                                .toDouble();
-                                                                      }
-                                                
-                                                                      controller
-                                                                          .testAnswerquestion();
-                                                                      controller
-                                                                          .submitAnswer();
-                                                                    } else {
-                                                                      controller
-                                                                          .submitAnswer();
-                                                                    }
-                                                                    print(
-                                                                        "Anlst${controller.answersList.string}");
                                                                   },
                                                                   child: buildButton(
-                                                                      "Save and Next"),
+                                                                      "clear"),
                                                                 ),
-                                                //// Mark button code
+
+                                                                // Save and Next button
+
+                                                                Obx(
+                                                                  () => InkWell(
+                                                                    onTap: controller.currentQuestionIndex.value ==
+                                                                            testSeries.questions!.length -
+                                                                                1
+                                                                        ? null // Agar last question hai toh button disable ho jaye
+                                                                        : () {
+                                                                            bool
+                                                                                isAnswered =
+                                                                                false;
+                                                                            String?
+                                                                                selectedOption;
+                                                                            bool
+                                                                                isCorrect =
+                                                                                false;
+
+                                                                            // Logic for mcq, msq, and integer types (similar to your original code)
+                                                                            // Check if the answer is provided and validate it
+                                                                            if (question.type ==
+                                                                                'mcq') {
+                                                                              final selectedOptionIndex = controller.selectedOptionIndex.value;
+
+                                                                              if (selectedOptionIndex != -1) {
+                                                                                selectedOption = question.options![selectedOptionIndex].option;
+                                                                                isAnswered = true;
+                                                                                controller.savedAnswers[question.id.toString()] = selectedOptionIndex;
+                                                                              }
+                                                                            } else if (question.type ==
+                                                                                'msq') {
+                                                                              if (controller.selectedOptionIndexes.isNotEmpty) {
+                                                                                selectedOption = controller.selectedOptionIndexes.map((index) => question.options![index].option).join(', ');
+                                                                                isAnswered = true;
+                                                                                isCorrect = controller.selectedOptionIndexes.every(
+                                                                                  (index) => question.explanation!.text!.contains(
+                                                                                    question.options![index].option.toString(),
+                                                                                  ),
+                                                                                );
+                                                                              }
+                                                                            } else if (question.type ==
+                                                                                'integer') {
+                                                                              if (controller.integerAnswer.value != null) {
+                                                                                selectedOption = controller.integerAnswer.value.toString();
+                                                                                isAnswered = true;
+                                                                                isCorrect = question.explanation!.text == selectedOption;
+                                                                              }
+                                                                            }
+
+                                                                            if (isAnswered) {
+                                                                              if (question.type != 'integer') {
+                                                                                isCorrect = question.explanation!.text!.contains(selectedOption!);
+                                                                              }
+
+                                                                              final answerData = {
+                                                                                "answer": selectedOption,
+                                                                                "question": question.id,
+                                                                                "isRight": isCorrect,
+                                                                              };
+
+                                                                              controller.answersList.add(answerData);
+
+                                                                              if (isCorrect) {
+                                                                                controller.totalMarks.value += question.marks!;
+                                                                              } else {
+                                                                                controller.incorrectMarks.value += question.negativeMarks!.toDouble();
+                                                                              }
+
+                                                                              controller.testAnswerquestion();
+                                                                              controller.submitAnswer();
+                                                                            } else {
+                                                                              controller.submitAnswer();
+                                                                            }
+                                                                            print("Anlst${controller.answersList.string}");
+                                                                          },
+                                                                    child: buildButton(
+                                                                        "Save and Next"),
+                                                                  ),
+                                                                ), //// Mark button code
                                                                 InkWell(
                                                                   onTap: () {
                                                                     bool
@@ -602,20 +554,18 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                     bool
                                                                         isCorrect =
                                                                         false;
-                                                
+
                                                                     if (question
                                                                             .type ==
                                                                         'mcq') {
-                                                                      final selectedOptionIndex =
-                                                                          controller
-                                                                              .selectedOptionIndex
-                                                                              .value;
-                                                
+                                                                      final selectedOptionIndex = controller
+                                                                          .selectedOptionIndex
+                                                                          .value;
+
                                                                       if (selectedOptionIndex !=
                                                                           -1) {
                                                                         selectedOption = question
-                                                                            .options![
-                                                                                selectedOptionIndex]
+                                                                            .options![selectedOptionIndex]
                                                                             .option;
                                                                         isAnswered =
                                                                             true;
@@ -628,9 +578,8 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                           .isNotEmpty) {
                                                                         selectedOption = controller
                                                                             .selectedOptionIndexes
-                                                                            .map((index) => question
-                                                                                .options![index]
-                                                                                .option)
+                                                                            .map((index) =>
+                                                                                question.options![index].option)
                                                                             .join(', ');
                                                                         isAnswered =
                                                                             true;
@@ -650,45 +599,39 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                             true;
                                                                       }
                                                                     }
-                                                
+
                                                                     if (isAnswered) {
                                                                       isCorrect = question
                                                                           .explanation!
                                                                           .text!
                                                                           .contains(
                                                                               selectedOption!);
-                                                
+
                                                                       final answerData =
                                                                           {
                                                                         "answer":
                                                                             selectedOption,
                                                                         "question":
-                                                                            question
-                                                                                .id,
+                                                                            question.id,
                                                                         "isRight":
                                                                             isCorrect,
                                                                       };
-                                                
+
                                                                       controller
                                                                           .answersList
                                                                           .add(
                                                                               answerData);
-                                                
+
                                                                       if (isCorrect) {
                                                                         controller
-                                                                                .totalMarks
-                                                                                .value +=
-                                                                            question
-                                                                                .marks!;
+                                                                            .totalMarks
+                                                                            .value += question.marks!;
                                                                       } else {
                                                                         controller
-                                                                                .incorrectMarks
-                                                                                .value +=
-                                                                            question
-                                                                                .negativeMarks!
-                                                                                .toDouble();
+                                                                            .incorrectMarks
+                                                                            .value += question.negativeMarks!.toDouble();
                                                                       }
-                                                
+
                                                                       controller
                                                                           .markForReview();
                                                                     } else {
@@ -697,9 +640,8 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                           "Please select or enter an answer before marking for review.");
                                                                     }
                                                                   },
-                                                                  child:
-                                                                      buildButton(
-                                                                          "Marked"),
+                                                                  child: buildButton(
+                                                                      "Marked"),
                                                                 ),
                                                               ],
                                                             ).w(400)
@@ -731,7 +673,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                         "Previous"),
                                                                   ),
                                                                   2.widthBox,
-                                                
+
                                                                   // Save and Next button
                                                                   InkWell(
                                                                     onTap: () {
@@ -743,7 +685,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                       bool
                                                                           isCorrect =
                                                                           false;
-                                                
+
                                                                       // Logic for mcq, msq, and integer types
                                                                       // Check if the answer is provided and validate it
                                                                       if (question
@@ -771,18 +713,15 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                             .isNotEmpty) {
                                                                           selectedOption = controller
                                                                               .selectedOptionIndexes
-                                                                              .map((index) =>
-                                                                                  question.options![index].option)
+                                                                              .map((index) => question.options![index].option)
                                                                               .join(', ');
                                                                           isAnswered =
                                                                               true;
                                                                           isCorrect = controller
                                                                               .selectedOptionIndexes
                                                                               .every(
-                                                                            (index) => question
-                                                                                .explanation!
-                                                                                .text!
-                                                                                .contains(
+                                                                            (index) =>
+                                                                                question.explanation!.text!.contains(
                                                                               question.options![index].option.toString(),
                                                                             ),
                                                                           );
@@ -796,31 +735,25 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                             .value;
                                                                         if (integerValue !=
                                                                                 null &&
-                                                                            controller
-                                                                                .inputAnswer
-                                                                                .value
-                                                                                .text
-                                                                                .isNotEmpty) {
+                                                                            controller.inputAnswer.value.text.isNotEmpty) {
                                                                           selectedOption =
                                                                               integerValue.toString();
                                                                           isAnswered =
                                                                               true;
                                                                           isCorrect =
-                                                                              question.explanation!.text ==
-                                                                                  selectedOption;
+                                                                              question.explanation!.text == selectedOption;
                                                                         }
                                                                       }
-                                                
+
                                                                       if (isAnswered) {
-                                                                        if (question
-                                                                                .type !=
+                                                                        if (question.type !=
                                                                             'integer') {
                                                                           isCorrect = question
                                                                               .explanation!
                                                                               .text!
                                                                               .contains(selectedOption!);
                                                                         }
-                                                
+
                                                                         final answerData =
                                                                             {
                                                                           "answer":
@@ -830,13 +763,12 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                           "isRight":
                                                                               isCorrect,
                                                                         };
-                                                
+
                                                                         // Add answer to the list
                                                                         controller
                                                                             .answersList
-                                                                            .add(
-                                                                                answerData);
-                                                
+                                                                            .add(answerData);
+
                                                                         // Update marks based on correctness
                                                                         if (isCorrect) {
                                                                           controller
@@ -847,7 +779,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                               .incorrectMarks
                                                                               .value += question.negativeMarks!.toDouble();
                                                                         }
-                                                
+
                                                                         // Submit the answer and move to the next question
                                                                         controller
                                                                             .testAnswerquestion();
@@ -857,7 +789,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                         controller
                                                                             .submitAnswer(); // Even if unanswered, submit
                                                                       }
-                                                
+
                                                                       // Logic to navigate to the next question after handling the answer
                                                                       // Ensure you implement this correctly
                                                                       // Adjust this based on your implementation
@@ -865,9 +797,9 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                     child: buildButton(
                                                                         "Save and Next"),
                                                                   ),
-                                                
+
                                                                   2.widthBox,
-                                                
+
                                                                   // Mark for Review button
                                                                   InkWell(
                                                                     onTap: () {
@@ -879,7 +811,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                       bool
                                                                           isCorrect =
                                                                           false;
-                                                
+
                                                                       // Similar answer logic as above (mcq, msq, integer types)
                                                                       if (question
                                                                               .type ==
@@ -887,7 +819,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                         final selectedOptionIndex = controller
                                                                             .selectedOptionIndex
                                                                             .value;
-                                                
+
                                                                         if (selectedOptionIndex !=
                                                                             -1) {
                                                                           selectedOption = question
@@ -904,8 +836,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                             .isNotEmpty) {
                                                                           selectedOption = controller
                                                                               .selectedOptionIndexes
-                                                                              .map((index) =>
-                                                                                  question.options![index].option)
+                                                                              .map((index) => question.options![index].option)
                                                                               .join(', ');
                                                                           isAnswered =
                                                                               true;
@@ -916,11 +847,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                         // Check if integer value is not null and use it for answer
                                                                         if (controller.integerAnswer.value !=
                                                                                 null &&
-                                                                            controller
-                                                                                .integerAnswer
-                                                                                .value
-                                                                                .toString()
-                                                                                .isNotEmpty) {
+                                                                            controller.integerAnswer.value.toString().isNotEmpty) {
                                                                           selectedOption = controller
                                                                               .integerAnswer
                                                                               .value
@@ -928,8 +855,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                           isAnswered =
                                                                               true;
                                                                           isCorrect =
-                                                                              question.explanation!.text ==
-                                                                                  selectedOption;
+                                                                              question.explanation!.text == selectedOption;
                                                                         }
                                                                       }
                                                                       //                                                               'integer') {
@@ -946,14 +872,13 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                       //                                                                   true;
                                                                       //                                                             }
                                                                       //                                                           }
-                                                
+
                                                                       if (isAnswered) {
                                                                         isCorrect = question
                                                                             .explanation!
                                                                             .text!
-                                                                            .contains(
-                                                                                selectedOption!);
-                                                
+                                                                            .contains(selectedOption!);
+
                                                                         final answerData =
                                                                             {
                                                                           "answer":
@@ -963,12 +888,11 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                           "isRight":
                                                                               isCorrect,
                                                                         };
-                                                
+
                                                                         controller
                                                                             .answersList
-                                                                            .add(
-                                                                                answerData);
-                                                
+                                                                            .add(answerData);
+
                                                                         if (isCorrect) {
                                                                           controller
                                                                               .totalMarks
@@ -978,7 +902,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                               .incorrectMarks
                                                                               .value += question.negativeMarks!.toDouble();
                                                                         }
-                                                
+
                                                                         controller
                                                                             .markForReview();
                                                                       } else {
@@ -989,7 +913,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                                                     child: buildButton(
                                                                         "Mark for Review"),
                                                                   ),
-                                                
+
                                                                   // Unmark button to remove the question from the "Review" list
                                                                   2.widthBox,
                                                                   InkWell(
@@ -1088,6 +1012,4 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
         .replaceAll('<stdio.h>', '&lt;stdio.h&gt;')
         .replaceAll('</stdio.h>', '');
   }
-
-
 }
