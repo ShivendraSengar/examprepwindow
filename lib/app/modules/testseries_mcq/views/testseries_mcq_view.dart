@@ -44,21 +44,23 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 8),
+                          horizontal: 0, vertical: 8),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Card(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: SizedBox(
-                                    height: 620,
-                                    width: Get.width / 1.7,
+                                    height: isSmallScreen == true ? 900 : 620,
+                                    width: isSmallScreen == true
+                                        ? 300
+                                        : Get.width / 1.7,
                                     child: SingleChildScrollView(
                                       child: Column(
                                         children: [
@@ -67,7 +69,7 @@ class TestseriesMcqView extends GetView<TestseriesMcqController> {
                                               : Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
-                                                          .spaceBetween,
+                                                          .start,
                                                   // crossAxisAlignment:
                                                   //     CrossAxisAlignment.center,
                                                   children: [

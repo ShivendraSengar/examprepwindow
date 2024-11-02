@@ -12,7 +12,8 @@ final PrefUtils prefutils = Get.find();
 const baseUrl = 'https://devapi.exampreptool.com/api/';
 //const baseUrl = 'http://3.108.150.124:4000/api/'; //https://devapi.exampreptool.com/api/';
 final userData = UserData().obs;
-//const razorpayid = {`${rzp_test_PwgBzUCpnd1ZRt}`}
+//const razorpayid = {`${rzp_test_PwgBzUCpnd1ZRt} RAZORPAY_KEY_ID = rzp_test_PwgBzUCpnd1ZRt
+// RAZORPAY_KEY_SECRET = UfwrtiFlMRNrFBPpOvU5wKBr`}
 var userid = EditProfile().obs;
 const String key_id = "rzp_live_7ck6XrPcnXgzmw";
 const examdat = "654f089dbf2c60d79abcb464";

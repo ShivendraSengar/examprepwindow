@@ -11,64 +11,65 @@ class RandomMobileView extends GetView<TestseriesMcqController> {
   @override
   Widget build(BuildContext context) {
     final Testseries testSeries = Get.arguments as Testseries;
+
+    controller.testSeries.value = testSeries;
     void submitTest() {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        content: Container(
-          height: Get.height / 4,
-          width: 400,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                "Your Test has been submitted"
-                    .text
-                    .size(20)
-                    .fontWeight(FontWeight.bold)
-                    .bold
-                    .make(),
-                10.heightBox,
-                "You got ${(controller.totalMarks.value - controller.incorrectMarks.toDouble()).toStringAsFixed(2)} marks"
-                    .text
-                    .purple500
-                    .size(16)
-                    .bold
-                    .make()
-                    .p16(),
-              ],
-            ),
-          ),
-        ),
-        actions: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  // First, dismiss the dialog
-                  Navigator.of(context).pop();
-controller.testcontroller.startTest();
-                            (); // End test and show solution
-                        
-                         
-                        
-                            controller.submitAnswerquestion();
-                  onSomeEvent();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Container(
+              height: Get.height / 4,
+              width: 400,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    "Your Test has been submitted"
+                        .text
+                        .size(20)
+                        .fontWeight(FontWeight.bold)
+                        .bold
+                        .make(),
+                    10.heightBox,
+                    "You got ${(controller.totalMarks.value - controller.incorrectMarks.toDouble()).toStringAsFixed(2)} marks"
+                        .text
+                        .purple500
+                        .size(16)
+                        .bold
+                        .make()
+                        .p16(),
+                  ],
                 ),
-                child: Text('OK'),
-              ).p16(),
+              ),
+            ),
+            actions: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // First, dismiss the dialog
+                      Navigator.of(context).pop();
+                      controller.testcontroller.startTest();
+                      (); // End test and show solution
+
+                      controller.submitAnswerquestion();
+                      onSomeEvent();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                    ),
+                    child: const Text('OK'),
+                  ).p16(),
+                ],
+              ),
             ],
-          ),
-        ],
+          );
+        },
       );
-    },
-  );
-} // // Define the onTimeUp function
+    } // // Define the onTimeUp function
+
     void onTimeUp() {
       showDialog(
         context: context,
@@ -152,7 +153,16 @@ controller.testcontroller.startTest();
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // submitTest();
+                      submitTest();
+                      controller.submitAnswerquestion();
+                      controller.stopTimer();
+
+                      controller.testcontroller.startTest();
+
+                      Navigator.of(context).pop();
+// End test and show solution
+
+                      onSomeEvent();
                     },
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.green),
@@ -182,7 +192,7 @@ controller.testcontroller.startTest();
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(
+            const Icon(
               Icons.timelapse_outlined,
               size: 40,
             ),
@@ -208,41 +218,41 @@ controller.testcontroller.startTest();
         ),
         const SizedBox(height: 20),
         Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: SizedBox(
-            width: 400,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            padding: const EdgeInsets.all(0.0),
+            child: SizedBox(
+             
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Obx(() {
-                      var currentQuestion =
-                          controller.testSeries.value.questions?.length;
-                      return Padding(
-                          padding: const EdgeInsets.only(left: 8, right: 8),
-                          child: Container(
-                            child: Text(
-                              ' ${controller.currentQuestionIndex.value + 1}',
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                          ));
-                    }),
-                    Obx(() {
-                      return buildAnswerContainer(
-                          "${controller.totalMarks.value}  ", Colors.green);
-                    }),
-                    Obx(() {
-                      return buildAnswerContainer(
-                          "${controller.incorrectMarks.toString()} ",
-                          Colors.red);
-                    }),
-                    buildEndButton().onTap(() {
-                    
-                      controller.testcontroller.startTest();
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Obx(() {
+                          var currentQuestion =
+                              controller.testSeries.value.questions?.length;
+                          return Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 8),
+                              child: Container(
+                                child: Text(
+                                  ' ${controller.currentQuestionIndex.value + 1}',
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ));
+                        }),
+                        Obx(() {
+                          return buildAnswerContainer(
+                              "${controller.totalMarks.value}  ", Colors.green);
+                        }),
+                        Obx(() {
+                          return buildAnswerContainer(
+                              "${controller.incorrectMarks.toString()} ",
+                              Colors.red);
+                        }),
+                        buildEndButton().onTap(() {
+                          controller.testcontroller.startTest();
                           // End test and show solution
 
                           // Solution view logic
@@ -250,119 +260,87 @@ controller.testcontroller.startTest();
                           onTimeUp();
                           controller.submitAnswerquestion();
                           controller.testcontroller.dispose();
-                      print("End Test");
-                    }),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Card(
-                  elevation: 1,
-                  child: Container(
-                    height: 60,
-                    width: double.infinity,
-                    padding: EdgeInsets.all(3),
-                    // Set a specific height for the GridView
-                    child: ListView.builder(
-                      // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      scrollDirection: Axis.horizontal,
-
-                      itemCount: testSeries.questions?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        // Color cardColor;
-
-                        // if (controller.answeredQuestions.contains(index)) {
-                        //   cardColor = const Color.fromARGB(255, 106, 232, 110)!;
-                        // } else if (controller.markedForReviewQuestions
-                        //     .contains(index)) {
-                        //   cardColor = const Color.fromARGB(255, 210, 94, 231)!;
-                        // } else {
-                        //   cardColor = Color.fromARGB(255, 224, 148, 156)!;
-                        // }
-
-                        return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Obx(() {
-                              // only color chnaged box
-                              Color cardColor;
-                              if (controller.answeredQuestions
-                                  .contains(index)) {
-                                cardColor =
-                                    const Color.fromARGB(255, 32, 233, 42)!;
-                              } else if (controller.markedForReviewQuestions
-                                  .contains(index)) {
-                                cardColor =
-                                    const Color.fromARGB(255, 200, 22, 231)!;
-                              } else if (controller.notvisited
-                                  .contains(index)) {
-                                cardColor =
-                                    const Color.fromARGB(255, 201, 27, 27)!;
-                              } else {
-                                cardColor = Colors.white!;
-                              }
-                              return Container(
-                                  width: 40,
-                                  height: 40,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: cardColor,
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          width: 1, color: Colors.black26)),
-                                  child: Center(
-                                    child: Text(
-                                      '${index + 1}',
-                                      style: const TextStyle(fontSize: 24),
-                                    ),
-                                  )).onTap(() {
-                                controller.updateCurrentQuestionIndex(index);
-                              });
-                            }));
-                      },
+                          print("End Test");
+                        }),
+                      ],
                     ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(testSeries.questionType.toString()),
-              ],
-            ),
-          ),
-        ),
+                    const SizedBox(height: 20),
 
+                    Card(
+                      elevation: 1,
+                      child: Container(
+                        height: 60,
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(3),
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: testSeries.questions?.length ?? 0,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Obx(() {
+                                  // only color chnaged box
+                                  Color cardColor;
+
+                                  if (controller.markedForReviewQuestions
+                                      .contains(index)) {
+                                    cardColor = const Color.fromARGB(255, 200,
+                                        22, 231); // Purple for marked review
+                                  } else if (controller.answeredQuestions
+                                      .contains(index)) {
+                                    cardColor = const Color.fromARGB(
+                                        255, 32, 233, 42); // Green for answered
+                                  } else if (controller.notvisited
+                                      .contains(index)) {
+                                    cardColor = const Color.fromARGB(255, 201,
+                                        27, 27); // Red for not visited
+                                  } else {
+                                    cardColor = Colors
+                                        .white; // Default white for other cases
+                                  }
+
+                                  return Container(
+                                      width: 40,
+                                      height: 40,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: cardColor,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              width: 1, color: Colors.black26)),
+                                      child: Center(
+                                        child: Text(
+                                          '${index + 1}',
+                                          style: const TextStyle(fontSize: 24),
+                                        ),
+                                      )).onTap(() {
+                                    controller
+                                        .updateCurrentQuestionIndex(index);
+                                  });
+                                }));
+                          },
+                        ),
+                      ),
+                    ),
+                    // buildEndButton().onTap(() {
+                    //   controller.testcontroller.startTest();
+
+                    //   onTimeUp();
+                    //   controller.submitAnswerquestion();
+                    //   controller.testcontroller.dispose();
+                    // })
+                  ],
+                ))),
       ],
     );
-  }
-
-  void onSomeEvent() {
-    // Test ID ko retrieve karein (for example purposes)
-    String testId = controller.testcontroller.testSeries[0].id.toString();
-
-    // Calculate and save final marks
-    controller.calculateFinalMarks(testId);
-
-    // Navigate to the next page
-    Get.toNamed(Routes.TESTSERIES_VALUE_ANALYSIS, arguments: {
-      "finalMarks": controller.marksMap[testId],
-      "testId": testId,
-    });
-  }
-
-  String correctHtmlContent(String html) {
-    return html
-        .replaceAll('&lt;', '<')
-        .replaceAll('&gt;', '>')
-        .replaceAll('<pre>', '')
-        .replaceAll('</pre>', '')
-        .replaceAll('<stdio.h>', '&lt;stdio.h&gt;')
-        .replaceAll('</stdio.h>', '');
   }
 
   buildAnswerContainer(text, color) {
     return Container(
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       height: 45,
       decoration: BoxDecoration(
-          color: color,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(width: 1, color: color)),
       child: Text(text),
@@ -373,16 +351,43 @@ controller.testcontroller.startTest();
     return Container(
       height: 45,
       alignment: Alignment.center,
-      width: 120,
+      width: 70,
       decoration: BoxDecoration(
           color: HexColor("#D20000"), borderRadius: BorderRadius.circular(5)),
       child: "End Test"
           .text
-          .size(16)
+          .size(10)
           .fontWeight(FontWeight.bold)
           .color(Vx.white)
           .uppercase
           .make(),
     );
+  }
+
+  void onSomeEvent() {
+    // Test ID ko retrieve karein
+    String testId = controller.testcontroller.testSeries[0].id.toString();
+
+    // Calculate and save final marks
+    controller.calculateFinalMarks(testId);
+
+    // Check if marks are calculated successfully
+    if (controller.marksMap.containsKey(testId)) {
+      // Navigate to the next page with calculated marks and testId
+      Get.offAndToNamed(
+        Routes.TESTSERIES_VALUE_ANALYSIS,
+        arguments: [
+          controller.marksMap[testId], // Pass calculated marks
+          testId, // Pass test ID
+        ],
+      );
+    } else {
+      // Handle the case where marks are not calculated
+      Get.snackbar(
+        "Error",
+        "Marks could not be calculated.",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 }

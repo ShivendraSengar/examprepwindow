@@ -67,7 +67,7 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                     ),
-                    child: Text('OK'),
+                    child: const Text('OK'),
                   ).p16(),
                 ],
               ),
@@ -173,8 +173,8 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
                       onSomeEvent();
                     },
                     style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                    child: Text('YES'),
+                        ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 25, 39, 25)),
+                    child: const Text('YES'),
                   ).p16(),
                   ElevatedButton(
                     onPressed: () {
@@ -182,7 +182,7 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
                     },
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                    child: Text('NO'),
+                    child: const Text('NO'),
                   ).p16(),
                 ],
               ),
@@ -268,7 +268,7 @@ class RandomQuestionPage extends GetView<TestseriesMcqController> {
                               itemCount: testSeries.questions?.length ?? 0,
                               itemBuilder: (context, index) {
                                 return Card(
-                                  shape: RoundedRectangleBorder(
+                                  shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(8)),
                                   ),

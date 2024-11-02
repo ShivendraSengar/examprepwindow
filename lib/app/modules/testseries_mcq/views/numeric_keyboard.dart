@@ -1,70 +1,89 @@
-import 'package:exam_prep_tool/app/data/modal/test_series/weekley_testSeries_modal.dart';
-import 'package:exam_prep_tool/app/modules/testseries_mcq/controllers/testseries_mcq_controller.dart';
-import 'package:exam_prep_tool/app/widgets/custom_numeric_keyboard.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 
-import 'package:exam_prep_tool/app/routes/app_pages.dart';
+class NumericKeyboard extends StatelessWidget {
+  final Function(String) onKeyTap;
+  final VoidCallback onBackspace;
+  final VoidCallback onClear;
 
-import 'package:flutter/widgets.dart';
-
-import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:velocity_x/velocity_x.dart';
-class NumericKeyboardExample extends StatefulWidget {
-  @override
-  _NumericKeyboardExampleState createState() => _NumericKeyboardExampleState();
-}
-
-class _NumericKeyboardExampleState extends State<NumericKeyboardExample> {
-  final TextEditingController _inputController = TextEditingController();
-  bool _showKeyboard = false; // To manage the visibility of the custom keyboard
+  NumericKeyboard({
+    required this.onKeyTap,
+    required this.onBackspace,
+    required this.onClear,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextField(
-          controller: _inputController,
-          focusNode: FocusNode(), // Prevent the default keyboard from showing
-          keyboardType: TextInputType.none, // Disable default keyboard
-          decoration: const InputDecoration(
-            labelText: "Enter your answer",
-          ),
-          onTap: () {
-            setState(() {
-              _showKeyboard = true; // Show custom keyboard on tap
-            });
-          },
+    return Container(
+      width: 250,
+      padding: const EdgeInsets.all(10),
+      color: Colors.grey[200],
+      child: GridView.builder(
+        shrinkWrap: true,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          childAspectRatio: 1.5,
         ),
-        
-        if (_showKeyboard)
-          NumericKeyboard(
-            onKeyTap: (value) {
-              // Append the tapped value to the TextField
-              setState(() {
-                _inputController.text += value;
-              });
-            },
-            onBackspace: () {
-              // Handle backspace
-              if (_inputController.text.isNotEmpty) {
-                setState(() {
-                  _inputController.text = _inputController.text
-                      .substring(0, _inputController.text.length - 1);
-                });
-              }
-            },
-            onClear: () {
-              // Clear the TextField
-              setState(() {
-                _inputController.clear();
-              });
-            },
-          ),
-      ],
+        itemCount: 12, // 10 digits, backspace, and clear
+        itemBuilder: (context, index) {
+          if (index < 9) {
+            // For digits 1-9
+            return GestureDetector(
+              onTap: () => onKeyTap((index + 1).toString()),
+              child: Container(
+                margin: const EdgeInsets.all(5),
+                alignment: Alignment.center,
+                color: Colors.blueAccent,
+                child: Text(
+                  (index + 1).toString(),
+                  style: const TextStyle(fontSize: 22, color: Colors.white),
+                ),
+              ),
+            );
+          } else if (index == 9) {
+            // For digit 0
+            return GestureDetector(
+              onTap: () => onKeyTap("0"),
+              child: Container(
+                margin: const EdgeInsets.all(5),
+                alignment: Alignment.center,
+                color: Colors.blueAccent,
+                child: const Text(
+                  "0",
+                  style: TextStyle(fontSize: 22, color: Colors.white),
+                ),
+              ),
+            );
+          } else if (index == 10) {
+            // Backspace button
+            return GestureDetector(
+              onTap: onBackspace,
+              child: Container(
+                margin: const EdgeInsets.all(5),
+                alignment: Alignment.center,
+                color: Colors.redAccent,
+                child: const Icon(
+                  Icons.backspace,
+                  color: Colors.white,
+                ),
+              ),
+            );
+          } else {
+            // Clear button
+            return GestureDetector(
+              onTap: onClear,
+              child: Container(
+                margin: const EdgeInsets.all(5),
+                alignment: Alignment.center,
+                color: Colors.orangeAccent,
+                child: const Text(
+                  "Clear",
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }
