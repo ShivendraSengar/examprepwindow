@@ -12,10 +12,8 @@ import 'package:get/get.dart';
 
 class ChangePassScreenController extends GetxController {
   TextEditingController oldpass = TextEditingController();
-  Rx<TextEditingController> newpass = TextEditingController().obs;
-   Rx<TextEditingController> confirmnewpass = TextEditingController().obs;
-  // TextEditingController newpass = TextEditingController();
-  // TextEditingController confirmnewpass = TextEditingController();
+  TextEditingController newpass = TextEditingController();
+  TextEditingController confirmnewpass = TextEditingController();
   final LoginRepo repositry = LoginRepoImpl();
   RxBool isLoading = false.obs;
   final PrefUtils prefutils = Get.find();
@@ -27,8 +25,8 @@ class ChangePassScreenController extends GetxController {
       final params = ChangepassParams()
         ..email = logincontroller.email.text
         ..password = oldpass.text
-        ..newPassword = newpass.value.text
-        ..reNewpassword = confirmnewpass.value.text;
+        ..newPassword = newpass.text
+        ..reNewpassword = confirmnewpass.text;
 
       var response = await repositry.changepassword(
           params, 'Bearer ${prefutils.getToken().toString()}');
@@ -42,25 +40,6 @@ class ChangePassScreenController extends GetxController {
     }
   }
 
-
-  var password = ''.obs;
-  var isPasswordEmpty = true.obs;
-  var isPasswordValid = true.obs;
-
-  // Function to validate password
-  void validatePassword(String value) {
-    isPasswordEmpty(value.isEmpty);
-    isPasswordValid(_isPasswordValid(value));
-  }
-
-  // Function to check if the password meets the criteria
-  bool _isPasswordValid(String value) {
-    // Implement your password validation logic here
-    // Example: Minimum 8 characters, at least one uppercase, one lowercase, one number, and one special character
-    RegExp passwordRegex =
-        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-    return passwordRegex.hasMatch(value);
-  }
   @override
   void onInit() {
     //print("aaa${email.toString()}");
