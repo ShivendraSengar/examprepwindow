@@ -11,7 +11,7 @@ environment:
 dependencies:
   cupertino_icons: ^1.0.2
   get: 4.6.6
-  velocity_x: ^4.1.2
+  velocity_x: ^4.2.1
   flutter_switch: ^0.3.0
   image_picker:
   shared_preferences:
@@ -19,7 +19,7 @@ dependencies:
   # syncfusion_flutter_pdfviewer:
   readmore:
   razorpay_web:
- 
+
   intl:
   carousel_slider: ^4.2.1
   flutter_html:
@@ -40,7 +40,7 @@ dependencies:
   hexcolor: ^3.0.1
   shimmer: ^3.0.0
   retrofit:
-  
+  firebase_core:
   firebase_messaging:
   screen_protector: ^1.4.2
   http: ^1.2.0
@@ -55,8 +55,8 @@ dependencies:
   webview_windows: ^0.4.0
   uni_links: ^0.5.1
   dotted_border: ^2.1.0
-  
-  
+
+
 dev_dependencies:
   flutter_lints: ^4.0.0
   flutter_launcher_icons: "^0.13.1"

@@ -29,21 +29,14 @@ import 'dart:async';
 import 'dart:io';
 
 class CupanDiscountController extends GetxController {
- 
+  final isInitialized = false.obs;
 
-  
-
-
-
-    final isInitialized = false.obs;
-  
   StreamSubscription? _sub;
-  
 
   final arguments = Get.arguments;
-  
+
 // / Define arguments as per your logic
- var arguments1 = [].obs;
+  var arguments1 = [].obs;
 
   RxDouble paynum = 0.0.obs;
 // InAppWebViewController? webView;
@@ -86,7 +79,6 @@ class CupanDiscountController extends GetxController {
     // razorpayFunction(finalCost.value);
   }
 
-  
   // var showReferralSection = false.obs;
   var isReferralApplied = false.obs;
   var isOwnReferral = false.obs;
@@ -115,48 +107,50 @@ class CupanDiscountController extends GetxController {
   void toggleReferralSection() {
     showReferralSection.value = !showReferralSection.value;
   }
+
   // Methods to toggle visibility
   Future<void> checkReferralData(String id) async {
-  print("Referral code: $referalCode");
+    print("Referral code: $referalCode");
 
-  isLoading.value = true;
-  final response = await repository1.checkreferrallist(
-    id,
-    prefUtils.getID().toString(),
-    'Bearer ${prefutils.getToken().toString()}',
-  );
+    isLoading.value = true;
+    final response = await repository1.checkreferrallist(
+      id,
+      prefUtils.getID().toString(),
+      'Bearer ${prefutils.getToken().toString()}',
+    );
 
-  if (response.data != null) {
-    if (response.data!.success!) {
-      checkreferal.value = response.data!.data ?? [];
-      ReferaldiscountPercentage.value = calculateFinalAmount(
-          checkreferal.first.referralDiscount!.toDouble());
+    if (response.data != null) {
+      if (response.data!.success!) {
+        checkreferal.value = response.data!.data ?? [];
+        ReferaldiscountPercentage.value = calculateFinalAmount(
+            checkreferal.first.referralDiscount!.toDouble());
 
-      // Mark referral as applied
-      // isReferralApplied.value = true;
-       isOwnReferral.value = false;
-    isReferralApplied.value = true;
-       // Clear any error message
-      updateFinalAmount(ReferaldiscountPercentage.value);
+        // Mark referral as applied
+        // isReferralApplied.value = true;
+        isOwnReferral.value = false;
+        isReferralApplied.value = true;
+        // Clear any error message
+        updateFinalAmount(ReferaldiscountPercentage.value);
+      } else {
+        // Own referral error case
+        showToastMessage('${response.data!.message.toString()}', "");
+        referralErrorMessage.value =
+            response.data!.message ?? 'Invalid referral code';
+        isOwnReferral.value = true;
 
+        isReferralApplied.value = false;
+        updateFinalAmount(coursePrice.value.toDouble());
+      }
     } else {
-      // Own referral error case
+      // General API error message
       showToastMessage('${response.data!.message.toString()}', "");
-      referralErrorMessage.value = response.data!.message ?? 'Invalid referral code';
-      isOwnReferral.value = true;
-    
-    isReferralApplied.value = false;
+      referralErrorMessage.value =
+          response.data!.message ?? "This referralId doesn't exist!";
       updateFinalAmount(coursePrice.value.toDouble());
     }
-  } else {
-    // General API error message
-    showToastMessage('${response.data!.message.toString()}', "");
-    referralErrorMessage.value = response.data!.message ?? "This referralId doesn't exist!";
-    updateFinalAmount(coursePrice.value.toDouble());
-  }
 
-  isLoading.value = false;
-}
+    isLoading.value = false;
+  }
 
 // Future<void> checkReferralData(String id) async {
 //   print("Referral code: $referalCode");
@@ -296,7 +290,7 @@ class CupanDiscountController extends GetxController {
     try {
       final requestBody = {
         'courseId': arguments[6].toString(),
-        "durationInMonths":  arguments[4].toString(),
+        "durationInMonths": arguments[4].toString(),
         'courseType': arguments[7].toString(),
         'userId': prefutils.getID(),
         'razorpay_order_id': orderid.toString(),
@@ -358,7 +352,7 @@ class CupanDiscountController extends GetxController {
 
   @override
   void onInit() {
-      // _initUniLinks();
+    // _initUniLinks();
     calculateCost();
     final arguments = Get.arguments;
 
@@ -428,86 +422,88 @@ class CupanDiscountController extends GetxController {
       }
     }
   }
+
 ////////////////////////////////
   ///////////////////////////////////////////////////////////////////// web payment
-   void paymentGetId() async {
-  isLoading.value = true;
-  // final PaymentController paymentController = Get.find<PaymentController>();
-  
-  try {
-    // Calculate the final amount based on coupon and referral conditions
-    double amountValue;
-    if (isCouponApplied.value && !isReferralApplied.value) {
-      amountValue = finalCost.value;
-    } else if (!isCouponApplied.value && isReferralApplied.value) {
-      amountValue = ReferaldiscountPercentage.value.toDouble(); // Adjust calculation as needed
-    } else if (isCouponApplied.value && isReferralApplied.value) {
-      amountValue = finalCost.value; // Assuming finalCost includes both discounts
-    } else {
-      amountValue = coursePrice.value.toDouble();
-    }
+  void paymentGetId() async {
+    isLoading.value = true;
+    // final PaymentController paymentController = Get.find<PaymentController>();
 
-    // Convert amount to string and multiply by 100 to get the value in cents/paisa
-    final String amountStr = (amountValue * 100).toString();
+    try {
+      // Calculate the final amount based on coupon and referral conditions
+      double amountValue;
+      if (isCouponApplied.value && !isReferralApplied.value) {
+        amountValue = finalCost.value;
+      } else if (!isCouponApplied.value && isReferralApplied.value) {
+        amountValue = ReferaldiscountPercentage.value
+            .toDouble(); // Adjust calculation as needed
+      } else if (isCouponApplied.value && isReferralApplied.value) {
+        amountValue =
+            finalCost.value; // Assuming finalCost includes both discounts
+      } else {
+        amountValue = coursePrice.value.toDouble();
+      }
 
-    // Prepare the request body
-    final Map<String, dynamic> requestBody = {
-      'amount': amountStr,
-      'courseId': id.toString(),
-      'currency': currencyin,
-      'type': courseType.toString(),
-      'userId': prefutils.getID(),
-      'notes': purchase,
-    };
+      // Convert amount to string and multiply by 100 to get the value in cents/paisa
+      final String amountStr = (amountValue * 100).toString();
 
-    // Make the POST request
-    final response = await https.post(
-      Uri.parse('https://devapi.exampreptool.com/api/payment/pay'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-      body: jsonEncode(requestBody),
-    );
+      // Prepare the request body
+      final Map<String, dynamic> requestBody = {
+        'amount': amountStr,
+        'courseId': id.toString(),
+        'currency': currencyin,
+        'type': courseType.toString(),
+        'userId': prefutils.getID(),
+        'notes': purchase,
+      };
 
-    // Handle the response
-    if (response.statusCode == 200) {
-      final dynamic responseData = jsonDecode(response.body);
+      // Make the POST request
+      final response = await https.post(
+        Uri.parse('https://devapi.exampreptool.com/api/payment/pay'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(requestBody),
+      );
 
-      if (responseData is Map<String, dynamic>) {
-        final String paymentId = responseData['data']['id'].toString();
-        setPaymentId(paymentId);
-        print('orderid: ${paymentId}');
-        print('orderid1: ${orderidpay}');
+      // Handle the response
+      if (response.statusCode == 200) {
+        final dynamic responseData = jsonDecode(response.body);
 
+        if (responseData is Map<String, dynamic>) {
+          final String paymentId = responseData['data']['id'].toString();
+          setPaymentId(paymentId);
+          print('orderid: ${paymentId}');
+          print('orderid1: ${orderidpay}');
 
           // Call the payment processing function for werb page
           callRazorpay(paymentId);
           print("Response: ${response.body}");
-        ///////////// Call the payment processing function in Windows
-      //   Get.toNamed(Routes.RAZOR_PAY_WINDOW, arguments: [
-      //     paynum.value.toString(),
-      //     arguments[6],
-      //     arguments[7],
-      //     arguments[4],
-      //  paymentId,
-      //   ]);
-      //   print("Response: ${response.body}");
+          ///////////// Call the payment processing function in Windows
+          //   Get.toNamed(Routes.RAZOR_PAY_WINDOW, arguments: [
+          //     paynum.value.toString(),
+          //     arguments[6],
+          //     arguments[7],
+          //     arguments[4],
+          //  paymentId,
+          //   ]);
+          //   print("Response: ${response.body}");
 
-        // Optionally, show a success message
-        // showToastMessage('Success', 'Payment message sent successfully');
+          // Optionally, show a success message
+          // showToastMessage('Success', 'Payment message sent successfully');
+        }
+      } else {
+        print('Error: ${response.statusCode}, ${response.body}');
+        showToastMessage('Error', 'An error occurred during payment.');
       }
-    } else {
-      print('Error: ${response.statusCode}, ${response.body}');
+    } catch (e) {
+      print('Error: $e');
       showToastMessage('Error', 'An error occurred during payment.');
+    } finally {
+      isLoading.value = false;
     }
-  } catch (e) {
-    print('Error: $e');
-    showToastMessage('Error', 'An error occurred during payment.');
-  } finally {
-    isLoading.value = false;
   }
-}
 /////////////////////////////////////////////////////////////////////window page payment
 //   void paymentGetId(BuildContext context, List<dynamic> arguments) async {
 //   isLoading.value = true;
@@ -605,9 +601,6 @@ class CupanDiscountController extends GetxController {
 //   }
 // }
 
-
-
-
   callRazorpay(String id) {
     log('dragonBall callRazorpay');
     print("orderid.valueabahh ${orderid}");
@@ -671,6 +664,4 @@ class CupanDiscountController extends GetxController {
     razorpay.clear();
     super.onClose();
   }
-
- 
 }
