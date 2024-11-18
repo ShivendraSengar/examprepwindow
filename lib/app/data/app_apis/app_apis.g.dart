@@ -13,7 +13,7 @@ class _AppApis implements AppApis {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://devapi.exampreptool.com/api/';
+    baseUrl ??= 'https://exampreptool.com/api/';
   }
 
   final Dio _dio;
@@ -882,6 +882,40 @@ class _AppApis implements AppApis {
               baseUrl,
             ))));
     final _value = SubjectfilterlistModal.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<PyqandNotesfilter>> getpyqlist(
+    String subject,
+    String uploadType,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'subject': subject,
+      r'uploadType': uploadType,
+    };
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<PyqandNotesfilter>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'uploadData/list-upload',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = PyqandNotesfilter.fromJson(_result.data!);
     final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }

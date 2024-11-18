@@ -40,7 +40,7 @@ class CupanDiscountController extends GetxController {
 
   RxDouble paynum = 0.0.obs;
 // InAppWebViewController? webView;
-  final String url = 'https://devapi.exampreptool.com/api/payment/pay';
+  final String url = 'https://exampreptool.com/api/payment/pay';
   final PrefUtils prefutils = Get.find();
   // Replace 'your_token_here' with the actual token value
   final String token = prefUtils.getToken().toString();
@@ -299,7 +299,7 @@ class CupanDiscountController extends GetxController {
         "mode": "online"
       };
       final response = await https.post(
-        Uri.parse('https://devapi.exampreptool.com/api/payment/purchase'),
+        Uri.parse('https://exampreptool.com/api/payment/purchase'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${token}',
@@ -459,7 +459,7 @@ class CupanDiscountController extends GetxController {
 
       // Make the POST request
       final response = await https.post(
-        Uri.parse('https://devapi.exampreptool.com/api/payment/pay'),
+        Uri.parse('https://exampreptool.com/api/payment/pay'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -536,7 +536,7 @@ class CupanDiscountController extends GetxController {
 
 //     // Make the POST request
 //     final response = await https.post(
-//       Uri.parse('https://devapi.exampreptool.com/api/payment/pay'),
+//       Uri.parse('https://exampreptool.com/api/payment/pay'),
 //       headers: {
 //         'Content-Type': 'application/json',
 //         'Authorization': 'Bearer $token',

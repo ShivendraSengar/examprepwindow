@@ -41,7 +41,7 @@
             })
           };
 
-          fetch('https://devapi.exampreptool.com/api/payment/purchase', verifyRequestOptions)
+          fetch('https://exampreptool.com/api/payment/purchase', verifyRequestOptions)
             .then(response => response.json())
             .then(data => {
               console.log('Verification success:', data);
@@ -72,7 +72,7 @@
       rzp1.open();
     }
 
-    
+
 
     document.getElementById('pay-button').onclick = function(e) {
       var amount = window.amountFromFlutter;
@@ -82,7 +82,7 @@
       var userId = window.userIdFromFlutter;
       var inmonth = window.inmonthFromFlutter;
       var orderidpay = window.orderidpayFromFlutter;
- 
+
       console.log('Button Clicked');
       console.log('Amount:', amount);
       console.log('Token:', token);

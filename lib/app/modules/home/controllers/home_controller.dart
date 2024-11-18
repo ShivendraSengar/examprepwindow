@@ -41,7 +41,7 @@ class HomeController extends GetxController {
   CheckToken? data;
   final CourseRepo repositry = CoursesRepoIml();
 
-  final String url = 'https://devapi.exampreptool.com/api/payment/pay';
+  final String url = 'https://exampreptool.com/api/payment/pay';
 
   // Replace 'your_token_here' with the actual token value
   final String token = prefUtils.getToken().toString();
@@ -120,7 +120,7 @@ class HomeController extends GetxController {
         "mode": "online"
       };
       final response = await https.post(
-        Uri.parse('https://devapi.exampreptool.com/api/payment/purchase'),
+        Uri.parse('https://exampreptool.com/api/payment/purchase'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${token}',
@@ -144,6 +144,7 @@ class HomeController extends GetxController {
       isLoading.value = false;
     }
   }
+
   Timer? _timer;
   @override
   void onInit() async {
@@ -152,7 +153,7 @@ class HomeController extends GetxController {
     // screenon();
     // await onedevicelogin();
     //  ProfileData();
- // 5 मिनट का टाइमर सेट करें
+    // 5 मिनट का टाइमर सेट करें
     _timer = Timer.periodic(const Duration(seconds: 25), (Timer timer) {
       onedevicelogin(); // हर 5 मिनट में टोकन को वेरिफाई करें
     });
@@ -188,7 +189,7 @@ class HomeController extends GetxController {
         'notes': purchase,
       };
       final response = await https.post(
-        Uri.parse('https://devapi.exampreptool.com/api/payment/pay'),
+        Uri.parse('https://exampreptool.com/api/payment/pay'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${token}',
