@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dio/dio.dart';
+// import 'package:dio/dio.dart';
 import 'package:exam_prep_tool/app/routes/app_pages.dart';
 import 'package:exam_prep_tool/app/utils/initial_bindings.dart';
 import 'package:exam_prep_tool/app/utils/utils.dart';
