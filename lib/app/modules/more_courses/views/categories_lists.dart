@@ -36,10 +36,10 @@ class Mobileview extends GetView<MoreCoursesController> {
                         children: [
                           IconButton(onPressed: (){
                             Get.back();
-                          }, icon: Icon(Icons.arrow_back,
+                          }, icon: const Icon(Icons.arrow_back,
                           color: Vx.white,size: 8,)),
                           
-                          Icon(
+                          const Icon(
                             Icons.category,
                             color: Colors.white,
                             size: 16,
@@ -454,22 +454,22 @@ class Mobileview extends GetView<MoreCoursesController> {
                                 crossAxisAlignment: CrossAxisAlignment
                                     .start, // Center the content vertically
                                 children: [
-                                  SizedBox(width: 18),
+                                  const SizedBox(width: 18),
                                   Image.asset(
                                     controller.images[0],
                                     height: 30,
                                     width: 30,
                                   ),
-                                  SizedBox(width: 5),
-                                  SizedBox(
+                                  const SizedBox(width: 5),
+                                  const SizedBox(
                                     height: 19,
                                     child: VerticalDivider(
                                       color: Colors.white,
                                       width: 6,
                                     ),
                                   ),
-                                  SizedBox(width: 5),
-                                  Text(
+                                  const SizedBox(width: 5),
+                                  const Text(
                                     "All Courses",
                                     style: TextStyle(color: Colors.white),
                                   ),
@@ -498,24 +498,32 @@ class Mobileview extends GetView<MoreCoursesController> {
                             crossAxisAlignment: CrossAxisAlignment
                                 .start, // Center the content vertically
                             children: [
-                              SizedBox(width: 18),
-                              Image.asset(
-                                controller.images[index - 1],
-                                height: 30,
-                                width: 30,
+                              const SizedBox(width: 18),
+                              Image.network( height: 30,
+                                            width: 30,
+                                imageUrl + data.image.toString(),
+                                errorBuilder: (BuildContext context,
+                                    Object exception, StackTrace? stackTrace) {
+                                  return Image.asset( height: 30,
+                                            width: 30,
+                                    'images/placeholder.jpeg', // Replace 'assets/placeholder_image.png' with your placeholder image path
+                                    fit: BoxFit.fill,
+                                  );
+                                },
+                                fit: BoxFit.fill,
                               ),
-                              SizedBox(width: 5),
-                              SizedBox(
+                              const SizedBox(width: 5),
+                              const SizedBox(
                                 height: 19,
                                 child: VerticalDivider(
                                   color: Colors.white,
                                   width: 6,
                                 ),
                               ),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               Text(
                                 data.category.toString(),
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ],
                           ),

@@ -30,10 +30,10 @@ class MoreCoursesView extends GetView<MoreCoursesController> {
     // Determine the layout based on the screen width
     if (screenWidth < mobileBreakpoint) {
       // Mobile layout
-      return Mobileview();
+      return const Mobileview();
     } else if (screenWidth < tabletBreakpoint) {
       // Tablet layout
-      return Mobileview();
+      return const Mobileview();
     } else {
       // Desktop layout
 
@@ -57,7 +57,7 @@ class MoreCoursesView extends GetView<MoreCoursesController> {
                       child: Row(
                         children: [
                           SizedBox(
-                            width: 250,
+                            width: 270,
                               height: Get.height,
                             child: ListView.builder(
                               shrinkWrap: true, // Add this line
@@ -98,22 +98,22 @@ class MoreCoursesView extends GetView<MoreCoursesController> {
                                             crossAxisAlignment: CrossAxisAlignment
                                                 .start, // Center the content vertically
                                             children: [
-                                              SizedBox(width: 18),
+                                              const SizedBox(width: 18),
                                               Image.asset(
                                                 controller.images[0],
                                                 height: 30,
                                                 width: 30,
                                               ),
-                                              SizedBox(width: 5),
-                                              SizedBox(
+                                              const SizedBox(width: 5),
+                                              const SizedBox(
                                                 height: 19,
                                                 child: VerticalDivider(
                                                   color: Colors.white,
                                                   width: 6,
                                                 ),
                                               ),
-                                              SizedBox(width: 5),
-                                              Text(
+                                              const SizedBox(width: 5),
+                                              const Text(
                                                 "All Courses",
                                                 style: TextStyle(
                                                     color: Colors.white),
@@ -134,7 +134,7 @@ class MoreCoursesView extends GetView<MoreCoursesController> {
                                     },
                                     child: Container(
                                       height: 45,
-                                      width: 150,
+                                      width: 350,
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
                                         color: HexColor('#0D2735'),
@@ -142,30 +142,51 @@ class MoreCoursesView extends GetView<MoreCoursesController> {
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment
-                                            .start, // Center the content vertically
+                                            .center, // Center the content vertically
                                         children: [
-                                          SizedBox(width: 18),
-                                          Image.asset(
-                                            controller.images[index - 1],
-                                            height: 30,
+                                          const SizedBox(width: 18),
+                                          Image.network(
+                                            imageUrl + data.image.toString(),
+                                             height: 30,
                                             width: 30,
+                                            errorBuilder: (BuildContext context,
+                                                Object exception,
+                                                StackTrace? stackTrace) {
+                                              return Image.asset(
+                                                 height: 30,
+                                            width: 30,
+                                                'images/placeholder.jpeg', // Replace 'assets/placeholder_image.png' with your placeholder image path
+                                                fit: BoxFit.fill,
+                                              );
+                                            },
+                                            fit: BoxFit.fill,
                                           ),
-                                          SizedBox(width: 5),
-                                          SizedBox(
+                                          const SizedBox(width: 5),
+                                          const SizedBox(
                                             height: 19,
                                             child: VerticalDivider(
                                               color: Colors.white,
                                               width: 6,
                                             ),
                                           ),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            data.category.toString(),
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
+                                          const SizedBox(width: 5),
+                                          Container(
+                                            alignment: Alignment.centerLeft,
+                                            width:
+                                                180, // Row के constraints के अनुसार
+                                            height: 45,
+                                            child: Text(
+                                              data.category.toString(),
+                                              maxLines: 4,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+),
+
+
                                         ],
                                       ),
                                     ).p(5),

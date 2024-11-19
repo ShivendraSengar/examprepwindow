@@ -114,10 +114,10 @@ class PracticeTestSeries extends GetView<TestsearisController> {
                           //                        Expanded(
                           //                          child: Text(
                           //                            data.title ?? "",
-                          //                            style: TextStyle(
-                          //                                color: Colors.black),
-                          //                          ),
-                          //                        ),
+                          //                     style: TextStyle(
+                          //                         color: Colors.black),
+                          //                     
+                          //                     
                           //                        Image.asset(
                           //                          Assets
                           //                              .images.showicons.path,
